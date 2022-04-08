@@ -1,17 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FlowerEShopAPI.DB.Entities
+namespace FlowerEShopAPI.DAL.Entities
 {
     public class ShoppingCart
     {
-        public ShoppingCart(string shoppingCartId)
+        public ShoppingCart(string id)
         {
-            ShoppingCartId = shoppingCartId;
+            Id = id;
         }
 
         [Key]
-        public string ShoppingCartId { get; set; }
+        [Column(TypeName = "nvarchar(36)")]
+        public string Id { get; set; }
 
         public virtual List<Product> Product { get; set; }
     }
