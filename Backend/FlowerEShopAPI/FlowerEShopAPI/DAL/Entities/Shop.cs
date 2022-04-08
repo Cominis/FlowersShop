@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace FlowerEShopAPI.DB.Entities
+namespace FlowerEShopAPI.DAL.Entities
 {
     public class Shop
     {
-        public Shop(string shopId,string name, string description, DateTime createdAt, DateTime updatedAt, string userId)
+        public Shop(string id,string name, string description, DateTime createdAt, DateTime updatedAt, string userId)
         {
-            ShopId = shopId;
+            Id = id;
             Name = name;
             Description = description;
             CreatedAt = createdAt;
@@ -17,7 +17,7 @@ namespace FlowerEShopAPI.DB.Entities
 
         [Key]
         [Column(TypeName = "nvarchar(36)")]
-        public string ShopId { get; set; }
+        public string Id { get; set; }
         
         [Required]
         [Column(TypeName ="nvarchar(50)")]
