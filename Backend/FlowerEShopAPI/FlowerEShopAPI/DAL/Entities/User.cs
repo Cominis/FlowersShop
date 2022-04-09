@@ -6,7 +6,7 @@ namespace FlowerEShopAPI.DAL.Entities
     {
         public User(string userId, string name, string surname, string userName, string password)
         {
-            Id = userId;
+            UserId = userId;
             Name = name;
             Surname = surname;
             UserName = userName;
@@ -14,7 +14,7 @@ namespace FlowerEShopAPI.DAL.Entities
         }
 
         [Key]
-        public string Id { get; set; }
+        public string UserId { get; set; }
         [Required]
         [StringLength(50)]
         public string Name { get; set; }

@@ -1,5 +1,4 @@
-﻿#nullable disable
-using FlowerEShopAPI.DAL;
+﻿using FlowerEShopAPI.DAL;
 using FlowerEShopAPI.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,47 +7,47 @@ namespace FlowerEShopAPI.BL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ShopsController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly FlowerShopDBContext _context;
 
-        public ShopsController(FlowerShopDBContext context)
+        public UsersController(FlowerShopDBContext context)
         {
             _context = context;
         }
 
-        // GET: api/Shops
+        // GET: api/User
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Shop>>> GetShops()
+        public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
-            return await _context.Shops.ToListAsync();
+            return await _context.User.ToListAsync();
         }
 
-        // GET: api/Shops/5
+        // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Shop>> GetShop(string id)
+        public async Task<ActionResult<User>> GetUser(string id)
         {
-            var shop = await _context.Shops.FindAsync(id);
+            var user = await _context.User.FindAsync(id);
 
-            if (shop == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return shop;
+            return user;
         }
 
-        // PUT: api/Shops/5
+        // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutShop(string id, Shop shop)
+        public async Task<IActionResult> PutUser(string id, User user)
         {
-            if (id != shop.Id)
+            if (id != user.UserId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(shop).State = EntityState.Modified;
+            _context.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +55,7 @@ namespace FlowerEShopAPI.BL.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ShopExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -69,19 +68,19 @@ namespace FlowerEShopAPI.BL.Controllers
             return NoContent();
         }
 
-        // POST: api/Shops
+        // POST: api/User
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Shop>> PostShop(Shop shop)
+        public async Task<ActionResult<User>> Postuser(User user)
         {
-            _context.Shops.Add(shop);
+            _context.User.Add(user);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (ShopExists(shop.Id))
+                if (UserExists(user.UserId))
                 {
                     return Conflict();
                 }
@@ -91,28 +90,28 @@ namespace FlowerEShopAPI.BL.Controllers
                 }
             }
 
-            return CreatedAtAction("GetShop", new { id = shop.Id }, shop);
+            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
         }
 
-        // DELETE: api/Shops/5
+        // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteShop(string id)
+        public async Task<IActionResult> DeleteUser(string id)
         {
-            var shop = await _context.Shops.FindAsync(id);
-            if (shop == null)
+            var user = await _context.User.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            _context.Shops.Remove(shop);
+            _context.User.Remove(user);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ShopExists(string id)
+        private bool UserExists(string id)
         {
-            return _context.Shops.Any(e => e.Id == id);
+            return _context.User.Any(e => e.UserId == id);
         }
     }
 }
