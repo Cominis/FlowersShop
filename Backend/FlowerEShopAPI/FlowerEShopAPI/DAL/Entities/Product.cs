@@ -1,16 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace FlowerEShopAPI.DAL.Entities
 {
     public class Product
     {
-        public Product(string id, string shopId, string name, string description, decimal price, decimal quantity, DateTime createdAt, DateTime updatedAt)
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public enum StatusEnum
+        {
+            Available,
+            OutOfStock
+        }
+
+        public Product(string id, string shopId, string title, string description, string category, string location, StatusEnum status, decimal price, decimal quantity, DateTime createdAt, DateTime updatedAt, string subCategory = "")
         {
             Id = id;
             ShopId = shopId;
-            Name = name;
+            Title = title;
             Description = description;
+            Category = category;
+            SubCategory = subCategory;
+            Location = location;
+            Status = status;
             Price = price;
             Quantity = quantity;
             CreatedAt = createdAt;
@@ -18,23 +31,33 @@ namespace FlowerEShopAPI.DAL.Entities
         }
 
         [Key]
-        [Column(TypeName = "nvarchar(36)")]
         public string Id { get; set; }
 
         [Required]
-        [Column(TypeName ="nvarchar(50)")]
-        public string Name { get; set; }
+        [StringLength(50)]
+        public string Title { get; set; }
 
         [Required]
-        [Column(TypeName = "nvarchar(500)")]
+        [StringLength(500)]
         public string Description { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string Category { get; set; }
+
+        public string SubCategory { get; set; }
+
+        [Required, StringLength(50)]
+        public string Location { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(10,2)")]
+        public StatusEnum Status { get; set; }
+
+        [Required]
+        [Precision(4, 2)]
         public decimal Price { get; set; }
 
         [Required]
-        [Column(TypeName = "decimal(4)")]
+        [Precision(6, 0)]
         public decimal Quantity { get; set; }
 
         [Required]
