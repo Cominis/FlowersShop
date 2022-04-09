@@ -70,6 +70,6 @@ namespace FlowerEShopAPI.DAL.Entities
         [ForeignKey("ShopId")]
         public string ShopId { get; set; }
 
-        public virtual Shop Shop { get; set; }
+        public virtual Shop? Shop { get; set; }
     }
 }

@@ -36,6 +36,7 @@ namespace FlowerEShopAPI.DAL.Entities
         [ForeignKey("UserId")]
         public string? UserId { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual List<Product>? Product { get; set; }
+        public virtual User? User { get; set; }
     }
 }
