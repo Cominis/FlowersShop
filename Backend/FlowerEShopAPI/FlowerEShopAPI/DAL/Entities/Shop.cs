@@ -5,7 +5,7 @@ namespace FlowerEShopAPI.DAL.Entities
 {
     public class Shop
     {
-        public Shop(string id,string name, string description, DateTime createdAt, DateTime updatedAt, string userId)
+        public Shop(string id, string name, string description, DateTime createdAt, DateTime updatedAt, string userId)
         {
             Id = id;
             Name = name;
@@ -16,15 +16,14 @@ namespace FlowerEShopAPI.DAL.Entities
         }
 
         [Key]
-        [Column(TypeName = "nvarchar(36)")]
         public string Id { get; set; }
-        
+
         [Required]
-        [Column(TypeName ="nvarchar(50)")]
+        [StringLength(50)]
         public string Name { get; set; }
 
         [Required]
-        [Column(TypeName = "nvarchar(500)")]
+        [StringLength(500)]
         public string Description { get; set; }
 
         [Required]
@@ -35,6 +34,8 @@ namespace FlowerEShopAPI.DAL.Entities
 
         [Required]
         [ForeignKey("UserId")]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
+
+        public virtual User User { get; set; }
     }
 }
