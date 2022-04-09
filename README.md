@@ -9,6 +9,6 @@ Made by SimpleTypes team from Vilnius University
   2. SSMS (Interface): [SSMS](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15)
  
  In VS
-  1. VS: View -> Other windows -> Package Manager console
+  1. View -> Other windows -> Package Manager console
   2. Run command 'update-database'
 # FRONTEND SETUP STEPS
