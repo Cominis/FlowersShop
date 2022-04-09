@@ -42,7 +42,7 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(string id, User user)
         {
-            if (id != user.UserId)
+            if (id != user.Id)
             {
                 return BadRequest();
             }
@@ -80,7 +80,7 @@ namespace FlowerEShopAPI.BL.Controllers
             }
             catch (DbUpdateException)
             {
-                if (UserExists(user.UserId))
+                if (UserExists(user.Id))
                 {
                     return Conflict();
                 }
@@ -90,7 +90,7 @@ namespace FlowerEShopAPI.BL.Controllers
                 }
             }
 
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
+            return CreatedAtAction("GetUser", new { id = user.Id }, user);
         }
 
         // DELETE: api/Users/5
@@ -111,7 +111,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         private bool UserExists(string id)
         {
-            return _context.User.Any(e => e.UserId == id);
+            return _context.User.Any(e => e.Id == id);
         }
     }
 }
