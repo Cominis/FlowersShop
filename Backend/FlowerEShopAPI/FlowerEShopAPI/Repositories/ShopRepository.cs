@@ -1,6 +1,7 @@
 ﻿using FlowerEShopAPI.DAL;
 using FlowerEShopAPI.DAL.Entities;
 using FlowerEShopAPI.Repositories.RepositoryInterfaces;
+using FlowerEShopAPI.Repositories.RepositoryInterfaces.HelpersInterfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlowerEShopAPI.Repositories
@@ -9,10 +10,12 @@ namespace FlowerEShopAPI.Repositories
     {
         private readonly FlowerShopDBContext _context;
         private readonly IProductRepository _productRepository;
-        public ShopRepository(FlowerShopDBContext context, IProductRepository productRepository)
+        private readonly Lazy<IHelpers> _helpers = null;
+        public ShopRepository(FlowerShopDBContext context, IProductRepository productRepository, Lazy<IHelpers> helpers)
         {
             _context = context;
             _productRepository = productRepository;
+            _helpers = helpers;
         }
 
         public async Task<Shop?> Create(string name, string description, string userId)
@@ -35,8 +38,8 @@ namespace FlowerEShopAPI.Repositories
             var updatedAt = DateTime.UtcNow;
             var shop = _context.Shops.SingleOrDefault(b => b.Id == id);
 
-            shop.Name = IsStringEmty(name) ? shop.Name : name;
-            shop.Description = IsStringEmty(description) ? shop.Description : description;
+            shop.Name = _helpers.Value.IsStringEmty(name) ? shop.Name : name;
+            shop.Description = _helpers.Value.IsStringEmty(description) ? shop.Description : description;
             shop.UpdatedAt = updatedAt;
 
             var previousShopProducts = await _productRepository.FindAll(id);
@@ -84,15 +87,6 @@ namespace FlowerEShopAPI.Repositories
             var shop = await _context.Shops.Include(b => b.Product).SingleOrDefaultAsync(b => b.Id == id);
 
             return shop != null ? CheckForProducts(shop) : shop;
-        }
-
-        private static bool IsStringEmty(string str)
-        {
-            if (str == null || str.Length == 0)
-            {
-                return true;
-            }
-            return false;
         }
 
         private static Shop CheckForProducts(Shop shop)

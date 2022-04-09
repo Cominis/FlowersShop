@@ -10,11 +10,13 @@ namespace FlowerEShopAPI.Repositories
     {
         private readonly FlowerShopDBContext _context;
         private readonly Lazy<IEnumConverter> _enumConverter = null;
+        private readonly Lazy<IHelpers> _helpers = null;
 
-        public ProductRepository(FlowerShopDBContext context, Lazy<IEnumConverter> enumConverter)
+        public ProductRepository(FlowerShopDBContext context, Lazy<IEnumConverter> enumConverter, Lazy<IHelpers> helpers)
         {
             _context = context;
             _enumConverter = enumConverter;
+            _helpers = helpers;
         }
 
         public async Task<Product?> Create(string shopId, string title, string description, string category, string location, string status, decimal price, decimal quantity, string subCategory = "")
@@ -36,14 +38,14 @@ namespace FlowerEShopAPI.Repositories
             var updatedAt = DateTime.UtcNow;
             var product = _context.Products.SingleOrDefault(p => p.Id == id && p.ShopId == shopId);
 
-            product.Title = IsStringEmty(title) ? product.Title : title;
-            product.Description = IsStringEmty(description) ? product.Description : description;
-            product.Category = IsStringEmty(category) ? product.Category : category;
-            product.Location = IsStringEmty(location) ? product.Location : location;
-            product.Status = IsStringEmty(status) ? product.Status : _enumConverter.Value.StringToStatusEnum(status);
+            product.Title = _helpers.Value.IsStringEmty(title) ? product.Title : title;
+            product.Description = _helpers.Value.IsStringEmty(description) ? product.Description : description;
+            product.Category = _helpers.Value.IsStringEmty(category) ? product.Category : category;
+            product.Location = _helpers.Value.IsStringEmty(location) ? product.Location : location;
+            product.Status = _helpers.Value.IsStringEmty(status) ? product.Status : _enumConverter.Value.StringToStatusEnum(status);
             product.Price = (decimal)(price != null ? price : product.Price);
             product.Quantity = (decimal)(quantity != null ? quantity : product.Quantity);
-            product.SubCategory = IsStringEmty(subCategory) ? product.SubCategory : subCategory;
+            product.SubCategory = _helpers.Value.IsStringEmty(subCategory) ? product.SubCategory : subCategory;
             product.UpdatedAt = updatedAt;
 
             await _context.SaveChangesAsync();
@@ -75,15 +77,6 @@ namespace FlowerEShopAPI.Repositories
             var product = await _context.Products.SingleOrDefaultAsync(b => b.Id == id);
 
             return product;
-        }
-
-        private static bool IsStringEmty(string str)
-        {
-            if (str == null || str.Length == 0)
-            {
-                return true;
-            }
-            return false;
         }
     }
 }

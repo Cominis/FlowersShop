@@ -21,6 +21,8 @@ builder.Services.AddScoped<IEnumConverter, EnumConverter>();
 builder.Services.AddScoped(provider => new Lazy<IEnumConverter>(provider.GetService<IEnumConverter>));
 builder.Services.AddScoped<IShoppingCartRepository, ShopingCartRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IHelpers, Helpers>();
+builder.Services.AddScoped(provider => new Lazy<IHelpers>(provider.GetService<IHelpers>));
 
 var app = builder.Build();
 
