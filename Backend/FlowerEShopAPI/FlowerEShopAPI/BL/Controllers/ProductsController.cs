@@ -1,4 +1,5 @@
 ﻿#nullable disable
+using FlowerEShopAPI.DAL;
 using FlowerEShopAPI.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,9 +10,9 @@ namespace FlowerEShopAPI.BL.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly ProductContext _context;
+        private readonly FlowerShopDBContext _context;
 
-        public ProductsController(ProductContext context)
+        public ProductsController(FlowerShopDBContext context)
         {
             _context = context;
         }

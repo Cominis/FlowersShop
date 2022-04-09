@@ -1,4 +1,5 @@
 ﻿#nullable disable
+using FlowerEShopAPI.DAL;
 using FlowerEShopAPI.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,9 +10,9 @@ namespace FlowerEShopAPI.BL.Controllers
     [ApiController]
     public class ShoppingCartsController : ControllerBase
     {
-        private readonly ShoppingCartContext _context;
+        private readonly FlowerShopDBContext _context;
 
-        public ShoppingCartsController(ShoppingCartContext context)
+        public ShoppingCartsController(FlowerShopDBContext context)
         {
             _context = context;
         }
@@ -20,14 +21,14 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ShoppingCart>>> GetShoppingCarts()
         {
-            return await _context.ShoppingCarts.ToListAsync();
+            return await _context.ShoppingCart.ToListAsync();
         }
 
         // GET: api/ShoppingCarts/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ShoppingCart>> GetShoppingCart(string id)
         {
-            var shoppingCart = await _context.ShoppingCarts.FindAsync(id);
+            var shoppingCart = await _context.ShoppingCart.FindAsync(id);
 
             if (shoppingCart == null)
             {
@@ -73,7 +74,7 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpPost]
         public async Task<ActionResult<ShoppingCart>> PostShoppingCart(ShoppingCart shoppingCart)
         {
-            _context.ShoppingCarts.Add(shoppingCart);
+            _context.ShoppingCart.Add(shoppingCart);
             try
             {
                 await _context.SaveChangesAsync();
@@ -97,13 +98,13 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteShoppingCart(string id)
         {
-            var shoppingCart = await _context.ShoppingCarts.FindAsync(id);
+            var shoppingCart = await _context.ShoppingCart.FindAsync(id);
             if (shoppingCart == null)
             {
                 return NotFound();
             }
 
-            _context.ShoppingCarts.Remove(shoppingCart);
+            _context.ShoppingCart.Remove(shoppingCart);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -111,7 +112,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         private bool ShoppingCartExists(string id)
         {
-            return _context.ShoppingCarts.Any(e => e.Id == id);
+            return _context.ShoppingCart.Any(e => e.Id == id);
         }
     }
 }

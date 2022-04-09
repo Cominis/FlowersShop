@@ -4,9 +4,9 @@ namespace FlowerEShopAPI.DAL.Entities
 {
     public class User
     {
-        public User(string userId, string name, string surname, string userName, string password)
+        public User(string id, string name, string surname, string userName, string password)
         {
-            Id = userId;
+            Id = id;
             Name = name;
             Surname = surname;
             UserName = userName;
