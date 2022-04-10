@@ -22,7 +22,6 @@ namespace FlowerEShopAPI.DAL.Entities
         [StringLength(50)]
         public string Name { get; set; }
 
-        [Required]
         [StringLength(500)]
         public string Description { get; set; }
 
@@ -37,6 +36,6 @@ namespace FlowerEShopAPI.DAL.Entities
         public Guid UserId { get; set; }
 
         public virtual List<Product>? Product { get; set; }
-        public virtual User? User { get; set; }
+        public virtual User User { get; set; }
     }
 }

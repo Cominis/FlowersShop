@@ -29,6 +29,6 @@ namespace FlowerEShopAPI.DAL.Entities
         [StringLength(50)]
         public string Password { get; set; }
 
-        public virtual List<Shop?>? Shop { get; set; }
+        public virtual List<Shop>? Shop { get; set; }
     }
 }

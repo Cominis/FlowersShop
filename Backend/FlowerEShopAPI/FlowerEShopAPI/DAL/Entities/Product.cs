@@ -37,16 +37,17 @@ namespace FlowerEShopAPI.DAL.Entities
         [StringLength(50)]
         public string Title { get; set; }
 
-        [Required]
         [StringLength(500)]
         public string Description { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Category { get; set; }
 
         public string SubCategory { get; set; }
 
-        [Required, StringLength(50)]
+        [Required]
+        [StringLength(50)]
         public string Location { get; set; }
 
         [Required]
@@ -70,6 +71,6 @@ namespace FlowerEShopAPI.DAL.Entities
         [ForeignKey("ShopId")]
         public Guid ShopId { get; set; }
 
-        public virtual Shop? Shop { get; set; }
+        public virtual Shop Shop { get; set; }
     }
 }
