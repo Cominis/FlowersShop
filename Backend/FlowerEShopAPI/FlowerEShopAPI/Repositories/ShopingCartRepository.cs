@@ -16,9 +16,7 @@ namespace FlowerEShopAPI.Repositories
 
         public async Task<ShoppingCart> Add(string productId, string userId)
         {
-            var id = Guid.NewGuid().ToString();
-
-            var shoppingCart = new ShoppingCart(id, productId, userId);
+            var shoppingCart = new ShoppingCart(Guid.Parse(productId), Guid.Parse(userId));
 
             _context.ShoppingCart.Add(shoppingCart);
             await _context.SaveChangesAsync();
@@ -28,7 +26,7 @@ namespace FlowerEShopAPI.Repositories
 
         public async Task<string> Delete(string id)
         {
-            var shoppingCart = _context.ShoppingCart.SingleOrDefault(b => b.Id == id);
+            var shoppingCart = _context.ShoppingCart.SingleOrDefault(b => b.Id.ToString() == id);
 
             _context.ShoppingCart.Remove(shoppingCart);
             await _context.SaveChangesAsync();
@@ -38,26 +36,26 @@ namespace FlowerEShopAPI.Repositories
 
         public async Task<List<ShoppingCart>> DeleteOne(string productId)
         {
-            var shoppingCart = await _context.ShoppingCart.SingleOrDefaultAsync(s => s.ProductId == productId);
+            var shoppingCart = await _context.ShoppingCart.SingleOrDefaultAsync(s => s.ProductId.ToString() == productId);
 
             _context.ShoppingCart.Remove(shoppingCart);
             await _context.SaveChangesAsync();
 
-            var newShoppingcart = await FindAll(shoppingCart.UserId);
+            var newShoppingcart = await FindAll(shoppingCart.UserId.ToString());
 
             return newShoppingcart;
         }
 
         public async Task<List<ShoppingCart>> FindAll(string userId)
         {
-            var shoppingCarts = await _context.ShoppingCart.Where(a => a.UserId == userId).ToListAsync();
+            var shoppingCarts = await _context.ShoppingCart.Where(a => a.UserId.ToString() == userId).ToListAsync();
 
             return shoppingCarts;
         }
 
         public async Task<ShoppingCart> FindById(string id)
         {
-            var shoppingCart = await _context.ShoppingCart.SingleOrDefaultAsync(b => b.Id == id);
+            var shoppingCart = await _context.ShoppingCart.SingleOrDefaultAsync(b => b.Id.ToString() == id);
 
             return shoppingCart;
         }

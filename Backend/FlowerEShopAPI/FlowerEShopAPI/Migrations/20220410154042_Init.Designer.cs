@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerEShopAPI.Migrations
 {
     [DbContext(typeof(FlowerShopDBContext))]
-    [Migration("20220409190317_AddedProductIdToShoppingCart")]
-    partial class AddedProductIdToShoppingCart
+    [Migration("20220410154042_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,8 +26,9 @@ namespace FlowerEShopAPI.Migrations
 
             modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.Product", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Category")
                         .IsRequired()
@@ -58,12 +59,11 @@ namespace FlowerEShopAPI.Migrations
                         .HasPrecision(6)
                         .HasColumnType("decimal(6,0)");
 
-                    b.Property<string>("ShopId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("ShopId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ShoppingCartId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid?>("ShoppingCartId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -91,8 +91,9 @@ namespace FlowerEShopAPI.Migrations
 
             modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.Shop", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -113,9 +114,8 @@ namespace FlowerEShopAPI.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -126,12 +126,15 @@ namespace FlowerEShopAPI.Migrations
 
             modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.ShoppingCart", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -140,8 +143,9 @@ namespace FlowerEShopAPI.Migrations
 
             modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()

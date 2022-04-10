@@ -14,9 +14,8 @@ namespace FlowerEShopAPI.DAL.Entities
             OutOfStock
         }
 
-        public Product(string id, string shopId, string title, string description, string category, string location, StatusEnum status, decimal price, decimal quantity, DateTime createdAt, DateTime updatedAt, string subCategory = "")
+        public Product(Guid shopId, string title, string description, string category, string location, StatusEnum status, decimal price, decimal quantity, DateTime createdAt, DateTime updatedAt, string subCategory = "")
         {
-            Id = id;
             ShopId = shopId;
             Title = title;
             Description = description;
@@ -30,8 +29,9 @@ namespace FlowerEShopAPI.DAL.Entities
             UpdatedAt = updatedAt;
         }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -68,7 +68,7 @@ namespace FlowerEShopAPI.DAL.Entities
 
         [Required]
         [ForeignKey("ShopId")]
-        public string ShopId { get; set; }
+        public Guid ShopId { get; set; }
 
         public virtual Shop? Shop { get; set; }
     }

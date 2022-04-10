@@ -42,7 +42,7 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(string id, User user)
         {
-            if (id != user.Id)
+            if (id != user.Id.ToString())
             {
                 return BadRequest();
             }
@@ -80,7 +80,7 @@ namespace FlowerEShopAPI.BL.Controllers
             }
             catch (DbUpdateException)
             {
-                if (UserExists(user.Id))
+                if (UserExists(user.Id.ToString()))
                 {
                     return Conflict();
                 }
@@ -111,7 +111,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         private bool UserExists(string id)
         {
-            return _context.User.Any(e => e.Id == id);
+            return _context.User.Any(e => e.Id.ToString() == id);
         }
     }
 }

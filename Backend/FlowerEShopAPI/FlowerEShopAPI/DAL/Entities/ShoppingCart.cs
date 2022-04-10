@@ -5,23 +5,23 @@ namespace FlowerEShopAPI.DAL.Entities
 {
     public class ShoppingCart
     {
-        public ShoppingCart(string id,string productId,string userId)
+        public ShoppingCart(Guid productId, Guid userId)
         {
-            Id = id;
             ProductId = productId;
             UserId = userId;
         }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [ForeignKey("ProductId")]
-        public string ProductId { get; set; }
+        public Guid ProductId { get; set; }
 
         [Required]
         [ForeignKey("UserId")]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public virtual List<Product> Product { get; set; }
     }
 }

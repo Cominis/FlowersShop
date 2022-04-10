@@ -1,20 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FlowerEShopAPI.DAL.Entities
 {
     public class User
     {
-        public User(string id, string name, string surname, string userName, string password)
+        public User(string name, string surname, string userName, string password)
         {
-            Id = id;
             Name = name;
             Surname = surname;
             UserName = userName;
             Password = password;
         }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
@@ -28,6 +29,6 @@ namespace FlowerEShopAPI.DAL.Entities
         [StringLength(50)]
         public string Password { get; set; }
 
-        public virtual List<Shop> Shop { get; set; }
+        public virtual List<Shop?>? Shop { get; set; }
     }
 }

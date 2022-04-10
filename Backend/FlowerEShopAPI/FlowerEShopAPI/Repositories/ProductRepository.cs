@@ -23,9 +23,8 @@ namespace FlowerEShopAPI.Repositories
         {
             var createdAt = DateTime.UtcNow;
             var updatedAt = DateTime.UtcNow;
-            var id = Guid.NewGuid().ToString();
 
-            var product = new Product(id, shopId, title, description, category, location, _enumConverter.Value.StringToStatusEnum(status), price, quantity, createdAt, updatedAt, subCategory);
+            var product = new Product(Guid.Parse(shopId), title, description, category, location, _enumConverter.Value.StringToStatusEnum(status), price, quantity, createdAt, updatedAt, subCategory);
 
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
@@ -36,7 +35,7 @@ namespace FlowerEShopAPI.Repositories
         public async Task<Product?> Update(string id, string shopId, string title, string description, string category, string location, string status, decimal? price, decimal? quantity, string subCategory = "")
         {
             var updatedAt = DateTime.UtcNow;
-            var product = _context.Products.SingleOrDefault(p => p.Id == id && p.ShopId == shopId);
+            var product = _context.Products.SingleOrDefault(p => p.Id.ToString() == id && p.ShopId.ToString() == shopId);
 
             product.Title = _helpers.Value.IsStringEmty(title) ? product.Title : title;
             product.Description = _helpers.Value.IsStringEmty(description) ? product.Description : description;
@@ -55,7 +54,7 @@ namespace FlowerEShopAPI.Repositories
 
         public async Task<string> Delete(string id)
         {
-            var product = _context.Products.SingleOrDefault(b => b.Id == id);
+            var product = _context.Products.SingleOrDefault(b => b.Id.ToString() == id);
             var dateNow = DateTime.UtcNow;
 
             _context.Products.Remove(product);
@@ -67,14 +66,14 @@ namespace FlowerEShopAPI.Repositories
 
         public async Task<List<Product>> FindAll(string shopId)
         {
-            var products = await _context.Products.Where(a => a.ShopId == shopId).ToListAsync();
+            var products = await _context.Products.Where(a => a.ShopId.ToString() == shopId).ToListAsync();
 
             return products;
         }
 
         public async Task<Product> FindOne(string id)
         {
-            var product = await _context.Products.SingleOrDefaultAsync(b => b.Id == id);
+            var product = await _context.Products.SingleOrDefaultAsync(b => b.Id.ToString() == id);
 
             return product;
         }

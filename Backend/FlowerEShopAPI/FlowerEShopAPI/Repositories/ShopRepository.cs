@@ -22,21 +22,20 @@ namespace FlowerEShopAPI.Repositories
         {
             var createdAt = DateTime.UtcNow;
             var updatedAt = DateTime.UtcNow;
-            var shopId = Guid.NewGuid().ToString();
 
-            var shop = new Shop(shopId, name, description, createdAt, updatedAt, userId);
+            var shop = new Shop(name, description, createdAt, updatedAt, Guid.Parse(userId));
 
             _context.Shops.Add(shop);
             await _context.SaveChangesAsync();
 
-            var shopDetails = await FindOne(shop.Id);
+            var shopDetails = await FindOne(shop.Id.ToString());
 
             return shopDetails != null ? CheckForProducts(shopDetails) : shopDetails;
         }
         public async Task<Shop?> Update(string id, string name, string description, Product[] products)
         {
             var updatedAt = DateTime.UtcNow;
-            var shop = _context.Shops.SingleOrDefault(b => b.Id == id);
+            var shop = _context.Shops.SingleOrDefault(b => b.Id.ToString() == id);
 
             shop.Name = _helpers.Value.IsStringEmty(name) ? shop.Name : name;
             shop.Description = _helpers.Value.IsStringEmty(description) ? shop.Description : description;
@@ -44,29 +43,29 @@ namespace FlowerEShopAPI.Repositories
 
             var previousShopProducts = await _productRepository.FindAll(id);
             var deletedShopProducts = previousShopProducts.Where(a => products.Where(b => a.Id == b.Id).Count() == 0).ToList();
-            var addedShopProducts = products.Where(a => a.Id == null).ToList();
+            var addedShopProducts = products.Where(a => a.Id.ToString() == null).ToList();
 
             foreach (var product in deletedShopProducts)
             {
-                await _productRepository.Delete(product.Id);
+                await _productRepository.Delete(product.Id.ToString());
             }
 
             foreach (var product in addedShopProducts)
             {
-                await _productRepository.Create(product.Id, product.Title, product.Description, product.Category, product.Location, product.Status.ToString(), product.Price, product.Quantity, product.SubCategory);
+                await _productRepository.Create(product.ShopId.ToString(), product.Title, product.Description, product.Category, product.Location, product.Status.ToString(), product.Price, product.Quantity, product.SubCategory);
             }
 
 
             await _context.SaveChangesAsync();
 
-            var updatedShop = _context.Shops.SingleOrDefault(b => b.Id == id);
+            var updatedShop = _context.Shops.SingleOrDefault(b => b.Id.ToString() == id);
 
             return updatedShop != null ? CheckForProducts(updatedShop) : updatedShop;
         }
 
         public async Task<string> Delete(string id)
         {
-            var shop = _context.Shops.SingleOrDefault(b => b.Id == id);
+            var shop = _context.Shops.SingleOrDefault(b => b.Id.ToString() == id);
 
             _context.Shops.Remove(shop);
 
@@ -84,7 +83,7 @@ namespace FlowerEShopAPI.Repositories
 
         public async Task<Shop?> FindOne(string id)
         {
-            var shop = await _context.Shops.Include(b => b.Product).SingleOrDefaultAsync(b => b.Id == id);
+            var shop = await _context.Shops.Include(b => b.Product).SingleOrDefaultAsync(b => b.Id.ToString() == id);
 
             return shop != null ? CheckForProducts(shop) : shop;
         }

@@ -15,9 +15,7 @@ namespace FlowerEShopAPI.Repositories
 
         public async Task<User> Create(string name, string surname, string userName, string password)
         {
-            var id = Guid.NewGuid().ToString();
-
-            var user = new User(id, name, surname, userName, password);
+            var user = new User(name, surname, userName, password);
 
             _context.User.Add(user);
             await _context.SaveChangesAsync();
@@ -34,14 +32,14 @@ namespace FlowerEShopAPI.Repositories
 
         public async Task<User> FindOneById(string id)
         {
-            var user = await _context.User.SingleOrDefaultAsync(u => u.Id == id);
+            var user = await _context.User.SingleOrDefaultAsync(u => u.Id.ToString() == id);
 
             return user;
         }
 
         public async Task<string> Delete(string id)
         {
-            var user = _context.User.SingleOrDefault(u => u.Id == id);
+            var user = _context.User.SingleOrDefault(u => u.Id.ToString() == id);
 
             _context.User.Remove(user);
             await _context.SaveChangesAsync();

@@ -43,7 +43,7 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutShoppingCart(string id, ShoppingCart shoppingCart)
         {
-            if (id != shoppingCart.Id)
+            if (id != shoppingCart.Id.ToString())
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace FlowerEShopAPI.BL.Controllers
             }
             catch (DbUpdateException)
             {
-                if (ShoppingCartExists(shoppingCart.Id))
+                if (ShoppingCartExists(shoppingCart.Id.ToString()))
                 {
                     return Conflict();
                 }
@@ -112,7 +112,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         private bool ShoppingCartExists(string id)
         {
-            return _context.ShoppingCart.Any(e => e.Id == id);
+            return _context.ShoppingCart.Any(e => e.Id.ToString() == id);
         }
     }
 }
