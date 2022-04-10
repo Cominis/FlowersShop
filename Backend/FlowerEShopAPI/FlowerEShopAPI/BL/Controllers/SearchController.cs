@@ -1,8 +1,6 @@
 ﻿using FlowerEShopAPI.BL.Controllers.Interfaces;
 using FlowerEShopAPI.BL.Services.ServiceInterfaces;
-using FlowerEShopAPI.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
-using static FlowerEShopAPI.BL.Models.Body;
 
 namespace FlowerEShopAPI.BL.Controllers
 {
@@ -16,11 +14,11 @@ namespace FlowerEShopAPI.BL.Controllers
             _searchService = searchService;
         }
 
-        [HttpGet]
+        [HttpGet("{searchQuery}/{priceStart}/{priceEnd}/{status}")]
         [TypeFilter(typeof(LogInterceptor))]
-        public async Task<IActionResult> Get([FromBody] SearchBody body)
+        public async Task<IActionResult> Get(string searchQuery, decimal priceStart, decimal priceEnd, string status = "All")
         {
-            var search = await _searchService.SearchShops(body.SearchQuery, body.PriceStart, body.PriceEnd, body.Status);
+            var search = await _searchService.SearchShops(searchQuery, priceStart, priceEnd, status);
             return ReturnResponse(search);
         }
 

@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using static FlowerEShopAPI.BL.Models.Body;
 
 namespace FlowerEShopAPI.BL.Controllers.Interfaces
 {
     public interface ISearchController
     {
-        public Task<IActionResult> Get([FromBody] SearchBody body);
+        public Task<IActionResult> Get(string searchQuery, decimal priceStart, decimal priceEnd, string status = "All");
     }
 }

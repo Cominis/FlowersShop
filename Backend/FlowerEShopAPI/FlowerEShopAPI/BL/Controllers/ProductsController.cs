@@ -1,5 +1,6 @@
 #nullable disable
 using FlowerEShopAPI.BL.Attributes;
+using FlowerEShopAPI.BL.Controllers.Interfaces;
 using FlowerEShopAPI.BL.Services.ServiceInterfaces;
 using FlowerEShopAPI.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ namespace FlowerEShopAPI.BL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class ProductsController : ControllerBase, IProductController
     {
         private readonly IProductService _productService;
         public ProductsController(IProductService productService)
@@ -28,10 +29,10 @@ namespace FlowerEShopAPI.BL.Controllers
         }
 
         [TypeFilter(typeof(LogInterceptor))]
-        [HttpGet]
-        public async Task<IActionResult> GetAll([FromBody] AllProductsBody productBody)
+        [HttpGet("{shopId}/{sortingItem}")]
+        public async Task<IActionResult> GetAll(string shopId, string sortingItem)
         {
-            var products = await _productService.GetAllProducts(productBody.ShopId, productBody.SortingItem);
+            var products = await _productService.GetAllProducts(shopId, sortingItem);
             return ReturnResponse(products);
         }
 
