@@ -42,19 +42,5 @@
             public decimal Quantity { get; set; }
             public string ShopId { get; set; }
         }
-
-        public class AllProductsBody
-        {
-            public string ShopId { get; set; }
-            public string SortingItem { get; set; } = "";
-        }
-
-        public class SearchBody
-        {
-            public string SearchQuery { get; set; }
-            public decimal PriceStart { get; set; }
-            public decimal PriceEnd { get; set; }
-            public string Status { get; set; } = "All";
-        }
     }
 }
