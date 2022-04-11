@@ -14,19 +14,18 @@ namespace FlowerEShopAPI.DAL.Entities
             OutOfStock
         }
 
-        public Product(Guid shopId, string title, string description, string category, string location, StatusEnum status, decimal price, decimal quantity, DateTime createdAt, DateTime updatedAt, string subCategory = "")
+        public Product(Guid shopId, string title, string description, string category, StatusEnum status, decimal price, decimal quantity, string subCategory = "")
         {
             ShopId = shopId;
             Title = title;
             Description = description;
             Category = category;
             SubCategory = subCategory;
-            Location = location;
             Status = status;
             Price = price;
             Quantity = quantity;
-            CreatedAt = createdAt;
-            UpdatedAt = updatedAt;
+            CreatedAt = DateTime.Now;
+            UpdatedAt = DateTime.Now;
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -45,10 +44,6 @@ namespace FlowerEShopAPI.DAL.Entities
         public string Category { get; set; }
 
         public string SubCategory { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string Location { get; set; }
 
         [Required]
         public StatusEnum Status { get; set; }

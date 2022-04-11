@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerEShopAPI.Migrations
 {
     [DbContext(typeof(FlowerShopDBContext))]
-    [Migration("20220410154042_Init")]
+    [Migration("20220411204233_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,11 +45,6 @@ namespace FlowerEShopAPI.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(4, 2)
@@ -106,6 +101,11 @@ namespace FlowerEShopAPI.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -118,8 +118,6 @@ namespace FlowerEShopAPI.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Shops");
                 });
@@ -147,12 +145,14 @@ namespace FlowerEShopAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Password")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -162,11 +162,10 @@ namespace FlowerEShopAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("Id", "UserName", "Password");
 
-                    b.HasKey("Id");
+                    b.HasIndex("Id")
+                        .IsUnique();
 
                     b.ToTable("User");
                 });
@@ -186,30 +185,28 @@ namespace FlowerEShopAPI.Migrations
                     b.Navigation("Shop");
                 });
 
-            modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.Shop", b =>
+            modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.User", b =>
                 {
-                    b.HasOne("FlowerEShopAPI.DAL.Entities.User", "User")
-                        .WithMany("Shop")
-                        .HasForeignKey("UserId")
+                    b.HasOne("FlowerEShopAPI.DAL.Entities.Shop", "Shop")
+                        .WithOne("User")
+                        .HasForeignKey("FlowerEShopAPI.DAL.Entities.User", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Shop");
                 });
 
             modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.Shop", b =>
                 {
                     b.Navigation("Product");
+
+                    b.Navigation("User")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.ShoppingCart", b =>
                 {
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.User", b =>
-                {
-                    b.Navigation("Shop");
                 });
 #pragma warning restore 612, 618
         }

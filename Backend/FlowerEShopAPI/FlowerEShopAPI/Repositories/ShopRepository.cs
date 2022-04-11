@@ -18,12 +18,9 @@ namespace FlowerEShopAPI.Repositories
             _helpers = helpers;
         }
 
-        public async Task<Shop?> Create(string name, string description, string userId)
+        public async Task<Shop?> Create(string name, string description, string location, string userId)
         {
-            var createdAt = DateTime.UtcNow;
-            var updatedAt = DateTime.UtcNow;
-
-            var shop = new Shop(name, description, createdAt, updatedAt, Guid.Parse(userId));
+            var shop = new Shop(name, description,location, Guid.Parse(userId));
 
             _context.Shops.Add(shop);
             await _context.SaveChangesAsync();
@@ -32,14 +29,14 @@ namespace FlowerEShopAPI.Repositories
 
             return shopDetails != null ? CheckForProducts(shopDetails) : shopDetails;
         }
-        public async Task<Shop?> Update(string id, string name, string description, Product[] products)
+        public async Task<Shop?> Update(string id, string name, string description,string location, Product[] products)
         {
-            var updatedAt = DateTime.UtcNow;
             var shop = _context.Shops.SingleOrDefault(b => b.Id.ToString() == id);
 
             shop.Name = _helpers.Value.IsStringEmty(name) ? shop.Name : name;
             shop.Description = _helpers.Value.IsStringEmty(description) ? shop.Description : description;
-            shop.UpdatedAt = updatedAt;
+            shop.Location = _helpers.Value.IsStringEmty(location) ? shop.Location : location;
+            shop.UpdatedAt = DateTime.Now;
 
             var previousShopProducts = await _productRepository.FindAll(id);
             var deletedShopProducts = previousShopProducts.Where(a => products.Where(b => a.Id == b.Id).Count() == 0).ToList();
@@ -52,7 +49,7 @@ namespace FlowerEShopAPI.Repositories
 
             foreach (var product in addedShopProducts)
             {
-                await _productRepository.Create(product.ShopId.ToString(), product.Title, product.Description, product.Category, product.Location, product.Status.ToString(), product.Price, product.Quantity, product.SubCategory);
+                await _productRepository.Create(product.ShopId.ToString(), product.Title, product.Description, product.Category,product.Status.ToString(), product.Price, product.Quantity, product.SubCategory);
             }
 
 

@@ -34,18 +34,6 @@ namespace FlowerEShopAPI.Repositories
             return id;
         }
 
-        public async Task<List<ShoppingCart>> DeleteOne(string productId)
-        {
-            var shoppingCart = await _context.ShoppingCart.SingleOrDefaultAsync(s => s.ProductId.ToString() == productId);
-
-            _context.ShoppingCart.Remove(shoppingCart);
-            await _context.SaveChangesAsync();
-
-            var newShoppingcart = await FindAll(shoppingCart.UserId.ToString());
-
-            return newShoppingcart;
-        }
-
         public async Task<List<ShoppingCart>> FindAll(string userId)
         {
             var shoppingCarts = await _context.ShoppingCart.Where(a => a.UserId.ToString() == userId).ToListAsync();

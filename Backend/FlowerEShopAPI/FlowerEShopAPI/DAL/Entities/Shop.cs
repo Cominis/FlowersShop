@@ -5,12 +5,13 @@ namespace FlowerEShopAPI.DAL.Entities
 {
     public class Shop
     {
-        public Shop(string name, string description, DateTime createdAt, DateTime updatedAt, Guid userId)
+        public Shop(string name, string description, string location, Guid userId)
         {
             Name = name;
             Description = description;
-            CreatedAt = createdAt;
-            UpdatedAt = updatedAt;
+            Location = location;
+            CreatedAt = DateTime.Now;
+            UpdatedAt = DateTime.Now;
             UserId = userId;
         }
 
@@ -26,16 +27,20 @@ namespace FlowerEShopAPI.DAL.Entities
         public string Description { get; set; }
 
         [Required]
+        [StringLength(50)]
+        public string Location { get; set; }
+
+        [Required]
         public DateTime CreatedAt { get; set; }
         [Required]
         public DateTime UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
 
-        [Required]
         [ForeignKey("UserId")]
         public Guid UserId { get; set; }
 
-        public virtual List<Product>? Product { get; set; }
-        public virtual User User { get; set; }
+
+        public virtual List<Product> Product { get; set; } = new List<Product>();
+        public virtual User? User { get; set; }
     }
 }

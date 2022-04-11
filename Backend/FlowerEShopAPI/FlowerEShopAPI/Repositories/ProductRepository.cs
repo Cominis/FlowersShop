@@ -19,12 +19,9 @@ namespace FlowerEShopAPI.Repositories
             _helpers = helpers;
         }
 
-        public async Task<Product?> Create(string shopId, string title, string description, string category, string location, string status, decimal price, decimal quantity, string subCategory = "")
+        public async Task<Product?> Create(string shopId, string title, string description, string category, string status, decimal price, decimal quantity, string subCategory = "")
         {
-            var createdAt = DateTime.UtcNow;
-            var updatedAt = DateTime.UtcNow;
-
-            var product = new Product(Guid.Parse(shopId), title, description, category, location, _enumConverter.Value.StringToStatusEnum(status), price, quantity, createdAt, updatedAt, subCategory);
+            var product = new Product(Guid.Parse(shopId), title, description, category, _enumConverter.Value.StringToStatusEnum(status), price, quantity, subCategory);
 
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
@@ -32,20 +29,18 @@ namespace FlowerEShopAPI.Repositories
             return product;
         }
 
-        public async Task<Product?> Update(string id, string shopId, string title, string description, string category, string location, string status, decimal? price, decimal? quantity, string subCategory = "")
+        public async Task<Product?> Update(string id, string shopId, string title, string description, string category, string status, decimal? price, decimal? quantity, string subCategory = "")
         {
-            var updatedAt = DateTime.UtcNow;
             var product = _context.Products.SingleOrDefault(p => p.Id.ToString() == id && p.ShopId.ToString() == shopId);
 
             product.Title = _helpers.Value.IsStringEmty(title) ? product.Title : title;
             product.Description = _helpers.Value.IsStringEmty(description) ? product.Description : description;
             product.Category = _helpers.Value.IsStringEmty(category) ? product.Category : category;
-            product.Location = _helpers.Value.IsStringEmty(location) ? product.Location : location;
             product.Status = _helpers.Value.IsStringEmty(status) ? product.Status : _enumConverter.Value.StringToStatusEnum(status);
             product.Price = (decimal)(price != null ? price : product.Price);
             product.Quantity = (decimal)(quantity != null ? quantity : product.Quantity);
             product.SubCategory = _helpers.Value.IsStringEmty(subCategory) ? product.SubCategory : subCategory;
-            product.UpdatedAt = updatedAt;
+            product.UpdatedAt = DateTime.Now;
 
             await _context.SaveChangesAsync();
 
@@ -55,7 +50,6 @@ namespace FlowerEShopAPI.Repositories
         public async Task<string> Delete(string id)
         {
             var product = _context.Products.SingleOrDefault(b => b.Id.ToString() == id);
-            var dateNow = DateTime.UtcNow;
 
             _context.Products.Remove(product);
 

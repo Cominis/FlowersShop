@@ -16,12 +16,10 @@ namespace FlowerEShopAPI.DAL.Entities
         public Guid Id { get; set; }
 
         [Required]
-        [ForeignKey("ProductId")]
         public Guid ProductId { get; set; }
 
         [Required]
-        [ForeignKey("UserId")]
         public Guid UserId { get; set; }
-        public virtual List<Product> Product { get; set; }
+        public virtual ICollection<Product> Product { get; set; } = new List<Product>();
     }
 }

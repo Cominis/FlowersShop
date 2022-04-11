@@ -26,7 +26,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         // GET: api/Shops/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Shop>> GetShop(string id)
+        public async Task<ActionResult<Shop>> GetShop(Guid id)
         {
             var shop = await _context.Shops.FindAsync(id);
 
@@ -96,7 +96,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         // DELETE: api/Shops/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteShop(string id)
+        public async Task<IActionResult> DeleteShop(Guid id)
         {
             var shop = await _context.Shops.FindAsync(id);
             if (shop == null)
