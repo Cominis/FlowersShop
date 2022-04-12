@@ -20,7 +20,7 @@ namespace FlowerEShopAPI.Repositories
 
         public async Task<Shop?> Create(string name, string description, string location, string userId)
         {
-            var shop = new Shop(name, description,location, Guid.Parse(userId));
+            var shop = new Shop { Name = name, Description = description, Location = location, UserId = Guid.Parse(userId) };
 
             _context.Shops.Add(shop);
             await _context.SaveChangesAsync();
@@ -29,7 +29,7 @@ namespace FlowerEShopAPI.Repositories
 
             return shopDetails != null ? CheckForProducts(shopDetails) : shopDetails;
         }
-        public async Task<Shop?> Update(string id, string name, string description,string location, Product[] products)
+        public async Task<Shop?> Update(string id, string name, string description, string location, Product[] products)
         {
             var shop = _context.Shops.SingleOrDefault(b => b.Id.ToString() == id);
 
@@ -49,7 +49,7 @@ namespace FlowerEShopAPI.Repositories
 
             foreach (var product in addedShopProducts)
             {
-                await _productRepository.Create(product.ShopId.ToString(), product.Title, product.Description, product.Category,product.Status.ToString(), product.Price, product.Quantity, product.SubCategory);
+                await _productRepository.Create(product.ShopId.ToString(), product.Title, product.Description, product.Category, product.Status.ToString(), product.Price, product.Quantity, product.SubCategory);
             }
 
 
@@ -73,23 +73,23 @@ namespace FlowerEShopAPI.Repositories
 
         public async Task<List<Shop>?> FindAll()
         {
-            var shops = await _context.Shops.Include(b => b.Product).ToListAsync();
+            var shops = await _context.Shops.Include(b => b.Products).ToListAsync();
 
             return shops.Select(shop => CheckForProducts(shop)).ToList();
         }
 
         public async Task<Shop?> FindOne(string id)
         {
-            var shop = await _context.Shops.Include(b => b.Product).SingleOrDefaultAsync(b => b.Id.ToString() == id);
+            var shop = await _context.Shops.Include(b => b.Products).SingleOrDefaultAsync(b => b.Id.ToString() == id);
 
             return shop != null ? CheckForProducts(shop) : shop;
         }
 
         private static Shop CheckForProducts(Shop shop)
         {
-            if (shop.Product == null)
+            if (shop.Products == null)
             {
-                shop.Product = new List<Product>();
+                shop.Products = new List<Product>();
             }
 
             return shop;

@@ -16,7 +16,7 @@ namespace FlowerEShopAPI.Repositories
 
         public async Task<ShoppingCart> Add(string productId, string userId)
         {
-            var shoppingCart = new ShoppingCart(Guid.Parse(productId), Guid.Parse(userId));
+            var shoppingCart = new ShoppingCart { ProductId = Guid.Parse(productId), UserId = Guid.Parse(userId) };
 
             _context.ShoppingCart.Add(shoppingCart);
             await _context.SaveChangesAsync();

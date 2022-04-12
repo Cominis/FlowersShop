@@ -25,7 +25,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(string id)
+        public async Task<ActionResult<User>> GetUser(Guid id)
         {
             var user = await _context.User.FindAsync(id);
 
