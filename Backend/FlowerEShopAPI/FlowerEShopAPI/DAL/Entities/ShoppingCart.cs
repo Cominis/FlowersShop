@@ -1,17 +1,29 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FlowerEShopAPI.DAL.Entities
 {
-    public class ShoppingCart
+    public class ShoppingCart : BaseEntity
     {
-        public ShoppingCart(string id)
-        {
-            Id = id;
-        }
-
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
-        public virtual List<Product> Product { get; set; }
+        [Required]
+        public Guid ProductId { get; set; }
+
+        [Required]
+        public Guid UserId { get; set; }
+
+        [Required]
+        [Precision(6, 0)]
+        public int quantity;
+
+        [ForeignKey("ProductId")]
+        public virtual Product? Product { get; set; }
+
+        [ForeignKey("UserId")]
+        public virtual User? User { get; set; }
     }
 }

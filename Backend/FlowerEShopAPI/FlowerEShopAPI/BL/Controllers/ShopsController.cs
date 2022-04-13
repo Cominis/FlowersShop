@@ -26,7 +26,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         // GET: api/Shops/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Shop>> GetShop(string id)
+        public async Task<ActionResult<Shop>> GetShop(Guid id)
         {
             var shop = await _context.Shops.FindAsync(id);
 
@@ -43,7 +43,7 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutShop(string id, Shop shop)
         {
-            if (id != shop.Id)
+            if (id != shop.Id.ToString())
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace FlowerEShopAPI.BL.Controllers
             }
             catch (DbUpdateException)
             {
-                if (ShopExists(shop.Id))
+                if (ShopExists(shop.Id.ToString()))
                 {
                     return Conflict();
                 }
@@ -96,7 +96,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         // DELETE: api/Shops/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteShop(string id)
+        public async Task<IActionResult> DeleteShop(Guid id)
         {
             var shop = await _context.Shops.FindAsync(id);
             if (shop == null)
@@ -112,7 +112,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         private bool ShopExists(string id)
         {
-            return _context.Shops.Any(e => e.Id == id);
+            return _context.Shops.Any(e => e.Id.ToString() == id);
         }
     }
 }
