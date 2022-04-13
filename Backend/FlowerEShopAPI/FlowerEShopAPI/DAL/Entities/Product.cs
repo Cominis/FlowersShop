@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace FlowerEShopAPI.DAL.Entities
 {
-    public class Product
+    public class Product : BaseEntity
     {
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public enum StatusEnum
@@ -14,40 +14,22 @@ namespace FlowerEShopAPI.DAL.Entities
             OutOfStock
         }
 
-        public Product(string id, string shopId, string title, string description, string category, string location, StatusEnum status, decimal price, decimal quantity, DateTime createdAt, DateTime updatedAt, string subCategory = "")
-        {
-            Id = id;
-            ShopId = shopId;
-            Title = title;
-            Description = description;
-            Category = category;
-            SubCategory = subCategory;
-            Location = location;
-            Status = status;
-            Price = price;
-            Quantity = quantity;
-            CreatedAt = createdAt;
-            UpdatedAt = updatedAt;
-        }
-
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [StringLength(50)]
         public string Title { get; set; }
 
-        [Required]
         [StringLength(500)]
         public string Description { get; set; }
+
         [Required]
         [StringLength(50)]
         public string Category { get; set; }
 
         public string SubCategory { get; set; }
-
-        [Required, StringLength(50)]
-        public string Location { get; set; }
 
         [Required]
         public StatusEnum Status { get; set; }
@@ -61,15 +43,11 @@ namespace FlowerEShopAPI.DAL.Entities
         public decimal Quantity { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; }
-        [Required]
-        public DateTime UpdatedAt { get; set; }
-        public DateTime? DeletedAt { get; set; }
+        public Guid ShopId { get; set; }
 
-        [Required]
         [ForeignKey("ShopId")]
-        public string ShopId { get; set; }
+        public virtual Shop? Shop { get; set; }
 
-        public virtual Shop Shop { get; set; }
+        public virtual List<ShoppingCart> ShoppingCarts { get; set; } = new List<ShoppingCart>();
     }
 }

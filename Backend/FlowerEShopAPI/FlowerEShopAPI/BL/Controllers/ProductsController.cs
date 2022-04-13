@@ -45,7 +45,7 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProduct(string id, Product product)
         {
-            if (id != product.Id)
+            if (id != product.Id.ToString())
             {
                 return BadRequest();
             }
@@ -83,7 +83,7 @@ namespace FlowerEShopAPI.BL.Controllers
             }
             catch (DbUpdateException)
             {
-                if (ProductExists(product.Id))
+                if (ProductExists(product.Id.ToString()))
                 {
                     return Conflict();
                 }
@@ -114,7 +114,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         private bool ProductExists(string id)
         {
-            return _context.Products.Any(e => e.Id == id);
+            return _context.Products.Any(e => e.Id.ToString() == id);
         }
     }
 }
