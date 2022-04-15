@@ -3,16 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FlowerEShopAPI.DAL.Entities
 {
-    public class User
+    public class User : BaseEntity
     {
-        public User(string name, string surname, string userName, string password)
-        {
-            Name = name;
-            Surname = surname;
-            UserName = userName;
-            Password = password;
-        }
-
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
@@ -30,5 +22,7 @@ namespace FlowerEShopAPI.DAL.Entities
         public string Password { get; set; } 
 
         public virtual Shop? Shop { get; set; }
+
+        public virtual List<ShoppingCart> ShoppingCarts { get; set; } = new List<ShoppingCart>();
     }
 }

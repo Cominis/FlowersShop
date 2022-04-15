@@ -14,9 +14,9 @@ namespace FlowerEShopAPI.Repositories
             _context = context;
         }
 
-        public async Task<ShoppingCart> Add(string productId, string userId)
+        public async Task<ShoppingCart> Add(string productId, int quantity, string userId)
         {
-            var shoppingCart = new ShoppingCart(Guid.Parse(productId), Guid.Parse(userId));
+            var shoppingCart = new ShoppingCart { ProductId = Guid.Parse(productId), Quantity = quantity, UserId = Guid.Parse(userId) };
 
             _context.ShoppingCart.Add(shoppingCart);
             await _context.SaveChangesAsync();
@@ -34,18 +34,18 @@ namespace FlowerEShopAPI.Repositories
             return id;
         }
 
+        public async Task<ShoppingCart> FindOne(string id)
+        {
+            var shoppingCart = await _context.ShoppingCart.SingleOrDefaultAsync(b => b.Id.ToString() == id);
+
+            return shoppingCart;
+        }
+
         public async Task<List<ShoppingCart>> FindAll(string userId)
         {
             var shoppingCarts = await _context.ShoppingCart.Where(a => a.UserId.ToString() == userId).ToListAsync();
 
             return shoppingCarts;
-        }
-
-        public async Task<ShoppingCart> FindById(string id)
-        {
-            var shoppingCart = await _context.ShoppingCart.SingleOrDefaultAsync(b => b.Id.ToString() == id);
-
-            return shoppingCart;
         }
     }
 }

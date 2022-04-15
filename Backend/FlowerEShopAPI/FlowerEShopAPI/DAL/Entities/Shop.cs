@@ -3,18 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FlowerEShopAPI.DAL.Entities
 {
-    public class Shop
+    public class Shop : BaseEntity
     {
-        public Shop(string name, string description, string location, Guid userId)
-        {
-            Name = name;
-            Description = description;
-            Location = location;
-            CreatedAt = DateTime.Now;
-            UpdatedAt = DateTime.Now;
-            UserId = userId;
-        }
-
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
@@ -30,17 +20,11 @@ namespace FlowerEShopAPI.DAL.Entities
         [StringLength(50)]
         public string Location { get; set; }
 
-        [Required]
-        public DateTime CreatedAt { get; set; }
-        [Required]
-        public DateTime UpdatedAt { get; set; }
-        public DateTime? DeletedAt { get; set; }
-
-        [ForeignKey("UserId")]
         public Guid UserId { get; set; }
 
+        public virtual List<Product> Products { get; set; } = new List<Product>();
 
-        public virtual List<Product> Product { get; set; } = new List<Product>();
+        [ForeignKey("UserId")]
         public virtual User? User { get; set; }
     }
 }

@@ -5,27 +5,13 @@ using System.Text.Json.Serialization;
 
 namespace FlowerEShopAPI.DAL.Entities
 {
-    public class Product
+    public class Product : BaseEntity
     {
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public enum StatusEnum
         {
             Available,
             OutOfStock
-        }
-
-        public Product(Guid shopId, string title, string description, string category, StatusEnum status, decimal price, decimal quantity, string subCategory = "")
-        {
-            ShopId = shopId;
-            Title = title;
-            Description = description;
-            Category = category;
-            SubCategory = subCategory;
-            Status = status;
-            Price = price;
-            Quantity = quantity;
-            CreatedAt = DateTime.Now;
-            UpdatedAt = DateTime.Now;
         }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -57,15 +43,11 @@ namespace FlowerEShopAPI.DAL.Entities
         public decimal Quantity { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; }
-        [Required]
-        public DateTime UpdatedAt { get; set; }
-        public DateTime? DeletedAt { get; set; }
-
-        [Required]
-        [ForeignKey("ShopId")]
         public Guid ShopId { get; set; }
 
-        public virtual Shop Shop { get; set; }
+        [ForeignKey("ShopId")]
+        public virtual Shop? Shop { get; set; }
+
+        public virtual List<ShoppingCart> ShoppingCarts { get; set; } = new List<ShoppingCart>();
     }
 }

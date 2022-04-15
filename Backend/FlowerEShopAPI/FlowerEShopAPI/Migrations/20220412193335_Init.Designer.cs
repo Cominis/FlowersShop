@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerEShopAPI.Migrations
 {
     [DbContext(typeof(FlowerShopDBContext))]
-    [Migration("20220411204233_Init")]
+    [Migration("20220412193335_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,9 +57,6 @@ namespace FlowerEShopAPI.Migrations
                     b.Property<Guid>("ShopId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ShoppingCartId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -78,8 +75,6 @@ namespace FlowerEShopAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ShopId");
-
-                    b.HasIndex("ShoppingCartId");
 
                     b.ToTable("Products");
                 });
@@ -119,6 +114,9 @@ namespace FlowerEShopAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
                     b.ToTable("Shops");
                 });
 
@@ -128,13 +126,26 @@ namespace FlowerEShopAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ShoppingCart");
                 });
@@ -145,14 +156,18 @@ namespace FlowerEShopAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("Password")
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -162,10 +177,16 @@ namespace FlowerEShopAPI.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id", "UserName", "Password");
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
-                    b.HasIndex("Id")
-                        .IsUnique();
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("UserName", "Password");
 
                     b.ToTable("User");
                 });
@@ -173,23 +194,8 @@ namespace FlowerEShopAPI.Migrations
             modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.Product", b =>
                 {
                     b.HasOne("FlowerEShopAPI.DAL.Entities.Shop", "Shop")
-                        .WithMany("Product")
+                        .WithMany("Products")
                         .HasForeignKey("ShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FlowerEShopAPI.DAL.Entities.ShoppingCart", null)
-                        .WithMany("Product")
-                        .HasForeignKey("ShoppingCartId");
-
-                    b.Navigation("Shop");
-                });
-
-            modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.User", b =>
-                {
-                    b.HasOne("FlowerEShopAPI.DAL.Entities.Shop", "Shop")
-                        .WithOne("User")
-                        .HasForeignKey("FlowerEShopAPI.DAL.Entities.User", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -198,15 +204,49 @@ namespace FlowerEShopAPI.Migrations
 
             modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.Shop", b =>
                 {
-                    b.Navigation("Product");
-
-                    b.Navigation("User")
+                    b.HasOne("FlowerEShopAPI.DAL.Entities.User", "User")
+                        .WithOne("Shop")
+                        .HasForeignKey("FlowerEShopAPI.DAL.Entities.Shop", "UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.ShoppingCart", b =>
                 {
+                    b.HasOne("FlowerEShopAPI.DAL.Entities.Product", "Product")
+                        .WithMany("ShoppingCarts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("FlowerEShopAPI.DAL.Entities.User", "User")
+                        .WithMany("ShoppingCarts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.Product", b =>
+                {
+                    b.Navigation("ShoppingCarts");
+                });
+
+            modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.Shop", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("FlowerEShopAPI.DAL.Entities.User", b =>
+                {
+                    b.Navigation("Shop");
+
+                    b.Navigation("ShoppingCarts");
                 });
 #pragma warning restore 612, 618
         }

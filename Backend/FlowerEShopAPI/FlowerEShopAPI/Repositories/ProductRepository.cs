@@ -21,7 +21,7 @@ namespace FlowerEShopAPI.Repositories
 
         public async Task<Product?> Create(string shopId, string title, string description, string category, string status, decimal price, decimal quantity, string subCategory = "")
         {
-            var product = new Product(Guid.Parse(shopId), title, description, category, _enumConverter.Value.StringToStatusEnum(status), price, quantity, subCategory);
+            var product = new Product { ShopId = Guid.Parse(shopId), Title = title, Description = description, Category = category, Status = _enumConverter.Value.StringToStatusEnum(status), Price = price, Quantity = quantity, SubCategory = subCategory };
 
             _context.Products.Add(product);
             await _context.SaveChangesAsync();

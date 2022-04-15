@@ -73,7 +73,6 @@ namespace FlowerEShopAPI.Services
                 }
             }
             throw new ArgumentException("User doesn't have access to delete this shop");
-
         }
 
         public async Task<Shop> GetShop(string id)

@@ -16,7 +16,7 @@ namespace FlowerEShopAPI.BL.Controllers
             _context = context;
         }
 
-        // GET: api/User
+        // GET: api/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
@@ -25,7 +25,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(string id)
+        public async Task<ActionResult<User>> GetUser(Guid id)
         {
             var user = await _context.User.FindAsync(id);
 
@@ -68,7 +68,7 @@ namespace FlowerEShopAPI.BL.Controllers
             return NoContent();
         }
 
-        // POST: api/User
+        // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<User>> Postuser(User user)

@@ -1,11 +1,13 @@
 ﻿#nullable disable
 using FlowerEShopAPI.DAL;
 using FlowerEShopAPI.DAL.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlowerEShopAPI.BL.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase

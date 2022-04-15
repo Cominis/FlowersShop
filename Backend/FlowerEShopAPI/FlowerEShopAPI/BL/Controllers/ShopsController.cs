@@ -3,9 +3,11 @@ using FlowerEShopAPI.DAL;
 using FlowerEShopAPI.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FlowerEShopAPI.BL.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ShopsController : ControllerBase
