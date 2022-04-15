@@ -10,5 +10,5 @@ Made by SimpleTypes team from Vilnius University
  
  In VS
   1. View -> Other windows -> Package Manager console
-  2. Run command 'update-database'
+  2. Run command 'EntityFrameworkCore\update-database'
 # FRONTEND SETUP STEPS
