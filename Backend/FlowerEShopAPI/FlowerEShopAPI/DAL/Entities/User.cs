@@ -14,12 +14,16 @@ namespace FlowerEShopAPI.DAL.Entities
 
         [Required]
         [StringLength(50)]
-        public string Surname { get; set; }
-        [Required]
-        public string UserName { get; set; } 
+        public string Email { get; set; }
+
         [Required]
         [StringLength(50)]
-        public string Password { get; set; } 
+        public string Surname { get; set; }
+        [Required]
+        public string UserName { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string Password { get; set; }
 
         public virtual Shop? Shop { get; set; }
 

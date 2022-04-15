@@ -49,7 +49,8 @@ namespace FlowerEShopAPI.DAL
             modelBuilder.Entity<User>().HasAlternateKey(table => new
             {
                 table.UserName,
-                table.Password
+                table.Password,
+                table.Email
             });
 
             modelBuilder.Entity<Shop>()

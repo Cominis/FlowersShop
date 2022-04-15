@@ -69,5 +69,19 @@ namespace FlowerEShopAPI.Services.Helpers
 
             return true;
         }
+
+        public async Task<bool> ValidateUser(string email)
+        {
+            var emailRegex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+
+            var isValidEmail = emailRegex.IsMatch(email);
+
+            if (!isValidEmail)
+            {
+                throw new ArgumentException($"Not valid email");
+            }
+
+            return true;
+        }
     }
 }

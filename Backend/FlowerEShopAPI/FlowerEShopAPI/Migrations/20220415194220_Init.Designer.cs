@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerEShopAPI.Migrations
 {
     [DbContext(typeof(FlowerShopDBContext))]
-    [Migration("20220412193335_Init")]
+    [Migration("20220415194220_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -162,6 +162,11 @@ namespace FlowerEShopAPI.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -186,7 +191,7 @@ namespace FlowerEShopAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("UserName", "Password");
+                    b.HasAlternateKey("UserName", "Password", "Email");
 
                     b.ToTable("User");
                 });

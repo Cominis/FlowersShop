@@ -13,9 +13,9 @@ namespace FlowerEShopAPI.Repositories
             _context = context;
         }
 
-        public async Task<User> Create(string name, string surname, string userName, string password)
+        public async Task<User> Create(string name, string email, string surname, string userName, string password)
         {
-            var user = new User { Name = name, Surname = surname, UserName = userName, Password = password };
+            var user = new User { Name = name, Email = email, Surname = surname, UserName = userName, Password = password };
 
             _context.User.Add(user);
             await _context.SaveChangesAsync();

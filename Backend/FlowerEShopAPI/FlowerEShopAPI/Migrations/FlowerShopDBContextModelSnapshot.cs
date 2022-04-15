@@ -160,6 +160,11 @@ namespace FlowerEShopAPI.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -184,7 +189,7 @@ namespace FlowerEShopAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("UserName", "Password");
+                    b.HasAlternateKey("UserName", "Password", "Email");
 
                     b.ToTable("User");
                 });

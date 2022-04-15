@@ -7,15 +7,18 @@ namespace FlowerEShopAPI.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-
-        public UserService(IUserRepository userRepository)
+        private readonly Lazy<IValidation> _validation = null;
+        public UserService(IUserRepository userRepository, Lazy<IValidation> validation)
         {
             _userRepository = userRepository;
+            _validation = validation;
         }
 
-        public async Task<User> CreateUser(string name, string surname, string userName, string password)
+        public async Task<User> CreateUser(string name, string email, string surname, string userName, string password)
         {
-            var createdUser = await _userRepository.Create(name, surname, userName, password);
+            await _validation.Value.ValidateUser(email);
+
+            var createdUser = await _userRepository.Create(name, email, surname, userName, password);
 
             return createdUser;
         }

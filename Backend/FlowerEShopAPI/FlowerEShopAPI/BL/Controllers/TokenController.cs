@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FlowerEShopAPI.DAL;
+using FlowerEShopAPI.DAL.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using FlowerEShopAPI.DAL;
-using FlowerEShopAPI.DAL.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace FlowerEShopAPI.BL.Controllers
 {
@@ -33,7 +33,7 @@ namespace FlowerEShopAPI.BL.Controllers
                 {
                     //create claims details based on the user information
                     var claims = new[] {
-                        new Claim("UserId", user.Id),
+                        new Claim("UserId", user.Id.ToString()),
                         new Claim("UserName", user.UserName),
                     };
 
