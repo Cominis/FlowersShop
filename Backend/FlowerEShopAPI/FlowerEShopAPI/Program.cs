@@ -3,6 +3,8 @@ using FlowerEShopAPI.Repositories;
 using FlowerEShopAPI.Repositories.Helpers;
 using FlowerEShopAPI.Repositories.RepositoryInterfaces;
 using FlowerEShopAPI.Repositories.RepositoryInterfaces.HelpersInterfaces;
+using FlowerEShopAPI.Services.Helpers;
+using FlowerEShopAPI.Services.ServiceInterfaces;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -15,6 +17,7 @@ builder.Services.AddDbContext<FlowerShopDBContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // DI
+//Repos
 builder.Services.AddScoped<IShopRepository, ShopRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IEnumConverter, EnumConverter>();
@@ -23,6 +26,10 @@ builder.Services.AddScoped<IShoppingCartRepository, ShopingCartRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IHelpers, Helpers>();
 builder.Services.AddScoped(provider => new Lazy<IHelpers>(provider.GetService<IHelpers>));
+
+//Services
+builder.Services.AddScoped<IValidation, Validation>();
+builder.Services.AddScoped(provider => new Lazy<IValidation>(provider.GetService<IValidation>));
 
 var app = builder.Build();
 
