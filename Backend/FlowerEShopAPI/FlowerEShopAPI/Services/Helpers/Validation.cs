@@ -68,8 +68,6 @@ namespace FlowerEShopAPI.Services.Helpers
             }
 
             return true;
-
-
         }
     }
 }
