@@ -40,7 +40,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         // DELETE: api/ShoppingCarts/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteShoppingCart(string id, [FromBody] ShoppingCartBody shoppingCartBody)
+        public async Task<IActionResult> Delete(string id, [FromBody] ShoppingCartBody shoppingCartBody)
         {
             await _shoppingCartService.RemoveFromCart(id, shoppingCartBody.UserId);
 

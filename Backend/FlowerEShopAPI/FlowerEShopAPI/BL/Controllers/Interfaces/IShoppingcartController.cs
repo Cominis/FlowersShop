@@ -7,6 +7,6 @@ namespace FlowerEShopAPI.BL.Controllers.Interfaces
     {
         public Task<IActionResult> Get(string id);
         public Task<IActionResult> Post([FromBody] ShoppingCartBody shoppingCartBody);
-        public Task<IActionResult> DeleteShoppingCart(string id, [FromBody] ShoppingCartBody shoppingCartBody);
+        public Task<IActionResult> Delete(string id, [FromBody] ShoppingCartBody shoppingCartBody);
     }
 }
