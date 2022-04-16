@@ -19,7 +19,7 @@ namespace FlowerEShopAPI.Services
         public async Task<ShoppingCart> AddToCart(string productId, int quantity, string userId)
         {
             var product = await _productRepository.FindOne(productId);
-            var user = await _userRepository.FindOne(userId);
+            var user = await _userRepository.FindOneById(userId);
 
             if (user != null)
             {
@@ -38,7 +38,7 @@ namespace FlowerEShopAPI.Services
 
         public async Task<List<ShoppingCart>> GetShoppingCart(string userId)
         {
-            var user = await _userRepository.FindOne(userId);
+            var user = await _userRepository.FindOneById(userId);
 
             if (user == null)
             {

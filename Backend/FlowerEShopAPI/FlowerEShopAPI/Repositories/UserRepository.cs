@@ -23,7 +23,22 @@ namespace FlowerEShopAPI.Repositories
             return user;
         }
 
-        public async Task<User> FindOne(string userName)
+        public async Task<User> Update(string id, string name, string email, string surname, string userName, string password)
+        {
+            var user = await _context.User.SingleOrDefaultAsync(u => u.Id.ToString() == id);
+
+            user.Name = name;
+            user.Surname = surname;
+            user.UserName = userName;
+            user.Email = email;
+            user.Password = password;
+
+            await _context.SaveChangesAsync();
+
+            return user;
+        }
+
+        public async Task<User> FindByUsername(string userName)
         {
             var user = await _context.User.SingleOrDefaultAsync(u => u.UserName == userName);
 

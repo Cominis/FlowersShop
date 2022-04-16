@@ -1,120 +1,62 @@
 ﻿#nullable disable
-using FlowerEShopAPI.DAL;
-using FlowerEShopAPI.DAL.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using FlowerEShopAPI.BL.Controllers.Interfaces;
+using FlowerEShopAPI.Services.ServiceInterfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using static FlowerEShopAPI.BL.Models.Body;
 
 namespace FlowerEShopAPI.BL.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class ShopsController : ControllerBase
+    public class ShopsController : ControllerBase, IShopController
     {
-        private readonly FlowerShopDBContext _context;
+        private readonly IShopService _shopService;
 
-        public ShopsController(FlowerShopDBContext context)
+        public ShopsController(IShopService shopService)
         {
-            _context = context;
-        }
-
-        // GET: api/Shops
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Shop>>> GetShops()
-        {
-            return await _context.Shops.ToListAsync();
+            _shopService = shopService;
         }
 
         // GET: api/Shops/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Shop>> GetShop(Guid id)
+        public async Task<IActionResult> Get(string id)
         {
-            var shop = await _context.Shops.FindAsync(id);
+            var getShop = await _shopService.GetShop(id);
 
-            if (shop == null)
-            {
-                return NotFound();
-            }
-
-            return shop;
+            return ReturnResponse(getShop);
         }
 
         // PUT: api/Shops/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutShop(string id, Shop shop)
+        public async Task<IActionResult> Put(string id, [FromBody] ShopBody body)
         {
-            if (id != shop.Id.ToString())
-            {
-                return BadRequest();
-            }
+            var updatedShop = await _shopService.UpdateShop(id, body.Name, body.Description, body.Location, body.Product, HttpContext.User.Identity.Name);
 
-            _context.Entry(shop).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ShopExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return ReturnResponse(updatedShop);
         }
 
         // POST: api/Shops
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Shop>> PostShop(Shop shop)
+        public async Task<IActionResult> Post([FromBody] ShopBody body)
         {
-            _context.Shops.Add(shop);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (ShopExists(shop.Id.ToString()))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var createdShop = await _shopService.CreateShop(body.Name, body.Description, body.Location, HttpContext.User.Identity.Name);
 
-            return CreatedAtAction("GetShop", new { id = shop.Id }, shop);
+            return ReturnResponse(createdShop);
         }
 
         // DELETE: api/Shops/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteShop(Guid id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var shop = await _context.Shops.FindAsync(id);
-            if (shop == null)
-            {
-                return NotFound();
-            }
+            await _shopService.DeleteShop(id, HttpContext.User.Identity.Name);
 
-            _context.Shops.Remove(shop);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return ReturnResponse("Shop was deleted successfully");
         }
 
-        private bool ShopExists(string id)
-        {
-            return _context.Shops.Any(e => e.Id.ToString() == id);
-        }
+        public IActionResult ReturnResponse(object value) => Ok(new { Response = value });
     }
 }

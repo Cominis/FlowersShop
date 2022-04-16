@@ -72,7 +72,16 @@ namespace FlowerEShopAPI.Services
 
             throw new ArgumentException("User cannot delete products of this shop");
         }
+        public async Task<Product> GetById(string id)
+        {
+            var product = await _productRepository.FindOne(id);
 
+            if (product == null)
+            {
+                throw new ArgumentException("Product doesn't exist");
+            }
+            return product;
+        }
         public async Task<List<Product>> GetAllProducts(string shopId)
         {
             var shop = await _shopRepository.FindOne(shopId);

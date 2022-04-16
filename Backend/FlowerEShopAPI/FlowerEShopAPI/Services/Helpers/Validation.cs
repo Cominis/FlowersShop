@@ -8,11 +8,13 @@ namespace FlowerEShopAPI.Services.Helpers
     public class Validation : IValidation
     {
         private readonly IShopRepository _shopRepository;
+        private readonly IUserRepository _userRepository;
         private readonly Lazy<IHelpers> _helpers = null;
 
-        public Validation(IShopRepository shopRepository, Lazy<IHelpers> helpers)
+        public Validation(IShopRepository shopRepository, IUserRepository userRepository, Lazy<IHelpers> helpers)
         {
             _shopRepository = shopRepository;
+            _userRepository = userRepository;
             _helpers = helpers;
         }
 
@@ -70,15 +72,23 @@ namespace FlowerEShopAPI.Services.Helpers
             return true;
         }
 
-        public async Task<bool> ValidateUser(string email)
+        public async Task<bool> ValidateUser(string email, string userName)
         {
             var emailRegex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+            var users = await _userRepository.FindByUsername(userName);
 
-            var isValidEmail = emailRegex.IsMatch(email);
+            var isValidUserName = _helpers.Value.IsStringEmty(userName) || users == null;
+            var isValidEmail = _helpers.Value.IsStringEmty(email) || emailRegex.IsMatch(email);
 
-            if (!isValidEmail)
+            bool[] validators = { isValidUserName, isValidEmail };
+            string[] namesOfParams = { "userName", "email" };
+
+            for (var i = 0; i < validators.Length; i++)
             {
-                throw new ArgumentException($"Not valid email");
+                if (!validators[i])
+                {
+                    throw new ArgumentException($"Not valid {namesOfParams[i]}");
+                }
             }
 
             return true;

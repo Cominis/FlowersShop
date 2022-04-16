@@ -1,7 +1,6 @@
-﻿using FlowerEShopAPI.DAL;
-using FlowerEShopAPI.DAL.Entities;
+﻿using FlowerEShopAPI.DAL.Entities;
+using FlowerEShopAPI.Services.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,12 +13,12 @@ namespace FlowerEShopAPI.BL.Controllers
     public class TokenController : ControllerBase
     {
         public IConfiguration _configuration;
-        private readonly FlowerShopDBContext _context;
+        private readonly IUserService _userService;
 
-        public TokenController(IConfiguration config, FlowerShopDBContext context)
+        public TokenController(IConfiguration config, IUserService userService)
         {
             _configuration = config;
-            _context = context;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -61,7 +60,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         private async Task<User?> GetUser(string userName, string password)
         {
-            return await _context.User.Where(u => u.UserName == userName).FirstOrDefaultAsync();
+            return await _userService.GetUserByUserName(userName);
         }
     }
 }

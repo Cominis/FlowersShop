@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
+using FlowerEShopAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +52,10 @@ builder.Services.AddScoped(provider => new Lazy<IHelpers>(provider.GetService<IH
 //Services
 builder.Services.AddScoped<IValidation, Validation>();
 builder.Services.AddScoped(provider => new Lazy<IValidation>(provider.GetService<IValidation>));
+builder.Services.AddScoped<IShopService, ShopService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
