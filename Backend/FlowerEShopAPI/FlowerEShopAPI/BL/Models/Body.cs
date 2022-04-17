@@ -39,5 +39,10 @@ namespace FlowerEShopAPI.BL.Models
             public decimal Quantity { get; set; }
             public string ShopId { get; set; }
         }
+
+        public class SearchBody
+        {
+            public string SearchQuery { get; set; }
+        }
     }
 }
