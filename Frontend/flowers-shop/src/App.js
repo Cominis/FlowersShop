@@ -1,7 +1,12 @@
-function App() {
+import { Container } from "@mui/material";
+import Header from "./header/Header";
+
+const App = () => {
   return (
-    <div>Hello world</div>
+    <Container>
+      <Header />
+    </Container>
   );
-}
+};
 
 export default App;
