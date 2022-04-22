@@ -3,11 +3,13 @@ using FlowerEShopAPI.Repositories;
 using FlowerEShopAPI.Repositories.Helpers;
 using FlowerEShopAPI.Repositories.RepositoryInterfaces;
 using FlowerEShopAPI.Repositories.RepositoryInterfaces.HelpersInterfaces;
+using FlowerEShopAPI.Services.Helpers;
+using FlowerEShopAPI.Services.ServiceInterfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
+using FlowerEShopAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,7 @@ builder.Services.AddControllersWithViews()
 );
 
 // DI
+//Repos
 builder.Services.AddScoped<IShopRepository, ShopRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IEnumConverter, EnumConverter>();
@@ -45,6 +48,14 @@ builder.Services.AddScoped<IShoppingCartRepository, ShopingCartRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IHelpers, Helpers>();
 builder.Services.AddScoped(provider => new Lazy<IHelpers>(provider.GetService<IHelpers>));
+
+//Services
+builder.Services.AddScoped<IValidation, Validation>();
+builder.Services.AddScoped(provider => new Lazy<IValidation>(provider.GetService<IValidation>));
+builder.Services.AddScoped<IShopService, ShopService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

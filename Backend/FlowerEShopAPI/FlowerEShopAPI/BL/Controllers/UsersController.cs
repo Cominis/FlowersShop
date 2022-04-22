@@ -1,117 +1,49 @@
-﻿using FlowerEShopAPI.DAL;
-using FlowerEShopAPI.DAL.Entities;
+﻿using FlowerEShopAPI.BL.Controllers.Interfaces;
+using FlowerEShopAPI.Services.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using static FlowerEShopAPI.BL.Models.Body;
 
 namespace FlowerEShopAPI.BL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : ControllerBase, IUserController
     {
-        private readonly FlowerShopDBContext _context;
+        private readonly IUserService _userService;
 
-        public UsersController(FlowerShopDBContext context)
+        public UsersController(IUserService userService)
         {
-            _context = context;
-        }
-
-        // GET: api/Users
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
-        {
-            return await _context.User.ToListAsync();
+            _userService = userService;
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(Guid id)
+        public async Task<IActionResult> Get(string id)
         {
-            var user = await _context.User.FindAsync(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return user;
-        }
-
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(string id, User user)
-        {
-            if (id != user.Id.ToString())
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var user = await _userService.GetUserById(id);
+            return ReturnResponse(user);
         }
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> Postuser(User user)
+        public async Task<IActionResult> Post([FromBody] UserCred userCred)
         {
-            _context.User.Add(user);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (UserExists(user.Id.ToString()))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var createdUser = await _userService.CreateUser(userCred.Name, userCred.Email, userCred.Surname, userCred.Username, userCred.Password);
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            return ReturnResponse(createdUser);
         }
 
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(string id)
+        // PUT: api/Users/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(string id, [FromBody] UserCred userCred)
         {
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
+            var updatedUser = await _userService.UpdateUser(id, userCred.Name, userCred.Email, userCred.Surname, userCred.Username, userCred.Password);
 
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            return ReturnResponse(updatedUser);
         }
 
-        private bool UserExists(string id)
-        {
-            return _context.User.Any(e => e.Id.ToString() == id);
-        }
+        public IActionResult ReturnResponse(object value) => Ok(new { Response = value });
     }
 }

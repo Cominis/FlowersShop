@@ -13,9 +13,9 @@ namespace FlowerEShopAPI.Repositories
             _context = context;
         }
 
-        public async Task<User> Create(string name, string surname, string userName, string password)
+        public async Task<User> Create(string name, string email, string surname, string userName, string password)
         {
-            var user = new User { Name = name, Surname = surname, UserName = userName, Password = password };
+            var user = new User { Name = name, Email = email, Surname = surname, UserName = userName, Password = password };
 
             _context.User.Add(user);
             await _context.SaveChangesAsync();
@@ -23,7 +23,22 @@ namespace FlowerEShopAPI.Repositories
             return user;
         }
 
-        public async Task<User> FindOne(string userName)
+        public async Task<User> Update(string id, string name, string email, string surname, string userName, string password)
+        {
+            var user = await _context.User.SingleOrDefaultAsync(u => u.Id.ToString() == id);
+
+            user.Name = name;
+            user.Surname = surname;
+            user.UserName = userName;
+            user.Email = email;
+            user.Password = password;
+
+            await _context.SaveChangesAsync();
+
+            return user;
+        }
+
+        public async Task<User> FindByUsername(string userName)
         {
             var user = await _context.User.SingleOrDefaultAsync(u => u.UserName == userName);
 

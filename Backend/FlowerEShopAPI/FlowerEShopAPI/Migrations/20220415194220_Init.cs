@@ -15,6 +15,7 @@ namespace FlowerEShopAPI.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
@@ -25,7 +26,7 @@ namespace FlowerEShopAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
-                    table.UniqueConstraint("AK_User_UserName_Password", x => new { x.UserName, x.Password });
+                    table.UniqueConstraint("AK_User_UserName_Password_Email", x => new { x.UserName, x.Password, x.Email });
                 });
 
             migrationBuilder.CreateTable(
