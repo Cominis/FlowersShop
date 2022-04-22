@@ -76,7 +76,7 @@ namespace FlowerEShopAPI.DAL.Repositories
 
         public async Task<Shop?> FindOne(string id)
         {
-            var shop = await _context.Shops.SingleOrDefaultAsync(b => b.Id.ToString() == id);
+            var shop = await _context.Shops.SingleOrDefaultAsync(b => b.UserId.ToString() == id);
 
             return shop;
         }

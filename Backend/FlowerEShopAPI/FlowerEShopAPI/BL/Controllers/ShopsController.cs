@@ -21,12 +21,12 @@ namespace FlowerEShopAPI.BL.Controllers
         }
 
         // GET: api/Shops/5
-        [HttpGet("{id}")]
+        [HttpGet]
         [TypeFilter(typeof(LogInterceptor))]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> Get()
         {
             var user = (User)HttpContext.Items["User"];
-            var getShop = await _shopService.GetShop(id);
+            var getShop = await _shopService.GetShop(user.Id.ToString());
             return ReturnResponse(getShop);
         }
 
