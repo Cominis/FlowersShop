@@ -12,6 +12,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "../net/axios";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -31,13 +33,23 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignIn() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    const payload = {
+      Email : data.get("email"),
+      Password : data.get("password")
+    };
+
+    try{
+      const response = await axios.post("Token",payload);   
+      navigate(`/myShop`);
+    }
+    catch(err){
+      alert(err.response?.data?.Error?.Message || "Unexpected error occured, try again");
+    }
   };
 
   return (
@@ -103,7 +115,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

@@ -64,7 +64,7 @@ const SearchBar = () => {
 
         try {
             console.log(query);
-            const response = await axios.post("Search", payload);
+            const response = await axios.get("Search/All/0/0/All");
 
             console.log(response);
             setResults(response.data.response);

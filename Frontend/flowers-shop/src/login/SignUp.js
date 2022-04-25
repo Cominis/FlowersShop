@@ -12,6 +12,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "../net/axios";
+import { useNavigate } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -31,13 +33,27 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+      const payload = {
+        Name : data.get("firstName"),
+        Email : data.get("email"),
+        Surname : data.get("lastName"),
+        Username : data.get("userName"),
+        Password : data.get("password")
+      };
+
+      try{
+        const response = await axios.post("Users",payload);    
+        navigate(`/signin`);
+      }
+      catch(err){
+        alert(err.response?.data?.Error?.Message || "Unexpected error occured, try again");
+      }
   };
 
   return (
@@ -86,6 +102,16 @@ export default function SignUp() {
                   autoComplete="family-name"
                 />
               </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="userName"
+                  label="User name"
+                  name="userName"
+                  autoComplete="user-name"
+                />
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
@@ -126,7 +152,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signin" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
