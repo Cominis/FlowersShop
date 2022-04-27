@@ -14,6 +14,9 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "../net/axios";
 import { useNavigate } from "react-router-dom";
+import { useGlobalState } from "../App";
+
+
 
 function Copyright(props) {
   return (
@@ -34,7 +37,9 @@ const theme = createTheme();
 
 export default function SignUp() {
   const navigate = useNavigate();
-
+  const [globalState, setGlobalState] = useGlobalState();
+  setGlobalState({ isLoggedIn: false });
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

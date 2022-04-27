@@ -4,10 +4,12 @@ import { Button, Grid } from "@mui/material";
 import MainLogo from "./MainLogo";
 import IntroTextItem from "./Intro";
 import { useNavigate } from "react-router-dom";
+import { useGlobalState } from "../App";
 
 const Homepage = (props) => {
     const navigate = useNavigate();
-
+    const [globalState, setGlobalState] = useGlobalState();
+    setGlobalState({ isLoggedIn: false });
     const onNavClick = (path) => {
         navigate(`/${path}`);
     };
@@ -54,7 +56,7 @@ const Homepage = (props) => {
                         <Button
                             variant="outlined"
                             onClick={() => {
-                                onNavClick("myShop");
+                                navigate("/signin")
                             }}
                         >
                             Sell

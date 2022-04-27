@@ -4,14 +4,14 @@ import Typography from "@mui/material/Typography";
 import LoginIcon from "@mui/icons-material/Login";
 import { useGlobalState } from "../App";
 import { Button, MenuItem } from "@mui/material";
-
+import { useNavigate } from "react-router-dom";
 const LoginButton = () => {
     const [globalState, setGlobalState] = useGlobalState();
-
+    const navigate = useNavigate();
     return (
         <MenuItem
             onClick={() => {
-                setGlobalState({ isLoggedIn: true });
+                navigate(`/signin`);
             }}
         >
             <Box sx={{ display: "flex", noWrap: true, flexDirection: "row" }}>
