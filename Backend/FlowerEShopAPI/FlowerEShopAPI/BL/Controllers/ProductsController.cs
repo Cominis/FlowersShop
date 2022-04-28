@@ -1,12 +1,10 @@
 ﻿#nullable disable
 using FlowerEShopAPI.Services.ServiceInterfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static FlowerEShopAPI.BL.Models.Body;
 
 namespace FlowerEShopAPI.BL.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
@@ -42,7 +40,7 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ProductBody productBody)
         {
-            var createdProduct = await _productService.AddProductToShop(productBody.ShopId, productBody.Title, productBody.Description, productBody.Category, productBody.SubCategory, productBody.Status, productBody.Price, productBody.Quantity, HttpContext.User.Identity.Name);
+            var createdProduct = await _productService.AddProductToShop(productBody.ShopId, productBody.Title, productBody.Description, productBody.Category, productBody.SubCategory, productBody.Status, productBody.Price, productBody.Quantity, productBody.UserId);
 
             return ReturnResponse(createdProduct);
         }
@@ -56,6 +54,9 @@ namespace FlowerEShopAPI.BL.Controllers
             return ReturnResponse("Product deleted successfully");
         }
 
-        public IActionResult ReturnResponse(object value) => Ok(new { Response = value });
+        public IActionResult ReturnResponse(object value)
+        {
+            return Ok(new { Response = value });
+        }
     }
 }

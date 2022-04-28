@@ -25,7 +25,7 @@ namespace FlowerEShopAPI.Services.Helpers
             var shops = await _shopRepository.FindAll();
 
             var isValidName = (isUpdate && _helpers.Value.IsStringEmty(name) || isUpdate && shops.Where(i => i.Name == name).Count() == 1) || (name != null && name.Length > 2 && nameRegex.IsMatch(name) && !shops.Where(i => i.Name == name).Any());
-            var isValidLocation = (isUpdate && _helpers.Value.IsStringEmty(location)) || _helpers.Value.IsStringEmty(location);
+            var isValidLocation = (isUpdate && _helpers.Value.IsStringEmty(location)) || !_helpers.Value.IsStringEmty(location);
 
             bool[] validators = { isValidName, isValidLocation };
             string[] namesOfParams = { "name", "location" };

@@ -29,7 +29,7 @@ namespace FlowerEShopAPI.Repositories
 
             return shopDetails != null ? CheckForProducts(shopDetails) : shopDetails;
         }
-        public async Task<Shop?> Update(string id, string name, string description, string location, Product[] products)
+        public async Task<Shop?> Update(string id, string name, string description, string location)
         {
             var shop = _context.Shops.SingleOrDefault(b => b.Id.ToString() == id);
 
@@ -39,19 +39,6 @@ namespace FlowerEShopAPI.Repositories
             shop.UpdatedAt = DateTime.Now;
 
             var previousShopProducts = await _productRepository.FindAll(id);
-            var deletedShopProducts = previousShopProducts.Where(a => products.Where(b => a.Id == b.Id).Count() == 0).ToList();
-            var addedShopProducts = products.Where(a => a.Id.ToString() == null).ToList();
-
-            foreach (var product in deletedShopProducts)
-            {
-                await _productRepository.Delete(product.Id.ToString());
-            }
-
-            foreach (var product in addedShopProducts)
-            {
-                await _productRepository.Create(product.ShopId.ToString(), product.Title, product.Description, product.Category, product.Status.ToString(), product.Price, product.Quantity, product.SubCategory);
-            }
-
 
             await _context.SaveChangesAsync();
 

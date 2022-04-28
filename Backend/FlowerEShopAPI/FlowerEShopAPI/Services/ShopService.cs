@@ -31,7 +31,7 @@ namespace FlowerEShopAPI.Services
             throw new ArgumentException("User doesn't exists");
         }
 
-        public async Task<Shop> UpdateShop(string id, string name, string description, string location, Product[] product, string userId)
+        public async Task<Shop> UpdateShop(string id, string name, string description, string location, string userId)
         {
             var shop = await _shopRepository.FindOne(id);
 
@@ -42,13 +42,8 @@ namespace FlowerEShopAPI.Services
                     throw new ArgumentException("Shop to update doesn't exist");
                 }
 
-                foreach (var item in product)
-                {
-                    await _validation.Value.ValidateProductData(item.ShopId.ToString(), item.Title, item.Category, item.Status.ToString(), item.Price, item.Quantity, false);
-                }
-
                 await _validation.Value.ValidateShopData(name, location, true);
-                var updatedShop = await _shopRepository.Update(id, name, description, location, product);
+                var updatedShop = await _shopRepository.Update(id, name, description, location);
 
                 return updatedShop;
             }
