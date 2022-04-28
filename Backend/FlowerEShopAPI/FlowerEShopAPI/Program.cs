@@ -1,15 +1,16 @@
+using FlowerEShopAPI.BL.Exceptions;
 using FlowerEShopAPI.DAL;
 using FlowerEShopAPI.Repositories;
 using FlowerEShopAPI.Repositories.Helpers;
 using FlowerEShopAPI.Repositories.RepositoryInterfaces;
 using FlowerEShopAPI.Repositories.RepositoryInterfaces.HelpersInterfaces;
+using FlowerEShopAPI.Services;
 using FlowerEShopAPI.Services.Helpers;
 using FlowerEShopAPI.Services.ServiceInterfaces;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using FlowerEShopAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +70,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.ConfigureCustomExceptionMiddleware();
 
 app.MapControllers();
 
