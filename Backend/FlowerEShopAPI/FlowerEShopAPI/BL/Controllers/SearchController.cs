@@ -23,6 +23,9 @@ namespace FlowerEShopAPI.BL.Controllers
             return ReturnResponse(search);
         }
 
-        public IActionResult ReturnResponse(object value) => Ok(new { Response = value });
+        public IActionResult ReturnResponse(object value)
+        {
+            return Ok(new { Response = value });
+        }
     }
 }

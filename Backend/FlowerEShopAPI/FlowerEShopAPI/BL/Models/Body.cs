@@ -1,6 +1,4 @@
-﻿using FlowerEShopAPI.DAL.Entities;
-
-namespace FlowerEShopAPI.BL.Models
+﻿namespace FlowerEShopAPI.BL.Models
 {
     public class Body
     {
@@ -9,7 +7,8 @@ namespace FlowerEShopAPI.BL.Models
             public string Name { get; set; }
             public string Description { get; set; }
             public string Location { get; set; }
-            public Product[] Product { get; set; }
+            //public Product[] Product { get; set; }
+            public string UserId { get; set; }
         }
 
         public class UserCred
@@ -38,6 +37,8 @@ namespace FlowerEShopAPI.BL.Models
             public decimal Price { get; set; }
             public decimal Quantity { get; set; }
             public string ShopId { get; set; }
+
+            public string UserId { get; set; }
         }
 
         public class SearchBody

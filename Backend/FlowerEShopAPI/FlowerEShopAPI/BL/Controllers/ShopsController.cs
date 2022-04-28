@@ -1,13 +1,11 @@
 ﻿#nullable disable
 using FlowerEShopAPI.BL.Controllers.Interfaces;
 using FlowerEShopAPI.Services.ServiceInterfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static FlowerEShopAPI.BL.Models.Body;
 
 namespace FlowerEShopAPI.BL.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ShopsController : ControllerBase, IShopController
@@ -33,7 +31,7 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(string id, [FromBody] ShopBody body)
         {
-            var updatedShop = await _shopService.UpdateShop(id, body.Name, body.Description, body.Location, body.Product, HttpContext.User.Identity.Name);
+            var updatedShop = await _shopService.UpdateShop(id, body.Name, body.Description, body.Location, HttpContext.User.Identity.Name);
 
             return ReturnResponse(updatedShop);
         }
@@ -43,7 +41,7 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ShopBody body)
         {
-            var createdShop = await _shopService.CreateShop(body.Name, body.Description, body.Location, HttpContext.User.Identity.Name);
+            var createdShop = await _shopService.CreateShop(body.Name, body.Description, body.Location, body.UserId);
 
             return ReturnResponse(createdShop);
         }
@@ -57,6 +55,9 @@ namespace FlowerEShopAPI.BL.Controllers
             return ReturnResponse("Shop was deleted successfully");
         }
 
-        public IActionResult ReturnResponse(object value) => Ok(new { Response = value });
+        public IActionResult ReturnResponse(object value)
+        {
+            return Ok(new { Response = value });
+        }
     }
 }

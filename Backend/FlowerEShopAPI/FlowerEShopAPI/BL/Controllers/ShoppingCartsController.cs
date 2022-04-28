@@ -1,13 +1,11 @@
 ﻿#nullable disable
 using FlowerEShopAPI.BL.Controllers.Interfaces;
 using FlowerEShopAPI.Services.ServiceInterfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static FlowerEShopAPI.BL.Models.Body;
 
 namespace FlowerEShopAPI.BL.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ShoppingCartsController : ControllerBase, IShoppingcartController
@@ -47,6 +45,9 @@ namespace FlowerEShopAPI.BL.Controllers
             return ReturnResponse("ShoppingCart item was deleted successfully");
         }
 
-        public IActionResult ReturnResponse(object value) => Ok(new { Response = value });
+        public IActionResult ReturnResponse(object value)
+        {
+            return Ok(new { Response = value });
+        }
     }
 }
