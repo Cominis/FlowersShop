@@ -80,7 +80,7 @@ namespace FlowerEShopAPI
             }
 
             app.UseHttpsRedirection();
-            
+
             app.UseRouting();
 
             app.UseAuthentication();
