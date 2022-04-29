@@ -35,7 +35,7 @@ namespace FlowerEShopAPI.Services
         {
             var shop = await _shopRepository.FindOne(id);
 
-            if (shop.UserId.ToString() == userId)
+            if (shop.UserId.ToString() == userId.ToLower())
             {
                 if (shop == null)
                 {
@@ -55,7 +55,7 @@ namespace FlowerEShopAPI.Services
         {
             var shop = await _shopRepository.FindOne(id);
 
-            if (shop.UserId.ToString() == userId)
+            if (shop.UserId.ToString() == userId.ToLower())
             {
                 if (shop != null)
                 {

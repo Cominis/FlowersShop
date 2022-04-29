@@ -14,11 +14,11 @@ namespace FlowerEShopAPI.DAL.Entities
         public Guid ProductId { get; set; }
 
         [Required]
-        public Guid UserId { get; set; }
+        [Precision(6,0)]
+        public decimal Quantity;
 
         [Required]
-        [Precision(6, 0)]
-        public int Quantity;
+        public Guid UserId { get; set; }
 
         [ForeignKey("ProductId")]
         public virtual Product? Product { get; set; }

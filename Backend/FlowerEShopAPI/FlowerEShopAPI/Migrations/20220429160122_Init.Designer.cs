@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlowerEShopAPI.Migrations
 {
     [DbContext(typeof(FlowerShopDBContext))]
-    [Migration("20220415194220_Init")]
+    [Migration("20220429160122_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
