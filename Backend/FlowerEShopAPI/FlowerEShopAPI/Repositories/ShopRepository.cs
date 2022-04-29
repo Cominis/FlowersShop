@@ -27,7 +27,7 @@ namespace FlowerEShopAPI.Repositories
 
             var shopDetails = await FindOne(shop.Id.ToString());
 
-            return shopDetails;
+            return shopDetails != null ? CheckForProducts(shopDetails) : shopDetails;
         }
         public async Task<Shop?> Update(string id, string name, string description, string location)
         {
@@ -38,11 +38,13 @@ namespace FlowerEShopAPI.Repositories
             shop.Location = _helpers.Value.IsStringEmty(location) ? shop.Location : location;
             shop.UpdatedAt = DateTime.Now;
 
+            var previousShopProducts = await _productRepository.FindAll(id);
+
             await _context.SaveChangesAsync();
 
             var updatedShop = _context.Shops.SingleOrDefault(b => b.Id.ToString() == id);
 
-            return updatedShop;
+            return updatedShop != null ? CheckForProducts(updatedShop) : updatedShop;
         }
 
         public async Task<string> Delete(string id)
@@ -60,14 +62,25 @@ namespace FlowerEShopAPI.Repositories
         {
             var shops = await _context.Shops.Include(b => b.Products).ToListAsync();
 
-            return shops;
+            return shops.Select(shop => CheckForProducts(shop)).ToList();
         }
 
         public async Task<Shop?> FindOne(string id)
         {
             var shop = await _context.Shops.Include(b => b.Products).SingleOrDefaultAsync(b => b.Id.ToString() == id);
 
+            return shop != null ? CheckForProducts(shop) : shop;
+        }
+
+        private static Shop CheckForProducts(Shop shop)
+        {
+            if (shop.Products == null)
+            {
+                shop.Products = new List<Product>();
+            }
+
             return shop;
         }
+
     }
 }

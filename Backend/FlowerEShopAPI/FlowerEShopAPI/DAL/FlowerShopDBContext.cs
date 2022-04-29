@@ -10,11 +10,6 @@ namespace FlowerEShopAPI.DAL
         {
         }
 
-        public DbSet<Shop> Shops { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<ShoppingCart> ShoppingCart { get; set; }
-        public DbSet<User> User { get; set; }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLazyLoadingProxies();
@@ -74,6 +69,11 @@ namespace FlowerEShopAPI.DAL
             .HasOne(b => b.User)
             .WithMany(c => c.ShoppingCarts).OnDelete(DeleteBehavior.NoAction); ;
         }
+
+        public DbSet<Shop> Shops { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ShoppingCart> ShoppingCart { get; set; }
+        public DbSet<User> User { get; set; }
     }
 }
 
