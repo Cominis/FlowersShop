@@ -22,9 +22,7 @@ namespace FlowerEShopAPI.DAL.Repositories
             _context.Shops.Add(shop);
             await _context.SaveChangesAsync();
 
-            var shopDetails = await FindOne(shop.Id.ToString());
-
-            return shopDetails;
+            return shop;
         }
         public async Task<Shop?> Update(string id, string name, string description, string location)
         {
@@ -39,7 +37,7 @@ namespace FlowerEShopAPI.DAL.Repositories
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (DbUpdateConcurrencyException)
             {
                 throw new DbUpdateConcurrencyException("Already modified. Try again");
             }
@@ -59,7 +57,7 @@ namespace FlowerEShopAPI.DAL.Repositories
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (DbUpdateConcurrencyException)
             {
                 throw new DbUpdateConcurrencyException("Already modified. Try again");
             }

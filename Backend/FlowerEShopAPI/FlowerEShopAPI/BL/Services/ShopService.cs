@@ -33,7 +33,7 @@ namespace FlowerEShopAPI.BL.Services
 
         public async Task<Shop> UpdateShop(string id, string name, string description, string location, string userId)
         {
-            var shop = await _shopRepository.FindOne(id);
+            var shop = await _shopRepository.FindOne(userId);
 
             if (shop.UserId.ToString() == userId)
             {
@@ -53,7 +53,7 @@ namespace FlowerEShopAPI.BL.Services
 
         public async Task<string> DeleteShop(string id, string userId)
         {
-            var shop = await _shopRepository.FindOne(id);
+            var shop = await _shopRepository.FindOne(userId);
 
             if (shop.UserId.ToString() == userId)
             {
@@ -73,11 +73,6 @@ namespace FlowerEShopAPI.BL.Services
         public async Task<Shop> GetShop(string id)
         {
             var shop = await _shopRepository.FindOne(id);
-
-            if (shop == null)
-            {
-                throw new ArgumentException("Invalid id for getting shop");
-            }
 
             return shop;
         }

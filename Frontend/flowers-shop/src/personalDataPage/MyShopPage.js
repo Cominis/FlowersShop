@@ -3,16 +3,34 @@ import PersonalData from "./PersonalData";
 import Typography from "@mui/material/Typography";
 import ShopField from "./ShopField";
 import Box from "@mui/material/Box";
-import { Button } from "@mui/material";
+import axios from "../net/axios";
+import { useGlobalState } from "../App";
 
 const MyShopPage = (props) => {
+    const [globalState] = useGlobalState();
+    const [shop, setShop] = React.useState();
     const routes = ["Flower E-shop", "My Shop"];
-    const shopKeys = ["shop name", "shop description", "shop location"];
-    const shopValues = [
-        "Geliu parduotuve",
-        "Cia tik geriausios geles",
-        "Vilnius, Vilniaus g. 6"
-    ];
+
+    React.useEffect(() => {
+        if (shop) {
+            return;
+        }
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("Shops", {
+                    headers: globalState.headers
+                });
+                setShop(response?.data?.response);
+            } catch (err) {
+                alert(
+                    err.response?.data?.Error?.Message ||
+                        "Unexpected error occured, try again"
+                );
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const pageInfo = (
         <>
@@ -20,14 +38,8 @@ const MyShopPage = (props) => {
                 <Typography paddingBottom={10} sx={{ textAlign: "center" }}>
                     {"shop settings"}
                 </Typography>
-                <ShopField
-                    settings={shopKeys.map((key, idx) => ({
-                        key,
-                        value: shopValues[idx]
-                    }))}
-                />
+                <ShopField useShop={[shop, setShop]} />
             </Box>
-            <Button variant="outlined">Create/Update</Button>
         </>
     );
 

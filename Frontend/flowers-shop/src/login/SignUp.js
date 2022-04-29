@@ -16,156 +16,159 @@ import axios from "../net/axios";
 import { useNavigate } from "react-router-dom";
 import { useGlobalState } from "../App";
 
-
-
 function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © Simple Types "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
+    return (
+        <Typography
+            variant="body2"
+            color="text.secondary"
+            align="center"
+            {...props}
+        >
+            {"Copyright © Simple Types "}
+            {new Date().getFullYear()}
+            {"."}
+        </Typography>
+    );
 }
 
 const theme = createTheme();
 
 export default function SignUp() {
-  const navigate = useNavigate();
-  const [globalState, setGlobalState] = useGlobalState();
-  setGlobalState({ isLoggedIn: false });
-  
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    const navigate = useNavigate();
+    const [, setGlobalState] = useGlobalState();
+    setGlobalState({ isLoggedIn: false });
 
-      const payload = {
-        Name : data.get("firstName"),
-        Email : data.get("email"),
-        Surname : data.get("lastName"),
-        Username : data.get("userName"),
-        Password : data.get("password")
-      };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
 
-      try{
-        const response = await axios.post("Users",payload);    
-        navigate(`/signin`);
-      }
-      catch(err){
-        alert(err.response?.data?.Error?.Message || "Unexpected error occured, try again");
-      }
-  };
+        const payload = {
+            Name: data.get("firstName"),
+            Email: data.get("email"),
+            Surname: data.get("lastName"),
+            Username: data.get("userName"),
+            Password: data.get("password")
+        };
 
-  return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="userName"
-                  label="User name"
-                  name="userName"
-                  autoComplete="user-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive marketing promotions and updates via email."
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="/signin" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-    </ThemeProvider>
-  );
+        try {
+            await axios.post("Users", payload);
+            navigate(`/signin`);
+        } catch (err) {
+            alert(
+                err.response?.data?.Error?.Message ||
+                    "Unexpected error occured, try again"
+            );
+        }
+    };
+
+    return (
+        <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center"
+                    }}
+                >
+                    <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign up
+                    </Typography>
+                    <Box
+                        component="form"
+                        noValidate
+                        onSubmit={handleSubmit}
+                        sx={{ mt: 3 }}
+                    >
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    autoComplete="given-name"
+                                    name="firstName"
+                                    required
+                                    fullWidth
+                                    id="firstName"
+                                    label="First Name"
+                                    autoFocus
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="lastName"
+                                    label="Last Name"
+                                    name="lastName"
+                                    autoComplete="family-name"
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="userName"
+                                    label="User name"
+                                    name="userName"
+                                    autoComplete="user-name"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="email"
+                                    label="Email Address"
+                                    name="email"
+                                    autoComplete="email"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="password"
+                                    label="Password"
+                                    type="password"
+                                    id="password"
+                                    autoComplete="new-password"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            value="allowExtraEmails"
+                                            color="primary"
+                                        />
+                                    }
+                                    label="I want to receive marketing promotions and updates via email."
+                                />
+                            </Grid>
+                        </Grid>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Sign Up
+                        </Button>
+                        <Grid container justifyContent="flex-end">
+                            <Grid item>
+                                <Link href="/signin" variant="body2">
+                                    Already have an account? Sign in
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Box>
+                <Copyright sx={{ mt: 5 }} />
+            </Container>
+        </ThemeProvider>
+    );
 }

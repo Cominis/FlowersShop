@@ -23,6 +23,7 @@ namespace FlowerEShopAPI.BL.Controllers
         // GET: api/Shops/5
         [HttpGet]
         [TypeFilter(typeof(LogInterceptor))]
+        [Authorize]
         public async Task<IActionResult> Get()
         {
             var user = (User)HttpContext.Items["User"];

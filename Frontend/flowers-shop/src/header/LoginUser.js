@@ -8,7 +8,6 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LoginButton from "./LoginButton";
 import { useNavigate } from "react-router-dom";
-import { createContext, useContext } from "react";
 import { useGlobalState } from "../App";
 
 const settings = {
@@ -23,8 +22,10 @@ const LoginUser = () => {
 
     const onNavClick = (path) => {
         handleCloseUserMenu();
-        if (path == "logout") {
+        if (path === "logout") {
             setGlobalState({ isLoggedIn: false });
+            localStorage.removeItem("token");
+            navigate(`/`);
         } else {
             navigate(`/${path}`);
         }

@@ -12,7 +12,10 @@ import MyShopPage from "./personalDataPage/MyShopPage";
 import * as React from "react";
 
 const defaultGlobalState = {
-    isLoggedIn: true
+    isLoggedIn: !!localStorage.getItem("token"),
+    headers: {
+        Authorization: "Bearer " + localStorage.getItem("token")
+    }
 };
 
 const globalStateContext = React.createContext(defaultGlobalState);
