@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using static FlowerEShopAPI.BL.Models.Body;
 
 namespace FlowerEShopAPI.BL.Controllers
 {
@@ -22,7 +23,7 @@ namespace FlowerEShopAPI.BL.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> login(User _userData)
+        public async Task<IActionResult> login([FromBody] UserLogin _userData)
         {
             if (_userData != null && _userData.UserName != null && _userData.Password != null)
             {

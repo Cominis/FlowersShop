@@ -20,7 +20,7 @@ namespace FlowerEShopAPI.Services
         {
             var shop = await _shopRepository.FindOne(shopId);
 
-            if (shop.Id.ToString() == shopId)
+            if (shop.Id.ToString() == shopId.ToLower())
             {
                 await _validation.Value.ValidateProductData(shopId, title, category, status, price, quantity, false);
                 var createdProduct = await _productRepository.Create(shopId, title, description, category, status, price, quantity, subcategory);
@@ -34,7 +34,7 @@ namespace FlowerEShopAPI.Services
         {
             var shop = await _shopRepository.FindOne(shopId);
 
-            if (shop.UserId.ToString() == userId)
+            if (shop.UserId.ToString() == userId.ToLower())
             {
                 var product = await _productRepository.FindOne(id);
 
@@ -55,7 +55,7 @@ namespace FlowerEShopAPI.Services
             var products = await _productRepository.FindOne(id);
             var shop = await _shopRepository.FindOne(products.ShopId.ToString());
 
-            if (shop.UserId.ToString() == userId)
+            if (shop.UserId.ToString() == userId.ToLower())
             {
 
                 if (products != null)
