@@ -9,5 +9,6 @@ namespace FlowerEShopAPI.DAL.Repositories.RepositoryInterfaces
         public Task<string> Delete(string id);
         public Task<Shop?> FindOne(string id);
         public Task<List<Shop>?> FindAll();
+        public Task<Shop?> FindOneByShopId(string id);
     }
 }

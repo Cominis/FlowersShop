@@ -4,7 +4,6 @@ import Divider from "@mui/material/Divider";
 import { styled } from "@mui/material/styles";
 import MuiGrid from "@mui/material/Grid";
 import SettingList from "./SettingList";
-
 const Grid = styled(MuiGrid)(({ theme }) => ({
     width: "100%",
     ...theme.typography.body2,
@@ -14,6 +13,7 @@ const Grid = styled(MuiGrid)(({ theme }) => ({
 }));
 
 const PersonalData = (props) => {
+
     return (
         <>
             <Breadcrumb routes={props.routes} />
@@ -21,7 +21,6 @@ const PersonalData = (props) => {
             <Grid
                 container
                 direction="row"
-                alignItems="center"
                 justifyContent="left"
                 sx={{ paddingLeft: -10 }}
             >

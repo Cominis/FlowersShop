@@ -78,5 +78,12 @@ namespace FlowerEShopAPI.DAL.Repositories
 
             return shop;
         }
+
+        public async Task<Shop?> FindOneByShopId(string id)
+        {
+            var shop = await _context.Shops.SingleOrDefaultAsync(b => b.Id.ToString() == id);
+
+            return shop;
+        }
     }
 }

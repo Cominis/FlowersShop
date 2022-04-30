@@ -7,6 +7,6 @@ namespace FlowerEShopAPI.BL.Controllers.Interfaces
     {
         public Task<IActionResult> Post([FromBody] UserCred userCred);
         public Task<IActionResult> Put([FromBody] UserCred userCred);
-        public Task<IActionResult> Get(string id);
+        public Task<IActionResult> Get();
     }
 }

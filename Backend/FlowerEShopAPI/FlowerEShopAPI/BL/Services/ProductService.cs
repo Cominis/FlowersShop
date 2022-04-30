@@ -18,11 +18,11 @@ namespace FlowerEShopAPI.BL.Services
 
         public async Task<Product> AddProductToShop(string shopId, string title, string description, string category, string subcategory, string status, decimal price, decimal quantity, string userId)
         {
-            var shop = await _shopRepository.FindOne(shopId);
+            var shop = await _shopRepository.FindOne(userId);
 
             if (shop.Id.ToString() == shopId)
             {
-                await _validation.Value.ValidateProductData(shopId, title, category, status, price, quantity, false);
+                await _validation.Value.ValidateProductData(userId, title, category, status, price, quantity, false);
                 var createdProduct = await _productRepository.Create(shopId, title, description, category, status, price, quantity, subcategory);
                 return createdProduct;
             }
@@ -32,7 +32,7 @@ namespace FlowerEShopAPI.BL.Services
         }
         public async Task<Product> UpdateProduct(string id, string shopId, string title, string description, string category, string subcategory, string status, decimal price, decimal quantity, string userId)
         {
-            var shop = await _shopRepository.FindOne(shopId);
+            var shop = await _shopRepository.FindOne(userId);
 
             if (shop.UserId.ToString() == userId)
             {
@@ -43,7 +43,7 @@ namespace FlowerEShopAPI.BL.Services
                     throw new ArgumentException("Product to update doesn't exist");
                 }
 
-                await _validation.Value.ValidateProductData(shopId, title, category, status, price, quantity, true);
+                await _validation.Value.ValidateProductData(userId, title, category, status, price, quantity, true);
                 var updatedProduct = await _productRepository.Update(id, shopId, title, description, category, status, price, quantity, subcategory);
                 return updatedProduct;
             }
@@ -53,7 +53,7 @@ namespace FlowerEShopAPI.BL.Services
         public async Task<string> DeleteProduct(string id, string userId)
         {
             var products = await _productRepository.FindOne(id);
-            var shop = await _shopRepository.FindOne(products.ShopId.ToString());
+            var shop = await _shopRepository.FindOne(userId);
 
             if (shop.UserId.ToString() == userId)
             {
@@ -84,7 +84,7 @@ namespace FlowerEShopAPI.BL.Services
         }
         public async Task<List<Product>> GetAllProducts(string shopId, string sortingItem)
         {
-            var shop = await _shopRepository.FindOne(shopId);
+            var shop = await _shopRepository.FindOneByShopId(shopId);
 
             if (shop == null)
             {

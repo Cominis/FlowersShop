@@ -45,14 +45,14 @@ namespace FlowerEShopAPI.BL.Services.Helpers
 
         }
 
-        public async Task<bool> ValidateProductData(string shopId, string title, string category, string status, decimal price, decimal quantity, bool isUpdate)
+        public async Task<bool> ValidateProductData(string userId, string title, string category, string status, decimal price, decimal quantity, bool isUpdate)
         {
             var nameRegex = new Regex(@"^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$");
             var priceRegex = new Regex(@"\d+(?:\.\d+)?");
             var quantityRegex = new Regex(@"\d+");
             var statuses = new List<string> { "Available", "OutOfStock" };
 
-            var shop = await _shopRepository.FindOne(shopId);
+            var shop = await _shopRepository.FindOne(userId);
 
             var isValidShop = shop != null;
             var isValidTitle = (isUpdate && _helpers.Value.IsStringEmty(title) || isUpdate && shop.Products.Where(product => product.Title == title).Count() == 1) || (title != null && title.Length > 2 && nameRegex.IsMatch(title));
