@@ -51,7 +51,7 @@ namespace FlowerEShopAPI.BL.Controllers
                 }
                 else
                 {
-                    return BadRequest("Invalid credentials");
+                    throw new ArgumentException("Wrong email or passwrod");
                 }
             }
             else
