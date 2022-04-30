@@ -1,23 +1,52 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
+import { useEffect, useState } from "react";
 import Breadcrumb from "../personalDataPage/Breadcrumb";
 import FlowersContainer from "./flowers/FlowersContainer";
 import ShopsContainer from "./shops/ShopsContainer";
-import ShopItems from "../shop-items/ShopItems";
+import axios from "../net/axios";
+import { useParams } from "react-router-dom";
 
 const Shop = (props) => {
-    const routes = ["Flower E-shop", "SHOP"];
+    const routes = ["Flower E-shop", "SHOPS"];
+    const [shops, setShops] = useState([]);
+    const { query, priceStart, priceEnd, statusSearch } = useParams();
+
+    console.log(query, priceStart, priceEnd, statusSearch);
+
+    useEffect(() => {
+        const fetch = async () => {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+
+            try {
+                console.log(query);
+                const response = await axios.get(
+                    `Search/${query}/${priceStart}/${priceEnd}/${statusSearch}`
+                );
+
+                console.log(response);
+
+                setShops(response.data.response);
+            } catch (err) {
+                alert(
+                    err.response?.data?.Error?.Message ||
+                        "Unexpected error occured, try again"
+                );
+            }
+        };
+
+        fetch();
+    }, [query, priceStart, priceEnd, statusSearch]);
 
     return (
         <Box>
             <Breadcrumb routes={routes} />
-            <Typography>Test</Typography>
             <Grid container columnSpacing={20}>
                 <Grid item>
-                    <ShopsContainer />
+                    <ShopsContainer shops={shops} />
                 </Grid>
                 <Grid item>
-                    <FlowersContainer />
+                    <FlowersContainer shop={shops[0]} />
                 </Grid>
             </Grid>
         </Box>

@@ -53,7 +53,10 @@ const App = () => {
                         <Route path="/signUp" element={<SignUp />} />
                         <Route path="/user" element={<PersonalDataPage />} />
                         <Route path="/myShop" element={<MyShopPage />} />
-                        <Route path="/mainShop" element={<Shop />} />
+                        <Route
+                            path="/mainShop/:query/:priceStart/:priceEnd/:statusSearch"
+                            element={<Shop />}
+                        />
                     </Routes>
                 </GlobalStateProvider>
             </Container>

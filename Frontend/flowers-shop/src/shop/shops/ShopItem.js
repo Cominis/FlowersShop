@@ -6,7 +6,10 @@ import ListItemText from "@mui/material/ListItemText";
 
 const ShopsItem = (props) => {
     return (
-        <ListItem key={`item-${props.shop.id}`}>
+        <ListItem
+            key={`item-${props.shop.id}`}
+            sx={{ border: 1, borderRadius: "10px" }}
+        >
             <Box
                 sx={{
                     display: "flex",
