@@ -15,6 +15,25 @@ const ShopField = (props) => {
         shop?.location || ""
     ];
 
+    const handleClick = async () => {
+
+        try{
+            if(shop){
+            const response = await axios.delete(`Shops/${shop.id}`,{
+                headers: globalState.headers
+            });
+            setShop(null);
+            alert(response.data.response);
+            }
+        }
+        catch(err){
+            alert(
+                err.response?.data?.Error?.Message ||
+                    "Unexpected error occured, try again"
+            );
+        }
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const payload = {
@@ -68,6 +87,9 @@ const ShopField = (props) => {
             {settings}
             <Button variant="outlined" type="submit">
                 Create/Update
+            </Button>
+            <Button variant="outlined" onClick = {handleClick}>
+                Delete
             </Button>
         </Box>
     );

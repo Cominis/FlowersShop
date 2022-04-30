@@ -44,9 +44,12 @@ namespace FlowerEShopAPI.DAL
             {
                 if (entity.Entity is BaseEntity)
                 {
-                    entity.State = EntityState.Modified;
-                    var deletedEntity = entity.Entity as BaseEntity;
-                    deletedEntity.DeletedAt = DateTime.UtcNow;
+                    if (entity.Entity is not Shop)
+                    {
+                        entity.State = EntityState.Modified;
+                        var deletedEntity = entity.Entity as BaseEntity;
+                        deletedEntity.DeletedAt = DateTime.UtcNow;
+                    }
                 }
             }
         }

@@ -30,6 +30,7 @@ const MyShopPage = (props) => {
                 });
                 setShop(response?.data?.response);
             } catch (err) {
+                console.log(err);
                 alert(
                     err.response?.data?.Error?.Message ||
                         "Unexpected error occured, try again"
@@ -40,6 +41,7 @@ const MyShopPage = (props) => {
         fetchData();
     }, []);
 
+
     const pageInfo = (
         <>
             <Box component="div" className="SettingField" paddingBottom={10}>
@@ -48,13 +50,18 @@ const MyShopPage = (props) => {
                 </Typography>
                 <ShopField useShop={[shop, setShop]} />
             </Box>
-            <Box component="div" className="SettingField" paddingBottom={10}>
+            {
+                shop ? <Box component="div" className="SettingField" paddingBottom={10}>
                 <Typography paddingBottom={10} sx={{ textAlign: "center" }}>
                     {"product settings"}
                 </Typography>
-                <ProductField useShop={[shop, setShop]} />
-            </Box>
-            <DisplayProducts useShop={[shop, setShop]} />
+                <ProductField useShop={[shop, setShop]}/>
+                </Box> : ""
+            }
+            
+            {
+                shop ? <DisplayProducts useShop={[shop, setShop]} /> : ""
+            }
         </>
     );
 
