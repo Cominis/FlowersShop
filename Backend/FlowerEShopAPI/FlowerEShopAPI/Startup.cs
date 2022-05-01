@@ -10,7 +10,6 @@ using FlowerEShopAPI.Services.ServiceInterfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using NLog;
 using System.Text;
 
 namespace FlowerEShopAPI
@@ -19,7 +18,6 @@ namespace FlowerEShopAPI
     {
         public Startup(IConfiguration configuration)
         {
-            LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/Configs/nlog.config"));
             Configuration = configuration;
         }
 
