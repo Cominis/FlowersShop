@@ -6,7 +6,6 @@ namespace FlowerEShopAPI.DAL.Entities
 {
     public class Logs
     {
-        [JsonConverter(typeof(JsonStringEnumConverter))]
         public enum TypeEnum
         {
             ACTION,
