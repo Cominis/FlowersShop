@@ -10,10 +10,11 @@ namespace FlowerEShopAPI.BL.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
-
-        public ProductsController(IProductService productService)
+        private readonly ILogsService _logsService;
+        public ProductsController(IProductService productService, ILogsService logsService)
         {
             _productService = productService;
+            _logsService = logsService;
         }
 
         // GET: api/Products/5
@@ -21,7 +22,7 @@ namespace FlowerEShopAPI.BL.Controllers
         public async Task<IActionResult> Get(string id)
         {
             var product = await _productService.GetById(id);
-
+            await _logsService.LogAction(product.Shop.User.UserName, GetType().Name, "Get", "Product found");
             return ReturnResponse(product);
         }
 
@@ -31,7 +32,7 @@ namespace FlowerEShopAPI.BL.Controllers
         public async Task<IActionResult> Put(string id, [FromBody] ProductBody productBody)
         {
             var updatedProduct = await _productService.UpdateProduct(id, productBody.ShopId, productBody.Title, productBody.Description, productBody.Category, productBody.SubCategory, productBody.Status, productBody.Price, productBody.Quantity, HttpContext.User.Identity.Name);
-
+            await _logsService.LogAction(updatedProduct.Shop.User.UserName, GetType().Name, "Put", "Product updated");
             return ReturnResponse(updatedProduct);
         }
 
@@ -41,7 +42,7 @@ namespace FlowerEShopAPI.BL.Controllers
         public async Task<IActionResult> Post([FromBody] ProductBody productBody)
         {
             var createdProduct = await _productService.AddProductToShop(productBody.ShopId, productBody.Title, productBody.Description, productBody.Category, productBody.SubCategory, productBody.Status, productBody.Price, productBody.Quantity, productBody.UserId);
-
+            await _logsService.LogAction(createdProduct.Shop.User.UserName, GetType().Name, "Post", "Product created");
             return ReturnResponse(createdProduct);
         }
 
@@ -49,8 +50,9 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
+            var product = await _productService.GetById(id);
             await _productService.DeleteProduct(id, HttpContext.User.Identity.Name);
-
+            await _logsService.LogAction(product.Shop.User.UserName, GetType().Name, "Delete", "Product with id: " + id + "deleted");
             return ReturnResponse("Product deleted successfully");
         }
 

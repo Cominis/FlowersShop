@@ -57,6 +57,7 @@ namespace FlowerEShopAPI
             services.AddScoped(provider => new Lazy<IEnumConverter>(provider.GetService<IEnumConverter>));
             services.AddScoped<IShoppingCartRepository, ShopingCartRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ILogsRepository, LogsRepository>();
             services.AddScoped<IHelpers, Helpers>();
             services.AddScoped(provider => new Lazy<IHelpers>(provider.GetService<IHelpers>));
 
@@ -68,6 +69,8 @@ namespace FlowerEShopAPI
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ISearchService, SearchService>();
+            services.AddScoped<ILogsService, LogsService>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
