@@ -56,14 +56,14 @@ namespace FlowerEShopAPI.Repositories
 
         public async Task<List<Shop>?> FindAll()
         {
-            var shops = await _context.Shops.Include(b => b.Products).ToListAsync();
+            var shops = await _context.Shops.ToListAsync();
 
             return shops.ToList();
         }
 
         public async Task<Shop?> FindOne(string id)
         {
-            var shop = await _context.Shops.Include(b => b.Products).SingleOrDefaultAsync(b => b.Id.ToString() == id);
+            var shop = await _context.Shops.SingleOrDefaultAsync(b => b.Id.ToString() == id);
 
             return shop;
         }
