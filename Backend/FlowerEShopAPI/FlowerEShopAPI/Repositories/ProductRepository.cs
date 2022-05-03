@@ -65,13 +65,6 @@ namespace FlowerEShopAPI.Repositories
             return products;
         }
 
-        public async Task<List<Product>> FindAll()
-        {
-            var products = await _context.Products.ToListAsync();
-
-            return products;
-        }
-
         public async Task<Product> FindOne(string id)
         {
             var product = await _context.Products.SingleOrDefaultAsync(b => b.Id.ToString() == id);

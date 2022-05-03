@@ -9,6 +9,5 @@ namespace FlowerEShopAPI.Repositories.RepositoryInterfaces
         public Task<string> Delete(string id);
         public Task<Product> FindOne(string id);
         public Task<List<Product>> FindAll(string shopId);
-        public Task<List<Product>> FindAll();
     }
 }
