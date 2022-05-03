@@ -11,7 +11,7 @@ namespace FlowerEShopAPI.Repositories.Helpers
             return status switch
             {
                 "Available" => StatusEnum.Available,
-                "OutOFStock" => StatusEnum.OutOfStock,
+                "OutOfStock" => StatusEnum.OutOfStock,
                 _ => throw new NotImplementedException("Unknown status type")
             };
         }

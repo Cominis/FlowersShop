@@ -1,4 +1,5 @@
-﻿using FlowerEShopAPI.Repositories.RepositoryInterfaces;
+﻿using FlowerEShopAPI.DAL.Entities;
+using FlowerEShopAPI.Repositories.RepositoryInterfaces;
 using FlowerEShopAPI.Repositories.RepositoryInterfaces.HelpersInterfaces;
 using FlowerEShopAPI.Services.ServiceInterfaces;
 using System.Text.RegularExpressions;
@@ -10,12 +11,14 @@ namespace FlowerEShopAPI.Services.Helpers
         private readonly IShopRepository _shopRepository;
         private readonly IUserRepository _userRepository;
         private readonly Lazy<IHelpers> _helpers = null;
+        private readonly Lazy<IEnumConverter> _enumConverter = null;
 
-        public Validation(IShopRepository shopRepository, IUserRepository userRepository, Lazy<IHelpers> helpers)
+        public Validation(IShopRepository shopRepository, IUserRepository userRepository, Lazy<IHelpers> helpers, Lazy<IEnumConverter> enumConverter)
         {
             _shopRepository = shopRepository;
             _userRepository = userRepository;
             _helpers = helpers;
+            _enumConverter = enumConverter;
         }
 
         public async Task<bool> ValidateShopData(string name, string location, bool isUpdate)
@@ -92,6 +95,19 @@ namespace FlowerEShopAPI.Services.Helpers
             }
 
             return true;
+        }
+
+        // kazkodel neveikia, kai yra tik priceStart
+        public bool ValidateFilters(Shop shop, string status, decimal? priceStart, decimal? priceEnd)
+        {
+            return (status != "All" && priceStart.HasValue && priceEnd.HasValue && shop.Products.Any(product => product.Status == _enumConverter.Value.StringToStatusEnum(status)) && shop.Products.Any(product => product.Price >= priceStart) && shop.Products.Any(product => product.Price <= priceEnd))
+                || (status != "All" && !priceStart.HasValue && priceEnd.HasValue && shop.Products.Any(product => product.Status == _enumConverter.Value.StringToStatusEnum(status)) && shop.Products.Any(product => product.Price <= priceEnd))
+                || (status != "All" && priceStart.HasValue && !priceEnd.HasValue && shop.Products.Any(product => product.Status == _enumConverter.Value.StringToStatusEnum(status)) && shop.Products.Any(product => product.Price >= priceStart))
+                || (status != "All" && !priceStart.HasValue && !priceEnd.HasValue && shop.Products.Any(product => product.Status == _enumConverter.Value.StringToStatusEnum(status)))
+                || (status == "All" && !priceStart.HasValue && priceEnd.HasValue && shop.Products.Any(product => product.Price <= priceEnd))
+                || (status == "All" && priceStart.HasValue && !priceEnd.HasValue && shop.Products.Any(product => product.Price >= priceStart))
+                || (status == "All" && priceStart.HasValue && priceEnd.HasValue && shop.Products.Any(product => product.Price >= priceStart) && shop.Products.Any(product => product.Price <= priceEnd))
+                || (status == "All" && !priceStart.HasValue && !priceEnd.HasValue);
         }
     }
 }

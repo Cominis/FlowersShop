@@ -18,7 +18,7 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpGet]
         public async Task<IActionResult> Get([FromBody] SearchBody body)
         {
-            var search = await _searchService.SearchShops(body.SearchQuery);
+            var search = await _searchService.SearchShops(body.SearchQuery, body.PriceStart, body.PriceEnd, body.Status);
             return ReturnResponse(search);
         }
 
