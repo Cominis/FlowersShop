@@ -100,14 +100,14 @@ namespace FlowerEShopAPI.Services.Helpers
         // kazkodel neveikia, kai yra tik priceStart
         public bool ValidateFilters(Shop shop, string status, decimal? priceStart, decimal? priceEnd)
         {
-            return (status != "All" && priceStart.HasValue && priceEnd.HasValue && shop.Products.Any(product => product.Status == _enumConverter.Value.StringToStatusEnum(status)) && shop.Products.Any(product => product.Price >= priceStart) && shop.Products.Any(product => product.Price <= priceEnd))
-                || (status != "All" && !priceStart.HasValue && priceEnd.HasValue && shop.Products.Any(product => product.Status == _enumConverter.Value.StringToStatusEnum(status)) && shop.Products.Any(product => product.Price <= priceEnd))
-                || (status != "All" && priceStart.HasValue && !priceEnd.HasValue && shop.Products.Any(product => product.Status == _enumConverter.Value.StringToStatusEnum(status)) && shop.Products.Any(product => product.Price >= priceStart))
-                || (status != "All" && !priceStart.HasValue && !priceEnd.HasValue && shop.Products.Any(product => product.Status == _enumConverter.Value.StringToStatusEnum(status)))
-                || (status == "All" && !priceStart.HasValue && priceEnd.HasValue && shop.Products.Any(product => product.Price <= priceEnd))
-                || (status == "All" && priceStart.HasValue && !priceEnd.HasValue && shop.Products.Any(product => product.Price >= priceStart))
-                || (status == "All" && priceStart.HasValue && priceEnd.HasValue && shop.Products.Any(product => product.Price >= priceStart) && shop.Products.Any(product => product.Price <= priceEnd))
-                || (status == "All" && !priceStart.HasValue && !priceEnd.HasValue);
+            return (status != "All" && priceStart > 0 && priceEnd > 0 && shop.Products.Any(product => product.Status == _enumConverter.Value.StringToStatusEnum(status)) && shop.Products.Any(product => product.Price >= priceStart) && shop.Products.Any(product => product.Price <= priceEnd))
+                || (status != "All" && priceStart == 0 && priceEnd > 0 && shop.Products.Any(product => product.Status == _enumConverter.Value.StringToStatusEnum(status)) && shop.Products.Any(product => product.Price <= priceEnd))
+                || (status != "All" && priceStart > 0 && priceEnd == 0 && shop.Products.Any(product => product.Status == _enumConverter.Value.StringToStatusEnum(status)) && shop.Products.Any(product => product.Price >= priceStart))
+                || (status != "All" && priceStart == 0 && priceEnd == 0 && shop.Products.Any(product => product.Status == _enumConverter.Value.StringToStatusEnum(status)))
+                || (status == "All" && priceStart == 0 && priceEnd > 0 && shop.Products.Any(product => product.Price <= priceEnd))
+                || (status == "All" && priceStart > 0 && priceEnd == 0 && shop.Products.Any(product => product.Price >= priceStart))
+                || (status == "All" && priceStart > 0 && priceEnd > 0 && shop.Products.Any(product => product.Price >= priceStart) && shop.Products.Any(product => product.Price <= priceEnd))
+                || (status == "All" && priceStart == 0 && priceEnd == 0);
         }
     }
 }
