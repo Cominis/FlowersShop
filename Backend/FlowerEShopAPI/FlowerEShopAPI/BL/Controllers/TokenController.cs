@@ -1,5 +1,5 @@
-﻿using FlowerEShopAPI.DAL.Entities;
-using FlowerEShopAPI.Services.ServiceInterfaces;
+﻿using FlowerEShopAPI.BL.Services.ServiceInterfaces;
+using FlowerEShopAPI.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
