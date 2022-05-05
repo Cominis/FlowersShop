@@ -19,6 +19,12 @@
             public string Password { get; set; }
         }
 
+        public class UserLogin
+        {
+            public string UserName { get; set; }
+            public string Password { get; set; }
+        }
+
         public class ShoppingCartBody
         {
             public string ProductId { get; set; }
@@ -43,6 +49,9 @@
         public class SearchBody
         {
             public string SearchQuery { get; set; }
+            public decimal PriceStart { get; set; }
+            public decimal PriceEnd { get; set; }
+            public string Status { get; set; } = "All";
         }
     }
 }

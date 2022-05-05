@@ -9,12 +9,10 @@ namespace FlowerEShopAPI.Repositories
     public class ShopRepository : IShopRepository
     {
         private readonly FlowerShopDBContext _context;
-        private readonly IProductRepository _productRepository;
         private readonly Lazy<IHelpers> _helpers = null;
-        public ShopRepository(FlowerShopDBContext context, IProductRepository productRepository, Lazy<IHelpers> helpers)
+        public ShopRepository(FlowerShopDBContext context, Lazy<IHelpers> helpers)
         {
             _context = context;
-            _productRepository = productRepository;
             _helpers = helpers;
         }
 
@@ -27,7 +25,7 @@ namespace FlowerEShopAPI.Repositories
 
             var shopDetails = await FindOne(shop.Id.ToString());
 
-            return shopDetails != null ? CheckForProducts(shopDetails) : shopDetails;
+            return shopDetails;
         }
         public async Task<Shop?> Update(string id, string name, string description, string location)
         {
@@ -38,13 +36,11 @@ namespace FlowerEShopAPI.Repositories
             shop.Location = _helpers.Value.IsStringEmty(location) ? shop.Location : location;
             shop.UpdatedAt = DateTime.Now;
 
-            var previousShopProducts = await _productRepository.FindAll(id);
-
             await _context.SaveChangesAsync();
 
             var updatedShop = _context.Shops.SingleOrDefault(b => b.Id.ToString() == id);
 
-            return updatedShop != null ? CheckForProducts(updatedShop) : updatedShop;
+            return updatedShop;
         }
 
         public async Task<string> Delete(string id)
@@ -60,27 +56,16 @@ namespace FlowerEShopAPI.Repositories
 
         public async Task<List<Shop>?> FindAll()
         {
-            var shops = await _context.Shops.Include(b => b.Products).ToListAsync();
+            var shops = await _context.Shops.ToListAsync();
 
-            return shops.Select(shop => CheckForProducts(shop)).ToList();
+            return shops.ToList();
         }
 
         public async Task<Shop?> FindOne(string id)
         {
-            var shop = await _context.Shops.Include(b => b.Products).SingleOrDefaultAsync(b => b.Id.ToString() == id);
-
-            return shop != null ? CheckForProducts(shop) : shop;
-        }
-
-        private static Shop CheckForProducts(Shop shop)
-        {
-            if (shop.Products == null)
-            {
-                shop.Products = new List<Product>();
-            }
+            var shop = await _context.Shops.SingleOrDefaultAsync(b => b.Id.ToString() == id);
 
             return shop;
         }
-
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -9,6 +8,23 @@ namespace FlowerEShopAPI.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Logs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    LogType = table.Column<int>(type: "int", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TimeStamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ClassName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MethodName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Logs", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
@@ -87,6 +103,7 @@ namespace FlowerEShopAPI.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Quantity = table.Column<decimal>(type: "decimal(6,0)", precision: 6, scale: 0, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -130,6 +147,9 @@ namespace FlowerEShopAPI.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Logs");
+
             migrationBuilder.DropTable(
                 name: "ShoppingCart");
 

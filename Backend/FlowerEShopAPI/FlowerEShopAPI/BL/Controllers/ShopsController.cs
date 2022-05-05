@@ -11,18 +11,21 @@ namespace FlowerEShopAPI.BL.Controllers
     public class ShopsController : ControllerBase, IShopController
     {
         private readonly IShopService _shopService;
+        private readonly ILogsService _logsService;
 
-        public ShopsController(IShopService shopService)
+        public ShopsController(IShopService shopService, ILogsService logsService)
         {
             _shopService = shopService;
+            _logsService = logsService;
         }
 
         // GET: api/Shops/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
+            //await _logsService.LogAction(HttpContext.User.Identity.Name, GetType().Name, "Get", "Finding shop");
             var getShop = await _shopService.GetShop(id);
-
+            await _logsService.LogAction(getShop.User.UserName, GetType().Name, "Get", "Shop found");
             return ReturnResponse(getShop);
         }
 
@@ -31,8 +34,9 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(string id, [FromBody] ShopBody body)
         {
+            //await _logsService.LogAction(HttpContext.User.Identity.Name, GetType().Name, "Put", "Updating shop");
             var updatedShop = await _shopService.UpdateShop(id, body.Name, body.Description, body.Location, HttpContext.User.Identity.Name);
-
+            await _logsService.LogAction(updatedShop.User.UserName, GetType().Name, "Put", "Shop updated");
             return ReturnResponse(updatedShop);
         }
 
@@ -41,8 +45,9 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ShopBody body)
         {
+            //await _logsService.LogAction(HttpContext.User.Identity.Name, GetType().Name, "Create", "Creating shop");
             var createdShop = await _shopService.CreateShop(body.Name, body.Description, body.Location, body.UserId);
-
+            await _logsService.LogAction(createdShop.User.UserName, GetType().Name, "Create", "Shop created");
             return ReturnResponse(createdShop);
         }
 
@@ -50,8 +55,11 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
-            await _shopService.DeleteShop(id, HttpContext.User.Identity.Name);
+            var shop = await _shopService.GetShop(id);
 
+            //await _logsService.LogAction(shop.User.UserName, GetType().Name, "Delete", "Deleting shop with id: " + id);
+            await _shopService.DeleteShop(id, HttpContext.User.Identity.Name);
+            await _logsService.LogAction(shop.User.UserName, GetType().Name, "Delete", "Shop with id: " + id + "deleted");
             return ReturnResponse("Shop was deleted successfully");
         }
 

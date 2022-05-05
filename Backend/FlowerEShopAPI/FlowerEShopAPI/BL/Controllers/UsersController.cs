@@ -10,10 +10,11 @@ namespace FlowerEShopAPI.BL.Controllers
     public class UsersController : ControllerBase, IUserController
     {
         private readonly IUserService _userService;
-
-        public UsersController(IUserService userService)
+        private readonly ILogsService _logsService;
+        public UsersController(IUserService userService, ILogsService logsService)
         {
             _userService = userService;
+            _logsService = logsService;
         }
 
         // GET: api/Users/5
@@ -21,6 +22,7 @@ namespace FlowerEShopAPI.BL.Controllers
         public async Task<IActionResult> Get(string id)
         {
             var user = await _userService.GetUserById(id);
+            await _logsService.LogAction(user.UserName, GetType().Name, "Get", "User with id: " + id + "found");
             return ReturnResponse(user);
         }
 
@@ -30,7 +32,7 @@ namespace FlowerEShopAPI.BL.Controllers
         public async Task<IActionResult> Post([FromBody] UserCred userCred)
         {
             var createdUser = await _userService.CreateUser(userCred.Name, userCred.Email, userCred.Surname, userCred.Username, userCred.Password);
-
+            await _logsService.LogAction(createdUser.UserName, GetType().Name, "Post", "User with id: " + createdUser.Id + "created");
             return ReturnResponse(createdUser);
         }
 
@@ -40,7 +42,7 @@ namespace FlowerEShopAPI.BL.Controllers
         public async Task<IActionResult> Put(string id, [FromBody] UserCred userCred)
         {
             var updatedUser = await _userService.UpdateUser(id, userCred.Name, userCred.Email, userCred.Surname, userCred.Username, userCred.Password);
-
+            await _logsService.LogAction(updatedUser.UserName, GetType().Name, "Update", "User with id: " + updatedUser.Id + "updated");
             return ReturnResponse(updatedUser);
         }
 
