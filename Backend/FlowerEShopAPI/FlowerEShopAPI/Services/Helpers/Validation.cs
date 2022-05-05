@@ -97,7 +97,6 @@ namespace FlowerEShopAPI.Services.Helpers
             return true;
         }
 
-        // kazkodel neveikia, kai yra tik priceStart
         public bool ValidateFilters(Shop shop, string status, decimal? priceStart, decimal? priceEnd)
         {
             return (status != "All" && priceStart > 0 && priceEnd > 0 && shop.Products.Any(product => product.Status == _enumConverter.Value.StringToStatusEnum(status)) && shop.Products.Any(product => product.Price >= priceStart) && shop.Products.Any(product => product.Price <= priceEnd))
