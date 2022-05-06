@@ -14,7 +14,7 @@ const CardList = (props) => (
         }}
     >
         <Scrollbars>
-            {props.data.map(item => <ItemCard item={item} handleDelete={props.handlDelete} handleCountChange={props.handleCountChange} />)}
+            {props.data.map(item => <ItemCard item={item} handleDelete={props.handleDelete} handleCountChange={props.handleCountChange} />)}
         </Scrollbars>
     </List>
 );
