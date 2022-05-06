@@ -1,4 +1,5 @@
-import * as React from 'react';import Box from '@mui/material/Box';
+import React, { useState } from "react";
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -9,6 +10,13 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const ItemCard = (props) => {
+    const [units, setUnits] = useState(props.item.units);
+    const incrementCounter = (unit) => {
+        setUnits(unit + 1); props.handleCountChange(props.item.id, unit + 1); props.item.units = unit + 1;
+    }
+    const decrementCounter = (unit) => {
+        setUnits(unit - 1); props.handleCountChange(props.item.id, unit - 1); props.item.units = unit - 1;
+    }
     return (
         <Card
             sx={{
@@ -21,8 +29,8 @@ const ItemCard = (props) => {
             <CardMedia
                 component="img"
                 sx={{ width: 100, height: 100, m: 2 }}
-                image={props.item_url}
-                alt={props.item}
+                image={props.item.item_url}
+                alt={props.item.item}
             />
             <Box
                 sx={{
@@ -36,13 +44,13 @@ const ItemCard = (props) => {
                     }}
                 >
                     <Typography component="div" fontWeight="bold">
-                        {props.item}
+                        {props.item.item}
                     </Typography>
                     <Typography variant="subtitle2" color="text.secondary" component="div" mt={-1}>
-                        {props.shop_name}
+                        {props.item.shop_name}
                     </Typography>
                     <Typography variant="subtitle1" color="text.secondary" component="div">
-                        {props.additional_info}
+                        {props.item.additional_info}
                     </Typography>
                 </CardContent>
             </Box>
@@ -55,17 +63,17 @@ const ItemCard = (props) => {
             >
                 <CardContent sx={{ flex: '1 0 auto' }} align="right">
                     <Typography width={100} component="div" fontWeight="bold">
-                        {props.unit_price.toFixed(2)} EUR
+                        {props.item.unit_price.toFixed(2)} EUR
                     </Typography>
                     <Typography marginRight={2.5} width={29} align='center' color="text.secondary" component="div">
-                        {props.units}
+                        {props.item.units}
                     </Typography>
                     <Box sx={{
                         position: 'absolute',
                         mt: -4.2,
                         ml: 2.3,
                     }}>
-                        <IconButton>
+                        <IconButton onClick={() => decrementCounter(props.item.units)}>
                             <RemoveCircleIcon fontSize='small' />
                         </IconButton>
                     </Box>
@@ -74,7 +82,7 @@ const ItemCard = (props) => {
                         mt: -4.2,
                         ml: 8.5,
                     }}>
-                        <IconButton>
+                        <IconButton onClick={() => incrementCounter(props.item.units)}>
                             <AddCircleIcon fontSize='small' />
                         </IconButton>
                     </Box>
@@ -83,7 +91,7 @@ const ItemCard = (props) => {
                         mt: 2,
                         ml: 8.5,
                     }}>
-                        <IconButton>
+                        <IconButton onClick={() => props.handleDelete(props.item.id)}>
                             <DeleteOutlinedIcon />
                         </IconButton>
                     </Box>
