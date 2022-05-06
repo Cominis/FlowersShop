@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
+import { Grid } from "@mui/material";
 import Box from "@mui/material/Box";
 import CardList from "./CardList";
 import Path from "./Path";
@@ -21,12 +22,12 @@ const Cart = () => {
             method: 'DELETE'
         })
 
-        const newItems = items.filter(item => item.id != id)
+        const newItems = items.filter(item => item.id !== id)
         setItems(newItems)
     }
 
     const handleCountChange = async (id, counted) => {
-        const updatedItem = items.filter(item => item.id == id)[0]
+        const updatedItem = items.filter(item => item.id === id)[0]
 
         await fetch('http://localhost:8000/items/' + id, {
             method: 'PUT',
