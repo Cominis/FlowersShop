@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import CardList from "./CardList";
 import Path from "./Path";
+import Checkout from "./Checkout";
 
 const priceData = { products_price: 100, delivery_price: 10, total_price: 110 }
 
@@ -43,6 +44,9 @@ const Cart = () => {
     }
     return (
         <Box justifyContent="center" alignItems="center">
+            <Grid>
+                <Path path={"Shopping Cart"} />
+            </Grid>
             <Grid
                 sx={{
                     display: 'flex',
@@ -57,13 +61,13 @@ const Cart = () => {
                 >
                     <CardList data={items} handleDelete={handlDelete} handleCountChange={handleCountChange} />
                 </Box>
-                <Box component="div"
-                    sx={{
-                        display: "flex",
-                        flexDirection: 'column',
-                    }}
-                >
-                    <CardList data={items} handleDelete={handlDelete} handleCountChange={handleCountChange} />
+                <Box component="div" sx={{
+                    display: "flex",
+                    flexDirection: 'column',
+                    marginLeft: 'auto',
+                    marginTop: 10,
+                }}>
+                    <Checkout products_price={priceData.products_price} delivery_price={priceData.delivery_price} total_price={priceData.total_price} />
                 </Box>
             </Grid>
         </Box>
