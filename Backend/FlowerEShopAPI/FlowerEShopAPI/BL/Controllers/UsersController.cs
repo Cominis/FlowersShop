@@ -1,7 +1,6 @@
-using FlowerEShopAPI.BL.Controllers.Interfaces;
-using FlowerEShopAPI.BL.Services.ServiceInterfaces;
 using FlowerEShopAPI.BL.Attributes;
 using FlowerEShopAPI.BL.Controllers.Interfaces;
+using FlowerEShopAPI.BL.Services.ServiceInterfaces;
 using FlowerEShopAPI.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using static FlowerEShopAPI.BL.Models.Body;
@@ -46,8 +45,9 @@ namespace FlowerEShopAPI.BL.Controllers
         public async Task<IActionResult> Put([FromBody] UserCred userCred)
         {
             var user = (User)HttpContext.Items["User"];
+            await _logsService.LogAction(user.UserName, GetType().Name, "Update", "Updating user");
             var updatedUser = await _userService.UpdateUser(user.Id.ToString(), userCred.Name, userCred.Email, userCred.Surname, userCred.Username, userCred.Password);
-            await _logsService.LogAction(updatedUser.UserName, GetType().Name, "Update", "User with id: " + updatedUser.Id + "updated");
+            await _logsService.LogAction(user.UserName, GetType().Name, "Update", "User with id: " + updatedUser.Id + "updated");
             return ReturnResponse(updatedUser);
         }
 
