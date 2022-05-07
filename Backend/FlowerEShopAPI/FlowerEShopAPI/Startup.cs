@@ -1,7 +1,8 @@
-﻿using FlowerEShopAPI.BL.Exceptions;
+using FlowerEShopAPI.BL.Exceptions;
 using FlowerEShopAPI.BL.Services;
 using FlowerEShopAPI.BL.Services.Helpers;
 using FlowerEShopAPI.BL.Services.ServiceInterfaces;
+using FlowerEShopAPI.BL.Middlewares;
 using FlowerEShopAPI.DAL;
 using FlowerEShopAPI.DAL.Repositories;
 using FlowerEShopAPI.DAL.Repositories.Helpers;
@@ -86,7 +87,7 @@ namespace FlowerEShopAPI
 
             app.UseAuthentication();
 
-            app.UseAuthorization();
+            app.UseMiddleware<JwtMiddleware>();
 
             app.ConfigureCustomExceptionMiddleware();
 

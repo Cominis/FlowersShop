@@ -1,5 +1,8 @@
-﻿using FlowerEShopAPI.BL.Controllers.Interfaces;
+using FlowerEShopAPI.BL.Controllers.Interfaces;
 using FlowerEShopAPI.BL.Services.ServiceInterfaces;
+using FlowerEShopAPI.BL.Attributes;
+using FlowerEShopAPI.BL.Controllers.Interfaces;
+using FlowerEShopAPI.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
 using static FlowerEShopAPI.BL.Models.Body;
 
@@ -38,14 +41,19 @@ namespace FlowerEShopAPI.BL.Controllers
 
         // PUT: api/Users/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [AuthorizeAttribute]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(string id, [FromBody] UserCred userCred)
+        public async Task<IActionResult> Put([FromBody] UserCred userCred)
         {
-            var updatedUser = await _userService.UpdateUser(id, userCred.Name, userCred.Email, userCred.Surname, userCred.Username, userCred.Password);
+            var user = (User)HttpContext.Items["User"];
+            var updatedUser = await _userService.UpdateUser(user.Id.ToString(), userCred.Name, userCred.Email, userCred.Surname, userCred.Username, userCred.Password);
             await _logsService.LogAction(updatedUser.UserName, GetType().Name, "Update", "User with id: " + updatedUser.Id + "updated");
             return ReturnResponse(updatedUser);
         }
 
-        public IActionResult ReturnResponse(object value) => Ok(new { Response = value });
+        public IActionResult ReturnResponse(object value)
+        {
+            return Ok(new { Response = value });
+        }
     }
 }
