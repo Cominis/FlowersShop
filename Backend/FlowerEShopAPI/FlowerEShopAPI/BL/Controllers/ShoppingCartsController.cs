@@ -1,4 +1,5 @@
 ﻿#nullable disable
+using FlowerEShopAPI.BL.Attributes;
 using FlowerEShopAPI.BL.Controllers.Interfaces;
 using FlowerEShopAPI.Services.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using static FlowerEShopAPI.BL.Models.Body;
 
 namespace FlowerEShopAPI.BL.Controllers
 {
+    [AuthorizeAttribute]
     [Route("api/[controller]")]
     [ApiController]
     public class ShoppingCartsController : ControllerBase, IShoppingcartController

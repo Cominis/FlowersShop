@@ -7,7 +7,6 @@
             public string Name { get; set; }
             public string Description { get; set; }
             public string Location { get; set; }
-            public string UserId { get; set; }
         }
 
         public class UserCred
@@ -42,8 +41,6 @@
             public decimal Price { get; set; }
             public decimal Quantity { get; set; }
             public string ShopId { get; set; }
-
-            public string UserId { get; set; }
         }
 
         public class SearchBody
