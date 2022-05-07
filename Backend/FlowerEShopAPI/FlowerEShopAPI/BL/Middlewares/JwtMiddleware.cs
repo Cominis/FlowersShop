@@ -1,4 +1,4 @@
-﻿using FlowerEShopAPI.Services.ServiceInterfaces;
+﻿using FlowerEShopAPI.BL.Services.ServiceInterfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
