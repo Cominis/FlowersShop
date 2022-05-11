@@ -28,7 +28,7 @@ namespace FlowerEShopAPI.BL.Services.Helpers
             var shops = await _shopRepository.FindAll();
 
             var isValidName = (isUpdate && _helpers.Value.IsStringEmty(name) || isUpdate && shops.Where(i => i.Name == name).Count() == 1) || (name != null && name.Length > 2 && nameRegex.IsMatch(name) && !shops.Where(i => i.Name == name).Any());
-            var isValidLocation = (isUpdate && _helpers.Value.IsStringEmty(location)) || !_helpers.Value.IsStringEmty(location);
+            var isValidLocation = (isUpdate && _helpers.Value.IsStringEmty(location) || isUpdate && shops.Where(i => i.Location == location).Count() == 1) || !_helpers.Value.IsStringEmty(location);
 
             bool[] validators = { isValidName, isValidLocation };
             string[] namesOfParams = { "name", "location" };
@@ -55,11 +55,11 @@ namespace FlowerEShopAPI.BL.Services.Helpers
             var shop = await _shopRepository.FindOne(shopId);
 
             var isValidShop = shop != null;
-            var isValidTitle = (isUpdate && _helpers.Value.IsStringEmty(title)) || (title != null && title.Length > 2 && nameRegex.IsMatch(title));
-            var isValidCategory = (isUpdate && _helpers.Value.IsStringEmty(category)) || category != null || category.Length > 1;
+            var isValidTitle = (isUpdate && _helpers.Value.IsStringEmty(title) || isUpdate && shop.Products.Where(product => product.Title == title).Count() == 1) || (title != null && title.Length > 2 && nameRegex.IsMatch(title));
+            var isValidCategory = (isUpdate && _helpers.Value.IsStringEmty(category) || isUpdate && shop.Products.Where(product => product.Category == category).Count() == 1) || category != null || category.Length > 1;
             var isValidStatus = (isUpdate && _helpers.Value.IsStringEmty(status)) || statuses.Contains(status);
-            var isValidPrice = priceRegex.IsMatch(price.ToString()) || (isUpdate && price == null);
-            var isValidQuantity = (isUpdate && quantity == null) || quantityRegex.IsMatch(quantity.ToString());
+            var isValidPrice = priceRegex.IsMatch(price.ToString()) || (isUpdate && price > 0 || isUpdate && shop.Products.Where(product => product.Price == price).Count() == 1);
+            var isValidQuantity = (isUpdate && quantity > 0 || isUpdate && shop.Products.Where(product => product.Quantity == quantity).Count() == 1) || quantityRegex.IsMatch(quantity.ToString());
 
             bool[] validators = { isValidShop, isValidTitle, isValidCategory, isValidStatus, isValidPrice, isValidQuantity };
             string[] namesOfParams = { "shop", "title", "category", "status", "price", "quantity" };
