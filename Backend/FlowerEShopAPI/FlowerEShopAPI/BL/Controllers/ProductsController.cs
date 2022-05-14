@@ -1,120 +1,76 @@
-﻿#nullable disable
-using FlowerEShopAPI.DAL;
+#nullable disable
+using FlowerEShopAPI.BL.Attributes;
+using FlowerEShopAPI.BL.Services.ServiceInterfaces;
 using FlowerEShopAPI.DAL.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using static FlowerEShopAPI.BL.Models.Body;
 
 namespace FlowerEShopAPI.BL.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly FlowerShopDBContext _context;
-
-        public ProductsController(FlowerShopDBContext context)
+        private readonly IProductService _productService;
+        private readonly ILogsService _logsService;
+        public ProductsController(IProductService productService, ILogsService logsService)
         {
-            _context = context;
-        }
-
-        // GET: api/Products
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
-        {
-            return await _context.Products.ToListAsync();
+            _productService = productService;
+            _logsService = logsService;
         }
 
         // GET: api/Products/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(string id)
+        public async Task<IActionResult> Get(string id)
         {
-            var product = await _context.Products.FindAsync(id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return product;
+            var user = (User)HttpContext.Items["User"];
+            await _logsService.LogAction(user.UserName ?? "Guest", GetType().Name, "Get", "Getting product"); ;
+            var product = await _productService.GetById(id);
+            await _logsService.LogAction(user.UserName ?? "Guest", GetType().Name, "Get", "Product found");
+            return ReturnResponse(product);
         }
 
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [AuthorizeAttribute]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduct(string id, Product product)
+        public async Task<IActionResult> Put(string id, [FromBody] ProductBody productBody)
         {
-            if (id != product.Id.ToString())
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(product).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var user = (User)HttpContext.Items["User"];
+            await _logsService.LogAction(user.UserName, GetType().Name, "Put", "Product updated");
+            var updatedProduct = await _productService.UpdateProduct(id, productBody.ShopId, productBody.Title, productBody.Description, productBody.Category, productBody.SubCategory, productBody.Status, productBody.Price, productBody.Quantity, user.Id.ToString());
+            await _logsService.LogAction(user.UserName, GetType().Name, "Put", "Product updated");
+            return ReturnResponse(updatedProduct);
         }
 
         // POST: api/Products
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [AuthorizeAttribute]
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<IActionResult> Post([FromBody] ProductBody productBody)
         {
-            _context.Products.Add(product);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (ProductExists(product.Id.ToString()))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetProduct", new { id = product.Id }, product);
+            var user = (User)HttpContext.Items["User"];
+            await _logsService.LogAction(user.UserName, GetType().Name, "Post", "Creating product");
+            var createdProduct = await _productService.AddProductToShop(productBody.ShopId, productBody.Title, productBody.Description, productBody.Category, productBody.SubCategory, productBody.Status, productBody.Price, productBody.Quantity, user.Id.ToString());
+            await _logsService.LogAction(user.UserName, GetType().Name, "Post", "Product created");
+            return ReturnResponse(createdProduct);
         }
 
         // DELETE: api/Products/5
+        [AuthorizeAttribute]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(string id)
+        public async Task<IActionResult> Delete(string id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            var user = (User)HttpContext.Items["User"];
+            await _logsService.LogAction(user.UserName, GetType().Name, "Delete", "Deleting product with id: " + id + "deleted");
+            await _productService.DeleteProduct(id, user.Id.ToString());
+            await _logsService.LogAction(user.UserName, GetType().Name, "Delete", "Product with id: " + id + "deleted");
+            return ReturnResponse("Product deleted successfully");
         }
 
-        private bool ProductExists(string id)
+        public IActionResult ReturnResponse(object value)
         {
-            return _context.Products.Any(e => e.Id.ToString() == id);
+            return Ok(new { Response = value });
         }
     }
 }

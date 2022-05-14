@@ -1,117 +1,59 @@
-﻿using FlowerEShopAPI.DAL;
+using FlowerEShopAPI.BL.Attributes;
+using FlowerEShopAPI.BL.Controllers.Interfaces;
+using FlowerEShopAPI.BL.Services.ServiceInterfaces;
 using FlowerEShopAPI.DAL.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using static FlowerEShopAPI.BL.Models.Body;
 
 namespace FlowerEShopAPI.BL.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : ControllerBase, IUserController
     {
-        private readonly FlowerShopDBContext _context;
-
-        public UsersController(FlowerShopDBContext context)
+        private readonly IUserService _userService;
+        private readonly ILogsService _logsService;
+        public UsersController(IUserService userService, ILogsService logsService)
         {
-            _context = context;
-        }
-
-        // GET: api/Users
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
-        {
-            return await _context.User.ToListAsync();
+            _userService = userService;
+            _logsService = logsService;
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(Guid id)
+        public async Task<IActionResult> Get(string id)
         {
-            var user = await _context.User.FindAsync(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return user;
-        }
-
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(string id, User user)
-        {
-            if (id != user.Id.ToString())
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            var user = await _userService.GetUserById(id);
+            await _logsService.LogAction(user.UserName, GetType().Name, "Get", "User with id: " + id + "found");
+            return ReturnResponse(user);
         }
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<User>> Postuser(User user)
+        public async Task<IActionResult> Post([FromBody] UserCred userCred)
         {
-            _context.User.Add(user);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (UserExists(user.Id.ToString()))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            var createdUser = await _userService.CreateUser(userCred.Name, userCred.Email, userCred.Surname, userCred.Username, userCred.Password);
+            await _logsService.LogAction(createdUser.UserName, GetType().Name, "Post", "User with id: " + createdUser.Id + "created");
+            return ReturnResponse(createdUser);
         }
 
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(string id)
+        // PUT: api/Users/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [AuthorizeAttribute]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put([FromBody] UserCred userCred)
         {
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            var user = (User)HttpContext.Items["User"];
+            await _logsService.LogAction(user.UserName, GetType().Name, "Update", "Updating user");
+            var updatedUser = await _userService.UpdateUser(user.Id.ToString(), userCred.Name, userCred.Email, userCred.Surname, userCred.Username, userCred.Password);
+            await _logsService.LogAction(user.UserName, GetType().Name, "Update", "User with id: " + updatedUser.Id + "updated");
+            return ReturnResponse(updatedUser);
         }
 
-        private bool UserExists(string id)
+        public IActionResult ReturnResponse(object value)
         {
-            return _context.User.Any(e => e.Id.ToString() == id);
+            return Ok(new { Response = value });
         }
     }
 }

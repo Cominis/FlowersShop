@@ -18,7 +18,7 @@ namespace FlowerEShopAPI.DAL.Entities
 
         [Required]
         [Precision(6, 0)]
-        public int quantity;
+        public int Quantity;
 
         [ForeignKey("ProductId")]
         public virtual Product? Product { get; set; }
