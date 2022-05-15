@@ -37,6 +37,13 @@ namespace FlowerEShopAPI.DAL.Repositories
             return user;
         }
 
+        public async Task<User> FindByEmail(string email)
+        {
+            var user = await _context.User.SingleOrDefaultAsync(u => u.Email == email);
+
+            return user;
+        }
+
         public async Task<User> FindByUsername(string userName)
         {
             var user = await _context.User.SingleOrDefaultAsync(u => u.UserName == userName);

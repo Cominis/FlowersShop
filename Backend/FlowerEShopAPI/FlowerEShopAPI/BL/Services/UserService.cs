@@ -37,9 +37,9 @@ namespace FlowerEShopAPI.BL.Services
             return user;
         }
 
-        public async Task<User> GetUserByUserName(string userName)
+        public async Task<User> GetUserByEmail(string email)
         {
-            var user = await _userRepository.FindByUsername(userName);
+            var user = await _userRepository.FindByEmail(email);
 
             return user;
         }
