@@ -1,8 +1,8 @@
 using FlowerEShopAPI.BL.Exceptions;
+using FlowerEShopAPI.BL.Middlewares;
 using FlowerEShopAPI.BL.Services;
 using FlowerEShopAPI.BL.Services.Helpers;
 using FlowerEShopAPI.BL.Services.ServiceInterfaces;
-using FlowerEShopAPI.BL.Middlewares;
 using FlowerEShopAPI.DAL;
 using FlowerEShopAPI.DAL.Repositories;
 using FlowerEShopAPI.DAL.Repositories.Helpers;
@@ -17,6 +17,8 @@ namespace FlowerEShopAPI
 {
     public class Startup
     {
+        private string MyAllowSpecificOrigins = "my_allow_specific_origins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -72,6 +74,17 @@ namespace FlowerEShopAPI
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<ILogsService, LogsService>();
 
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.WithOrigins("*")
+                                                  .AllowAnyHeader()
+                                                  .AllowAnyMethod();
+                                  });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -86,6 +99,8 @@ namespace FlowerEShopAPI
             app.UseRouting();
 
             app.UseAuthentication();
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseMiddleware<JwtMiddleware>();
 
