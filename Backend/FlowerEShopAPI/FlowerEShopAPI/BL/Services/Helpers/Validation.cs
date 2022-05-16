@@ -98,7 +98,7 @@ namespace FlowerEShopAPI.BL.Services.Helpers
 
             if (!isValidPassword)
             {
-                throw new ArgumentException("Password must have minimum eight characters, at least one uppercase letter,one lowercase letter and one number");
+                throw new ArgumentException("Password must have minimum eight characters, at least one uppercase letter, one lowercase letter and one number");
             }
 
             return true;
