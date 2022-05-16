@@ -13,6 +13,7 @@
     <None Remove="Controllers\**" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Lorem.Universal.Net" Version="4.0.80" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.8" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
@@ -31,6 +32,9 @@
     <PackageReference Include="System.Linq" Version="4.3.0" />
     <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
     <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

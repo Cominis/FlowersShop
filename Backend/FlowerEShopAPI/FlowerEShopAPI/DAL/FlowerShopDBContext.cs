@@ -1,4 +1,5 @@
 ﻿using FlowerEShopAPI.DAL.Entities;
+using FlowerEShopAPI.DAL.Seeds;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlowerEShopAPI.DAL
@@ -19,6 +20,7 @@ namespace FlowerEShopAPI.DAL
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLazyLoadingProxies();
+            optionsBuilder.EnableSensitiveDataLogging(true);
         }
 
         public override int SaveChanges()
@@ -89,11 +91,13 @@ namespace FlowerEShopAPI.DAL
 
             modelBuilder.Entity<ShoppingCart>()
             .HasOne(b => b.Product)
-            .WithMany(c => c.ShoppingCarts).OnDelete(DeleteBehavior.NoAction); ;
+            .WithMany(c => c.ShoppingCarts).OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<ShoppingCart>()
             .HasOne(b => b.User)
-            .WithMany(c => c.ShoppingCarts).OnDelete(DeleteBehavior.NoAction); ;
+            .WithMany(c => c.ShoppingCarts).OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Seed();
         }
     }
 }
