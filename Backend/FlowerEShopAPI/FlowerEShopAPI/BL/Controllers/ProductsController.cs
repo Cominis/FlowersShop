@@ -24,9 +24,9 @@ namespace FlowerEShopAPI.BL.Controllers
         public async Task<IActionResult> Get(string id)
         {
             var user = (User)HttpContext.Items["User"];
-            await _logsService.LogAction(user.UserName ?? "Guest", GetType().Name, "Get", "Getting product"); ;
+            await _logsService.LogAction(user?.UserName ?? "Guest", GetType().Name, "Get", "Getting product"); ;
             var product = await _productService.GetById(id);
-            await _logsService.LogAction(user.UserName ?? "Guest", GetType().Name, "Get", "Product found");
+            await _logsService.LogAction(user?.UserName ?? "Guest", GetType().Name, "Get", "Product found");
             return ReturnResponse(product);
         }
 

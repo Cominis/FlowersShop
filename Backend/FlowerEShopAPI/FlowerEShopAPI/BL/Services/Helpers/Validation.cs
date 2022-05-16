@@ -75,13 +75,15 @@ namespace FlowerEShopAPI.BL.Services.Helpers
             return true;
         }
 
-        public async Task<bool> ValidateUser(string email, string userName)
+        public async Task<bool> ValidateUser(string email, string userName, string password)
         {
             var emailRegex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
+            var passwordRegex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
             var users = await _userRepository.FindByUsername(userName);
 
             var isValidUserName = _helpers.Value.IsStringEmty(userName) || users == null;
             var isValidEmail = _helpers.Value.IsStringEmty(email) || emailRegex.IsMatch(email);
+            var isValidPassword = passwordRegex.IsMatch(password);
 
             bool[] validators = { isValidUserName, isValidEmail };
             string[] namesOfParams = { "userName", "email" };
@@ -92,6 +94,11 @@ namespace FlowerEShopAPI.BL.Services.Helpers
                 {
                     throw new ArgumentException($"Not valid {namesOfParams[i]}");
                 }
+            }
+
+            if (!isValidPassword)
+            {
+                throw new ArgumentException("Password must have minimum eight characters, at least one uppercase letter, one lowercase letter and one number");
             }
 
             return true;

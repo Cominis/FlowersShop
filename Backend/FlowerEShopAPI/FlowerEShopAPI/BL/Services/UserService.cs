@@ -16,7 +16,7 @@ namespace FlowerEShopAPI.BL.Services
 
         public async Task<User> CreateUser(string name, string email, string surname, string userName, string password)
         {
-            await _validation.Value.ValidateUser(email, userName);
+            await _validation.Value.ValidateUser(email, userName, password);
 
             var createdUser = await _userRepository.Create(name, email, surname, userName, password);
 
@@ -24,7 +24,7 @@ namespace FlowerEShopAPI.BL.Services
         }
         public async Task<User> UpdateUser(string id, string name, string email, string surname, string userName, string password)
         {
-            await _validation.Value.ValidateUser(email, userName);
+            await _validation.Value.ValidateUser(email, userName, password);
             var updatedUser = await _userRepository.Update(id, name, email, surname, userName, password);
 
             return updatedUser;
@@ -37,9 +37,9 @@ namespace FlowerEShopAPI.BL.Services
             return user;
         }
 
-        public async Task<User> GetUserByUserName(string userName)
+        public async Task<User> GetUserByEmail(string email)
         {
-            var user = await _userRepository.FindByUsername(userName);
+            var user = await _userRepository.FindByEmail(email);
 
             return user;
         }

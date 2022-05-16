@@ -25,16 +25,16 @@ namespace FlowerEShopAPI.BL.Controllers
         [HttpPost]
         public async Task<IActionResult> login(UserLogin _userData)
         {
-            if (_userData != null && _userData.UserName != null && _userData.Password != null)
+            if (_userData != null && _userData.Email != null && _userData.Password != null)
             {
-                var user = await GetUser(_userData.UserName, _userData.Password);
+                var user = await GetUser(_userData.Email, _userData.Password);
 
                 if (user != null)
                 {
                     //create claims details based on the user information
                     var claims = new[] {
                         new Claim("UserId", user.Id.ToString()),
-                        new Claim("UserName", user.UserName),
+                        new Claim("Email", user.Email),
                     };
 
                     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -59,9 +59,9 @@ namespace FlowerEShopAPI.BL.Controllers
             }
         }
 
-        private async Task<User?> GetUser(string userName, string password)
+        private async Task<User?> GetUser(string email, string password)
         {
-            return await _userService.GetUserByUserName(userName);
+            return await _userService.GetUserByEmail(email);
         }
     }
 }
