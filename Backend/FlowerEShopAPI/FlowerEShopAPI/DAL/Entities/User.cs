@@ -23,7 +23,6 @@ namespace FlowerEShopAPI.DAL.Entities
         [Required]
         public string UserName { get; set; }
         [Required]
-        [StringLength(50)]
         [JsonIgnore]
         public string Password { get; set; }
 
