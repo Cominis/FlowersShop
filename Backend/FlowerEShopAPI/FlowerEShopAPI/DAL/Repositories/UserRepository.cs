@@ -14,7 +14,8 @@ namespace FlowerEShopAPI.DAL.Repositories
 
         public async Task<User> Create(string name, string email, string surname, string userName, string password)
         {
-            var user = new User { Name = name, Email = email, Surname = surname, UserName = userName, Password = password };
+            var hashPassword = BCrypt.Net.BCrypt.HashPassword(password);
+            var user = new User { Name = name, Email = email, Surname = surname, UserName = userName, Password = hashPassword };
 
             _context.User.Add(user);
             await _context.SaveChangesAsync();
@@ -30,7 +31,7 @@ namespace FlowerEShopAPI.DAL.Repositories
             user.Surname = surname;
             user.UserName = userName;
             user.Email = email;
-            user.Password = password;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(password);
 
             await _context.SaveChangesAsync();
 
