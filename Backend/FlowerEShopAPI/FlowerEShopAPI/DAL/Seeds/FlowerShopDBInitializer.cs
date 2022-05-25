@@ -8,6 +8,8 @@ namespace FlowerEShopAPI.DAL.Seeds
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
+            var timeStamp = BitConverter.GetBytes(DateTime.Now.Ticks);
+
             var userIds = new string[]{"f70f7a45-8539-4082-a181-9705c2b5c505",
                                         "d74cfad8-b077-44f7-b29b-d8fa88164cfd",
                                         "c3940bfc-2107-4713-b8b6-a332cf0eb318",
@@ -31,7 +33,8 @@ namespace FlowerEShopAPI.DAL.Seeds
                     Email = LoremNET.Lorem.Email(),
                     Surname = LoremNET.Lorem.Words(1),
                     UserName = LoremNET.Lorem.Words(1),
-                    Password = LoremNET.Lorem.Words(1)
+                    Password = LoremNET.Lorem.Words(1),
+                    Timestamp = timeStamp
                 });
             }
 
@@ -63,6 +66,7 @@ namespace FlowerEShopAPI.DAL.Seeds
                     Description = LoremNET.Lorem.Paragraph(10, 5),
                     Location = LoremNET.Lorem.Sentence(1),
                     UserId = new Guid(userIds[shopIdx]),
+                    Timestamp = timeStamp
                 });
                 shopIdx++;
             }
@@ -190,7 +194,8 @@ namespace FlowerEShopAPI.DAL.Seeds
                         Status = LoremNET.Lorem.Enum<StatusEnum>(),
                         Price = (decimal)Convert.ToDouble(LoremNET.Lorem.Integer(0, 100)),
                         Quantity = LoremNET.Lorem.Integer(0, 100),
-                        ShopId = new Guid(shopId)
+                        ShopId = new Guid(shopId),
+                        Timestamp = timeStamp
                     });
                     productIdx++;
                 }
@@ -263,6 +268,7 @@ namespace FlowerEShopAPI.DAL.Seeds
                     ProductId = new Guid(LoremNET.Lorem.Random(productIds)),
                     UserId = new Guid(LoremNET.Lorem.Random(userIds)),
                     Quantity = LoremNET.Lorem.Integer(1, 10),
+                    Timestamp = timeStamp
                 });
 
             }

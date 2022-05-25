@@ -28,7 +28,14 @@ namespace FlowerEShopAPI.DAL.Repositories
             var shoppingCart = _context.ShoppingCart.SingleOrDefault(b => b.Id.ToString() == id);
 
             _context.ShoppingCart.Remove(shoppingCart);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw new DbUpdateConcurrencyException("Already modified. Try again");
+            }
 
             return id;
         }

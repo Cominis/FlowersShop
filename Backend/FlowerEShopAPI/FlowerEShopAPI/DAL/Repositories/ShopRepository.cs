@@ -35,7 +35,14 @@ namespace FlowerEShopAPI.DAL.Repositories
             shop.Location = _helpers.Value.IsStringEmty(location) ? shop.Location : location;
             shop.UpdatedAt = DateTime.Now;
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw new DbUpdateConcurrencyException("Already modified. Try again");
+            }
 
             var updatedShop = _context.Shops.SingleOrDefault(b => b.Id.ToString() == id);
 
@@ -48,7 +55,14 @@ namespace FlowerEShopAPI.DAL.Repositories
 
             _context.Shops.Remove(shop);
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw new DbUpdateConcurrencyException("Already modified. Try again");
+            }
 
             return id;
         }
