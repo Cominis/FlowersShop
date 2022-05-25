@@ -18,6 +18,7 @@ namespace FlowerEShopAPI.DAL.Repositories
             var user = new User { Name = name, Email = email, Surname = surname, UserName = userName, Password = hashPassword };
 
             _context.User.Add(user);
+
             await _context.SaveChangesAsync();
 
             return user;
@@ -31,10 +32,15 @@ namespace FlowerEShopAPI.DAL.Repositories
             user.Surname = surname;
             user.UserName = userName;
             user.Email = email;
-            user.Password = BCrypt.Net.BCrypt.HashPassword(password);
 
-            await _context.SaveChangesAsync();
-
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw new DbUpdateConcurrencyException("Already modified. Try again");
+            }
             return user;
         }
 
@@ -64,7 +70,15 @@ namespace FlowerEShopAPI.DAL.Repositories
             var user = _context.User.SingleOrDefault(u => u.Id.ToString() == id);
 
             _context.User.Remove(user);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw new DbUpdateConcurrencyException("Already modified. Try again");
+            }
 
             return id;
         }

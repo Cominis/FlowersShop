@@ -41,7 +41,14 @@ namespace FlowerEShopAPI.DAL.Repositories
             product.SubCategory = _helpers.Value.IsStringEmty(subCategory) ? product.SubCategory : subCategory;
             product.UpdatedAt = DateTime.Now;
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw new DbUpdateConcurrencyException("Already modified. Try again");
+            }
 
             return product;
         }
@@ -52,7 +59,14 @@ namespace FlowerEShopAPI.DAL.Repositories
 
             _context.Products.Remove(product);
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                throw new DbUpdateConcurrencyException("Already modified. Try again");
+            }
 
             return id;
         }
