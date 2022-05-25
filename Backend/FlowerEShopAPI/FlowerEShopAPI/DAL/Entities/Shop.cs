@@ -24,7 +24,6 @@ namespace FlowerEShopAPI.DAL.Entities
 
         public virtual List<Product> Products { get; set; } = new List<Product>();
 
-
         [ForeignKey("UserId")]
         public virtual User? User { get; set; }
     }
