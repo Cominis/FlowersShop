@@ -18,7 +18,6 @@ namespace FlowerEShopAPI.DAL.Repositories
             var user = new User { Name = name, Email = email, Surname = surname, UserName = userName, Password = hashPassword };
 
             _context.User.Add(user);
-
             await _context.SaveChangesAsync();
 
             return user;
