@@ -12,15 +12,14 @@ namespace FlowerEShopAPI.BL.Controllers
     public class UsersController : ControllerBase, IUserController
     {
         private readonly IUserService _userService;
-        private readonly ILogsService _logsService;
-        public UsersController(IUserService userService, ILogsService logsService)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
-            _logsService = logsService;
         }
 
         // GET: api/Users/5
         [HttpGet("{id}")]
+        [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> Get(string id)
         {
             var user = await _userService.GetUserById(id);
@@ -30,6 +29,7 @@ namespace FlowerEShopAPI.BL.Controllers
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> Post([FromBody] UserCred userCred)
         {
             var createdUser = await _userService.CreateUser(userCred.Name, userCred.Email, userCred.Surname, userCred.Username, userCred.Password);
@@ -40,12 +40,11 @@ namespace FlowerEShopAPI.BL.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [AuthorizeAttribute]
         [HttpPut("{id}")]
+        [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> Put([FromBody] UserCred userCred)
         {
             var user = (User)HttpContext.Items["User"];
-            await _logsService.LogAction(user.UserName, GetType().Name, "Update", "Updating user");
             var updatedUser = await _userService.UpdateUser(user.Id.ToString(), userCred.Name, userCred.Email, userCred.Surname, userCred.Username, userCred.Password);
-            await _logsService.LogAction(user.UserName, GetType().Name, "Update", "User with id: " + updatedUser.Id + "updated");
             return ReturnResponse(updatedUser);
         }
 

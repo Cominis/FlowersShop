@@ -37,6 +37,7 @@ namespace FlowerEShopAPI.BL.Middlewares
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
+                    RequireExpirationTime = bool.Parse(_configuration["Jwt:RequireExpirationTime"]),
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = key,
                     ValidateIssuer = false,
