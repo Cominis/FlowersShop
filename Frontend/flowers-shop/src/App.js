@@ -5,13 +5,14 @@ import Cart from "./cart/Cart";
 import SignIn from "./login/SignIn";
 import SignUp from "./login/SignUp";
 import TestApi from "./TestApi";
+import ShopItems from "./shop-items/ShopItems";
 
 const App = () => {
   return (
     <Container>
       {/* <TestApi /> */}
       <Header />
-      <Homepage />
+          <Cart />
     </Container>
   );
 };
