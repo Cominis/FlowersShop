@@ -16,16 +16,11 @@ const Shop = (props) => {
 
     useEffect(() => {
         const fetch = async () => {
-            // eslint-disable-next-line react-hooks/rules-of-hooks
-
             try {
                 console.log(query);
                 const response = await axios.get(
                     `Search/${query}/${priceStart}/${priceEnd}/${statusSearch}`
                 );
-
-                console.log(response);
-
                 setShops(response.data.response);
             } catch (err) {
                 alert(
@@ -43,7 +38,7 @@ const Shop = (props) => {
             <Breadcrumb routes={routes} />
             <Grid container columnSpacing={20}>
                 <Grid item>
-                    <ShopsContainer shops={shops}/>
+                    <ShopsContainer shops={shops} useOpened = {[opened,setOpened]}/>
                 </Grid>
                 <Grid item>
                     <FlowersContainer shop={shops[0]} />
