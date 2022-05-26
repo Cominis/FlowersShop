@@ -6,13 +6,13 @@ import FlowersContainer from "./flowers/FlowersContainer";
 import ShopsContainer from "./shops/ShopsContainer";
 import axios from "../net/axios";
 import { useParams } from "react-router-dom";
+import * as React from "react";
 
 const Shop = (props) => {
     const routes = ["Flower E-shop", "SHOPS"];
     const [shops, setShops] = useState([]);
     const { query, priceStart, priceEnd, statusSearch } = useParams();
-
-    console.log(query, priceStart, priceEnd, statusSearch);
+    const [opened,setOpened] = React.useState(false);
 
     useEffect(() => {
         const fetch = async () => {
@@ -43,11 +43,11 @@ const Shop = (props) => {
             <Breadcrumb routes={routes} />
             <Grid container columnSpacing={20}>
                 <Grid item>
-                    <ShopsContainer shops={shops} />
+                    <ShopsContainer shops={shops}/>
                 </Grid>
                 <Grid item>
                     <FlowersContainer shop={shops[0]} />
-                </Grid>
+                </Grid> 
             </Grid>
         </Box>
     );

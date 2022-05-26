@@ -28,7 +28,7 @@ namespace FlowerEShopAPI.BL.Services
                 shopList.Any(shop => shop.Products.Any(product => regex.IsMatch(product.Title)) || shop.Products.Any(product => regex.IsMatch(product.Category)) || shop.Products.Any(product => regex.IsMatch(product.SubCategory))) ?
                 shopList.Where((shop => shop.Products.Any(product => regex.IsMatch(product.Title)) || shop.Products.Any(product => regex.IsMatch(product.Category)) || shop.Products.Any(product => regex.IsMatch(product.SubCategory)))).ToList() :
                 shopList.ToList() :
-                shopList.ToList();
+                new List<Shop>();
         }
     }
 }
