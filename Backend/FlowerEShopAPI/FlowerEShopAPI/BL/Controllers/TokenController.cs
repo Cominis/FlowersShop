@@ -23,6 +23,7 @@ namespace FlowerEShopAPI.BL.Controllers
         }
 
         [HttpPost]
+        [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> login(UserLogin _userData)
         {
             if (_userData != null && _userData.Email != null && _userData.Password != null)

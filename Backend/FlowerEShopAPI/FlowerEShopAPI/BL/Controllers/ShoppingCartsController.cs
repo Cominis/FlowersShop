@@ -21,6 +21,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         // GET: api/ShoppingCarts/5
         [HttpGet("{id}")]
+        [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> Get(string id)
         {
             var shoppingCart = await _shoppingCartService.GetShoppingCart(id);
@@ -31,6 +32,7 @@ namespace FlowerEShopAPI.BL.Controllers
         // POST: api/ShoppingCarts
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> Post([FromBody] ShoppingCartBody shoppingCartBody)
         {
             var shoppingCart = await _shoppingCartService.AddToCart(shoppingCartBody.ProductId, shoppingCartBody.Quantity, shoppingCartBody.UserId);
@@ -40,6 +42,7 @@ namespace FlowerEShopAPI.BL.Controllers
 
         // DELETE: api/ShoppingCarts/5
         [HttpDelete("{id}")]
+        [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> Delete(string id, [FromBody] ShoppingCartBody shoppingCartBody)
         {
             await _shoppingCartService.RemoveFromCart(id, shoppingCartBody.UserId);
