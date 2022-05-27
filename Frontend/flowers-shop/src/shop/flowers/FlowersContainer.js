@@ -2,7 +2,8 @@ import { IconButton, ListSubheader } from "@mui/material";
 import { withStyles } from "@material-ui/core/styles";
 import { ImageList, ImageListItem, ImageListItemBar } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
-
+import PopUpFlowers from "./PopUpFlowers";
+import * as React from 'react';
 const styles = (theme) => ({
     root: {
         display: "flex",
@@ -35,6 +36,7 @@ const imgsNames = ["btulpe.jpg", "mtulpe.jpg", "otulpe.jpg", "rtulpe.jpg"];
 
 const FlowersContainer = (props) => {
     const { classes } = props;
+    const [product, setProduct] = React.useState ();
     return (
         props.shop && (
             <>
@@ -104,13 +106,17 @@ const FlowersContainer = (props) => {
                                                         ? "green"
                                                         : "red"
                                             }}
+                                            onClick = { () => setProduct(tile)}
                                         >
                                             Info
                                         </IconButton>
+                                        
                                     }
                                 />
-                            </ImageListItem>
+                               
+                            </ImageListItem>                   
                         ))}
+                         { product && <PopUpFlowers sx = {{backgroundColor : "white"}} useOpen = {[product,setProduct]}  />}
                     </ImageList>
                 </div>
             </>

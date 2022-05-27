@@ -13,7 +13,6 @@ const Shop = (props) => {
     const [shops, setShops] = useState([]);
     const { query, priceStart, priceEnd, statusSearch } = useParams();
     const [opened, setOpened] = React.useState();
-
     useEffect(() => {
         const fetch = async () => {
             try {
@@ -21,7 +20,10 @@ const Shop = (props) => {
                 const response = await axios.get(
                     `Search/${query}/${priceStart}/${priceEnd}/${statusSearch}`
                 );
-                setShops(response.data.response);
+                const shops = response.data.response;
+                const status = statusSearch === "Available" ? [0] : statusSearch === "OutOfStock" ? [1] : [1,0];
+                shops.forEach((shop) => shop.products = shop.products.filter(product => status.includes(product.status) && (product.price >= Number(priceStart) || Number(priceStart) === 0)  &&(Number(priceEnd) === 0 || product.price <= Number(priceEnd)) ));
+                setShops(shops);
             } catch (err) {
                 alert(
                     err.response?.data?.Error?.Message ||
