@@ -7,6 +7,7 @@ import SignIn from "./login/SignIn";
 import SignUp from "./login/SignUp";
 import TestApi from "./TestApi";
 import PersonalDataPage from "./personalDataPage/PersonalDataPage";
+import MyShopPage from "./personalDataPage/MyShopPage";
 
 const App = () => {
     return (
@@ -19,6 +20,7 @@ const App = () => {
                     <Route path="/signIn" element={<SignIn />} />
                     <Route path="/signUp" element={<SignUp />} />
                     <Route path="/user" element={<PersonalDataPage />} />
+                    <Route path="/myShop" element={<MyShopPage />} />
                     {/* <TestApi /> */}
                 </Routes>
             </Container>
