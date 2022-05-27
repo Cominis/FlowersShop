@@ -1,4 +1,5 @@
 ﻿using FlowerEShopAPI.BL.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
 
 namespace FlowerEShopAPI.BL.Exceptions
@@ -34,6 +35,17 @@ namespace FlowerEShopAPI.BL.Exceptions
                     Error = new ApiError()
                     {
                         StatusCode = context.Response.StatusCode = 400,
+                        Message = exception.Message
+                    }
+                }.ToString());
+            }
+            else if (exception.GetType().IsAssignableFrom(typeof(DbUpdateConcurrencyException)))
+            {
+                return context.Response.WriteAsync(new ErrorDetails()
+                {
+                    Error = new ApiError()
+                    {
+                        StatusCode = context.Response.StatusCode = 409,
                         Message = exception.Message
                     }
                 }.ToString());

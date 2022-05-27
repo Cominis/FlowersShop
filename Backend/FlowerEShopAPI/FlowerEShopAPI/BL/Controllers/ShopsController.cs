@@ -13,22 +13,20 @@ namespace FlowerEShopAPI.BL.Controllers
     public class ShopsController : ControllerBase, IShopController
     {
         private readonly IShopService _shopService;
-        private readonly ILogsService _logsService;
 
-        public ShopsController(IShopService shopService, ILogsService logsService)
+        public ShopsController(IShopService shopService)
         {
             _shopService = shopService;
-            _logsService = logsService;
+
         }
 
         // GET: api/Shops/5
         [HttpGet("{id}")]
+        [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> Get(string id)
         {
             var user = (User)HttpContext.Items["User"];
-            await _logsService.LogAction(user?.UserName ?? "Guest", GetType().Name, "Get", "Finding shop");
             var getShop = await _shopService.GetShop(id);
-            await _logsService.LogAction(user?.UserName ?? "Guest", GetType().Name, "Get", "Shop found");
             return ReturnResponse(getShop);
         }
 
@@ -36,12 +34,11 @@ namespace FlowerEShopAPI.BL.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [AuthorizeAttribute]
         [HttpPut("{id}")]
+        [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> Put(string id, [FromBody] ShopBody body)
         {
             var user = (User)HttpContext.Items["User"];
-            await _logsService.LogAction(user.UserName, GetType().Name, "Put", "Updating shop");
             var updatedShop = await _shopService.UpdateShop(id, body.Name, body.Description, body.Location, user.Id.ToString());
-            await _logsService.LogAction(user.UserName, GetType().Name, "Put", "Shop updated");
             return ReturnResponse(updatedShop);
         }
 
@@ -49,24 +46,22 @@ namespace FlowerEShopAPI.BL.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [AuthorizeAttribute]
         [HttpPost]
+        [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> Post([FromBody] ShopBody body)
         {
             var user = (User)HttpContext.Items["User"];
-            await _logsService.LogAction(user.UserName, GetType().Name, "Create", "Creating shop");
             var createdShop = await _shopService.CreateShop(body.Name, body.Description, body.Location, user.Id.ToString());
-            await _logsService.LogAction(user.UserName, GetType().Name, "Create", "Shop created");
             return ReturnResponse(createdShop);
         }
 
         // DELETE: api/Shops/5
         [AuthorizeAttribute]
         [HttpDelete("{id}")]
+        [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> Delete(string id)
         {
             var user = (User)HttpContext.Items["User"];
-            await _logsService.LogAction(user.UserName, GetType().Name, "Delete", "Deleting shop with id: " + id);
             await _shopService.DeleteShop(id, user.Id.ToString());
-            await _logsService.LogAction(user.UserName, GetType().Name, "Delete", "Shop with id: " + id + "deleted");
             return ReturnResponse("Shop was deleted successfully");
         }
 

@@ -74,7 +74,6 @@ namespace FlowerEShopAPI
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped<ILogsService, LogsService>();
 
-
             services.AddCors(options =>
             {
                 options.AddPolicy(name: MyAllowSpecificOrigins,

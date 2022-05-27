@@ -9,20 +9,20 @@ import LoginUser from "./LoginUser";
 import Hamburger from "./Hamburger";
 
 const Header = () => {
-  return (
-    <AppBar position="absolute" sx={{ bgcolor: "green" }}>
-      <Container maxWidth={false}>
-        <Toolbar disableGutters>
-          <Logo />
-          <Box sx={{ flexGrow: 1 }} />
-          <SearchBar />
-          <Box sx={{ flexGrow: 1 }} />
-          <Hamburger />
-          <LoginUser />
-        </Toolbar>
-      </Container>
-    </AppBar>
-  );
+    return (
+        <AppBar position="absolute" sx={{ bgcolor: "green" }}>
+            <Container maxWidth={false}>
+                <Toolbar disableGutters>
+                    <Logo />
+                    <Box sx={{ flexGrow: 1 }} />
+                    <SearchBar />
+                    <Box sx={{ flexGrow: 1 }} />
+                    <Hamburger />
+                    <LoginUser />
+                </Toolbar>
+            </Container>
+        </AppBar>
+    );
 };
 
 export default Header;

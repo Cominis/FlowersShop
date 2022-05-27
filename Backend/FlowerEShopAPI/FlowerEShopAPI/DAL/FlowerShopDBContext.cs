@@ -74,12 +74,6 @@ namespace FlowerEShopAPI.DAL
             modelBuilder.Entity<Shop>().HasQueryFilter(b => b.DeletedAt == null);
             modelBuilder.Entity<Product>().HasQueryFilter(b => b.DeletedAt == null);
             modelBuilder.Entity<ShoppingCart>().HasQueryFilter(b => b.DeletedAt == null);
-            modelBuilder.Entity<User>().HasAlternateKey(table => new
-            {
-                table.UserName,
-                table.Password,
-                table.Email
-            });
 
             modelBuilder.Entity<Shop>()
             .HasOne(b => b.User)

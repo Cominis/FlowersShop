@@ -23,13 +23,14 @@ namespace FlowerEShopAPI.BL.Controllers
         }
 
         [HttpPost]
+        [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> login(UserLogin _userData)
         {
             if (_userData != null && _userData.Email != null && _userData.Password != null)
             {
-                var user = await GetUser(_userData.Email, _userData.Password);
+                var user = await GetUser(_userData.Email);
 
-                if (user != null)
+                if (user != null && BCrypt.Net.BCrypt.Verify(_userData.Password, user.Password))
                 {
                     //create claims details based on the user information
                     var claims = new[] {
@@ -59,7 +60,7 @@ namespace FlowerEShopAPI.BL.Controllers
             }
         }
 
-        private async Task<User?> GetUser(string email, string password)
+        private async Task<User?> GetUser(string email)
         {
             return await _userService.GetUserByEmail(email);
         }
