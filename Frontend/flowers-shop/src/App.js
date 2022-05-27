@@ -6,6 +6,7 @@ import Cart from "./cart/Cart";
 import SignIn from "./login/SignIn";
 import SignUp from "./login/SignUp";
 import TestApi from "./TestApi";
+import ShopItems from "./shop-items/ShopItems";
 import PersonalDataPage from "./personalDataPage/PersonalDataPage";
 import MyShopPage from "./personalDataPage/MyShopPage";
 

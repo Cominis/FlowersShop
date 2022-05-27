@@ -7,42 +7,62 @@ import Path from "./Path";
 import Checkout from "./Checkout";
 
 const priceData = { products_price: 100, delivery_price: 10, total_price: 110 }
+const deliveryPrice = 5;
 
 const Cart = () => {
-    const [items, setItems] = useState([])
+    const [cart, setCart] = useState([])
 
     useEffect(() => {
-        fetch('http://localhost:8000/items')
+        fetch('http://localhost:8000/cart')
             .then(res => res.json())
-            .then(data => setItems(data))
+            .then(data => setCart(data))
     }, [])
 
     const handlDelete = async (id) => {
-        await fetch('http://localhost:8000/items/' + id, {
+        await fetch('http://localhost:8000/cart/' + id, {
             method: 'DELETE'
         })
 
-        const newItems = items.filter(item => item.id !== id)
-        setItems(newItems)
+        const newItems = cart.filter(item => item.id !== id)
+        setCart(newItems)
     }
 
     const handleCountChange = async (id, counted) => {
-        const updatedItem = items.filter(item => item.id === id)[0]
+        const updatedItem = cart.filter(item => item.id === id)[0]
 
-        await fetch('http://localhost:8000/items/' + id, {
+        await fetch('http://localhost:8000/cart/' + id, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 "id": updatedItem.id,
-                "item": updatedItem.item,
-                "item_url": updatedItem.item_url,
-                "shop_name": updatedItem.shop_name,
-                "additional_info": updatedItem.additional_info,
-                "unit_price": updatedItem.unit_price,
-                "units": counted
+                "userId": updatedItem.userId,
+                "quantity": counted
             })
         })
     }
+
+    const [shops, setShops] = useState([])
+
+    useEffect(() => {
+        fetch('http://localhost:8002/shop')
+            .then(res => res.json())
+            .then(data => setShops(data))
+    }, [])
+
+    const [items, setItems] = useState([])
+    var cartItems = [];
+    var price = 0;
+
+    useEffect(() => {
+        fetch('http://localhost:8001/products')
+            .then(res => res.json())
+            .then(data => setItems(data))
+    }, [])
+
+    cart.map(item => cartItems.push(items.find(x => x.id === item.id)));
+
+    cartItems.map(item => price += items.find(x => x.id === item.id).price * cart.find(x => x.id === item.id).quantity);
+
     return (
         <Box justifyContent="center" alignItems="center">
             <Grid>
@@ -60,15 +80,15 @@ const Cart = () => {
                         flexDirection: 'column',
                     }}
                 >
-                    <CardList data={items} handleDelete={handlDelete} handleCountChange={handleCountChange} />
+                    <CardList cartItems={cartItems} shops={shops} data={cart} handleDelete={handlDelete} handleCountChange={handleCountChange} />
                 </Box>
                 <Box component="div" sx={{
                     display: "flex",
                     flexDirection: 'column',
                     marginLeft: 'auto',
-                    marginTop: 10,
+                    marginTop: 4,
                 }}>
-                    <Checkout products_price={priceData.products_price} delivery_price={priceData.delivery_price} total_price={priceData.total_price} />
+                    <Checkout products_price={price} delivery_price={deliveryPrice} total_price={price + deliveryPrice} />
                 </Box>
             </Grid>
         </Box>

@@ -6,33 +6,29 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from '@material-ui/core';
 
 
-const buttonStyle = makeStyles({
+const styles = makeStyles({
     btn: {
         color: 'white',
         backgroundColor: 'rgb(0,150,0)',
         '&:hover': {
             backgroundColor: 'rgb(0,110,0)'
         }
+    },
+    checkout: {
+        display: 'flex',
+        position: 'relative',
+        width: 400,
+        height: 180,
     }
 })
 
 const Checkout = (props) => {
-    const classes = buttonStyle()
+    const classes = styles()
 
     return (
         <Container>
-            <Box
-                sx={{
-                    mb: 3,
-                    mt: 4,
-                    display: 'flex',
-                    position: 'relative',
-                    width: 400,
-                    height: 180,
-                    boxShadow: '0px 0px 5px 1px rgba(0, 0, 0, 0.5)',
-                    borderRadius: '5px',
-                }}
-            >
+            <Typography borderTop={1} borderColor="rgb(0, 0, 0, 0.2)" />
+            <Box className={classes.checkout}>
                 <Box
                     sx={{
                         display: 'flex',
@@ -44,6 +40,7 @@ const Checkout = (props) => {
                     <Typography component="div">
                         Products price
                     </Typography>
+                   
                     <Typography component="div">
                         Delivery
                     </Typography>
@@ -71,12 +68,14 @@ const Checkout = (props) => {
                     </Typography>
                 </Box>
             </Box>
+            <Typography borderTop={1} borderColor="rgb(0, 0, 0, 0.2)" />
             <Box component="div"
                 sx={{
                     display: "flex",
                     flexDirection: 'column',
                     width: 170,
                     marginLeft: 'auto',
+                    mt: 2
                 }}
             >
                 <Button className={classes.btn} type="submit" variant="contained">

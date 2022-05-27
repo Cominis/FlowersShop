@@ -1,0 +1,100 @@
+{
+  "products": [
+    {
+      "id": "PROD1",
+      "title": "Tulip",
+      "item_url": "https://dy1yydbfzm05w.cloudfront.net/media/catalog/product/cache/39b52c4cabb46819553175347e38b212/t/u/tulips-dutch-webready-assets-persimmon-product-1000px-01_1.jpg",
+      "description": "some additional info...",
+      "category": "bouquet",
+      "subcategory": "tulip",
+      "status": "status1",
+      "price": 3.1,
+      "quantity": 100,
+      "shopId": "SHOP1"
+    },
+    {
+      "id": "PROD2",
+      "title": "Rose",
+      "item_url": "https://www.collinsdictionary.com/images/full/rose_277351964.jpg",
+      "description": "some additional info...",
+      "category": "flower",
+      "subcategory": "rose",
+      "status": "status1",
+      "price": 3.1,
+      "quantity": 100,
+      "shopId": "SHOP1"
+    },
+    {
+      "id": "PROD3",
+      "title": "Sunflower",
+      "item_url": "https://www.shelf-edge.co.uk/wp-content/uploads/2019/02/Artificial-75cm-Giant-Single-Sunflower.jpg",
+      "description": "some additional info...",
+      "category": "flower",
+      "subcategory": "sunflower",
+      "status": "status1",
+      "price": 3.1,
+      "quantity": 100,
+      "shopId": "SHOP1"
+    },
+    {
+      "id": "PROD4",
+      "title": "Marigold",
+      "item_url": "https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX3269990.jpg",
+      "description": "some additional info...",
+      "category": "flower",
+      "subcategory": "marigold",
+      "status": "status1",
+      "price": 3.1,
+      "quantity": 10,
+      "shopId": "SHOP1"
+    },
+    {
+      "id": "PROD5",
+      "title": "Orchids",
+      "item_url": "https://images.thdstatic.com/productImages/478c3fad-00ce-4e51-8f7d-2405e7f0a8c7/svn/just-add-ice-indoor-plants-215585-64_400.jpg",
+      "description": "some additional info...",
+      "category": "flower",
+      "subcategory": "orchid",
+      "status": "status1",
+      "price": 3.1,
+      "quantity": 10,
+      "shopId": "SHOP1"
+    },
+    {
+      "id": "PROD6",
+      "title": "Peonies bouquet",
+      "item_url": "https://www.wineflowers.com/images/bouquet_peonie_rose.jpg",
+      "description": "some additional info...",
+      "category": "flower",
+      "subcategory": "peonies",
+      "status": "status1",
+      "price": 3.1,
+      "quantity": 10,
+      "shopId": "SHOP1"
+    },
+    {
+      "id": "PROD7",
+      "title": "Dahlias",
+      "item_url": "https://image.posterlounge.com/images/l/1898260.jpg",
+      "description": "some additional info...",
+      "category": "flower",
+      "subcategory": "dahlia",
+      "status": "status1",
+      "price": 3.1,
+      "quantity": 10,
+      "shopId": "SHOP1"
+    },
+    {
+      "id": "PROD8",
+      "title": "Dandelion",
+      "item_url": "https://static.turbosquid.com/Preview/001230/852/6C/3D-realistic-dandelion-flower_600.jpg",
+      "description": "some additional info...",
+      "category": "flower",
+      "subcategory": "dandelion",
+      "status": "status1",
+      "price": 3.1,
+      "quantity": 10,
+      "shopId": "SHOP1"
+    }
+  ]
+}
