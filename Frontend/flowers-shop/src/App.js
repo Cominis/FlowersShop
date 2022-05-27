@@ -50,8 +50,8 @@ const App = () => {
                         <Route path="/signUp" element={<SignUp />} />
                         <Route path="/user" element={<PersonalDataPage />} />
                         <Route path="/myShop" element={<MyShopPage />} />
-                        {/* <TestApi /> */}
                     </Routes>
+                    {/* <TestApi /> */}
                 </GlobalStateProvider>
             </Container>
         </Router>

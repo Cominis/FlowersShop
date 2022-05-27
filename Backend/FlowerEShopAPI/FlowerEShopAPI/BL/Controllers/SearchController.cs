@@ -16,11 +16,10 @@ namespace FlowerEShopAPI.BL.Controllers
             _searchService = searchService;
         }
 
-        [HttpGet]
+        [HttpPost]
         [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> Get([FromBody] SearchBody body)
         {
-            var user = (User)HttpContext.Items["User"];
             var search = await _searchService.SearchShops(body.SearchQuery, body.PriceStart, body.PriceEnd, body.Status);
             return ReturnResponse(search);
         }

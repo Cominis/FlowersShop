@@ -50,8 +50,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 const SearchBar = () => {
     const navigate = useNavigate();
 
-    const PATH = "Search";
-
     const [results, setResults] = React.useState();
     const [error, setError] = React.useState(null);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -59,9 +57,15 @@ const SearchBar = () => {
 
     const getSearchResults = async () => {
         setIsLoading(true);
+
+        const payload = {
+            SearchQuery: query
+        };
+
         try {
-            await new Promise((resolve) => setTimeout(() => {}, 3000));
-            const response = await axios.get(PATH, { searchQuery: query });
+            console.log(query);
+            const response = await axios.post("Search", payload);
+
             console.log(response);
             setResults(response.data.response);
             navigate(`/myShop`);
