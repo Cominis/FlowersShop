@@ -115,5 +115,15 @@ namespace FlowerEShopAPI.BL.Services.Helpers
                 || (status == "All" && priceStart > 0 && priceEnd > 0 && shop.Products.Any(product => product.Price >= priceStart) && shop.Products.Any(product => product.Price <= priceEnd))
                 || (status == "All" && priceStart == 0 && priceEnd == 0);
         }
+
+        public List<Product> ValidateSorting(List<Product> products, string item)
+        {
+            return item switch
+            {
+                "category" => products.OrderByDescending(product => product.Category).ToList(),
+                "title" => products.OrderByDescending(product => product.Title).ToList(),
+                _ => products,
+            };
+        }
     }
 }
