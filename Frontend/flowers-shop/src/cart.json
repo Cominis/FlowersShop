@@ -1,0 +1,44 @@
+{
+  "cart": [
+    {
+      "id": "PROD2",
+      "userId": "USER2",
+      "quantity": 20
+    },
+    {
+      "id": "PROD3",
+      "userId": "USER1",
+      "quantity": 4
+    },
+    {
+      "id": "PROD4",
+      "userId": "USER1",
+      "quantity": 6
+    },
+    {
+      "id": "PROD5",
+      "userId": "USER1",
+      "quantity": 8
+    },
+    {
+      "id": "PROD6",
+      "userId": "USER1",
+      "quantity": 8
+    },
+    {
+      "id": "PROD7",
+      "userId": "USER1",
+      "quantity": 8
+    },
+    {
+      "id": "PROD8",
+      "userId": "USER1",
+      "quantity": 4
+    },
+    {
+      "id": "PROD1",
+      "userId": "USER2",
+      "quantity": 3
+    }
+  ]
+}
