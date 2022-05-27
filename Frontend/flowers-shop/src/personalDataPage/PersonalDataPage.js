@@ -1,22 +1,9 @@
 import * as React from "react";
-import Breadcrumb from "./Breadcrumb";
 import SettingField from "./SettingField";
-import Header from "../header/Header";
-import Divider from "@mui/material/Divider";
-import { styled } from "@mui/material/styles";
-import MuiGrid from "@mui/material/Grid";
-import SettingList from "./SettingList";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-
-const Grid = styled(MuiGrid)(({ theme }) => ({
-    width: "100%",
-    ...theme.typography.body2,
-    '& [role="separator"]': {
-        margin: theme.spacing(0, 2)
-    }
-}));
+import PersonalData from "./PersonalData";
 
 const PersonalDataPage = (props) => {
     const [visible, setVisible] = React.useState(false);
@@ -39,44 +26,31 @@ const PersonalDataPage = (props) => {
         "joined date"
     ];
 
-    return (
+    const routes = ["Flower E-shop", "PROFILE"];
+
+    const pageInfo = (
         <>
-            <Breadcrumb routes={["Flower E-shop", "PROFILE"]} />
-
-            <Grid
-                container
-                direction="row"
-                alignItems="center"
-                justifyContent="left"
-                sx={{ paddingLeft: -10 }}
+            <IconButton
+                size="large"
+                aria-label="settings visibility"
+                aria-haspopup="true"
+                onClick={() => setVisible(!visible)}
+                color="inherit"
             >
-                <Grid item xs={3} sx={{ paddingTop: 10 }}>
-                    <SettingList />
-                </Grid>
-                <Divider orientation="vertical" flexItem />
-                <Grid item xs={6} sx={{ paddingLeft: 20 }}>
-                    <IconButton
-                        size="large"
-                        aria-label="settings visibility"
-                        aria-haspopup="true"
-                        onClick={() => setVisible(!visible)}
-                        color="inherit"
-                    >
-                        {visible ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                    </IconButton>
-
-                    <SettingField
-                        settings={keys.map((key, idx) => ({
-                            key,
-                            visible: key === "password" ? false : visible,
-                            value: values[idx],
-                            disabled: key === "joined"
-                        }))}
-                    />
-                </Grid>
-            </Grid>
+                {visible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+            </IconButton>
+            <SettingField
+                settings={keys.map((key, idx) => ({
+                    key,
+                    visible: key === "password" ? false : visible,
+                    value: values[idx],
+                    disabled: key === "joined"
+                }))}
+            />
         </>
     );
+
+    return <PersonalData pageInfo={pageInfo} routes={routes} />;
 };
 
 export default PersonalDataPage;
