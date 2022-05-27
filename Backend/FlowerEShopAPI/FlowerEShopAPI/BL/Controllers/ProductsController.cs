@@ -27,6 +27,14 @@ namespace FlowerEShopAPI.BL.Controllers
             return ReturnResponse(product);
         }
 
+        [TypeFilter(typeof(LogInterceptor))]
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromBody] AllProductsBody productBody)
+        {
+            var products = await _productService.GetAllProducts(productBody.ShopId, productBody.SortingItem);
+            return ReturnResponse(products);
+        }
+
         // PUT: api/Products/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [AuthorizeAttribute]
