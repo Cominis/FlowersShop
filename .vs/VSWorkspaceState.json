@@ -4,13 +4,8 @@
     "\\Frontend",
     "\\Frontend\\flowers-shop",
     "\\Frontend\\flowers-shop\\src",
-    "\\Frontend\\flowers-shop\\src\\cart",
-    "\\Frontend\\flowers-shop\\src\\header",
-    "\\Frontend\\flowers-shop\\src\\homepage",
-    "\\Frontend\\flowers-shop\\src\\images",
-    "\\Frontend\\flowers-shop\\src\\login",
     "\\Frontend\\flowers-shop\\src\\shop-items"
   ],
-  "SelectedNode": "\\Frontend\\flowers-shop\\src",
+  "SelectedNode": "\\Frontend\\flowers-shop\\src\\shop-items\\SortList.js",
   "PreviewInSolutionExplorer": false
 }
