@@ -59,7 +59,7 @@ const ItemList = (props) => {
                 </Paper>
             </Box>
 
-            <Box sx={{ width: '100%', position: 'flex', }}>
+            <Box sx={{ width: '100%', position: 'flex', mt: 30 }}>
                     <MobileStepper
                         steps={maxSteps}
                         position="static"

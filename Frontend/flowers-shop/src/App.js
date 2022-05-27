@@ -6,13 +6,14 @@ import SignIn from "./login/SignIn";
 import SignUp from "./login/SignUp";
 import TestApi from "./TestApi";
 import ShopItems from "./shop-items/ShopItems";
+import SortList from "./shop-items/SortList";
 
 const App = () => {
   return (
     <Container>
       {/* <TestApi /> */}
-      <Header />
-          <Cart />
+
+          <ShopItems />
     </Container>
   );
 };
