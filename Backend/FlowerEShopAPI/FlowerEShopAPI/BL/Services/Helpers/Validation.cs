@@ -56,7 +56,7 @@ namespace FlowerEShopAPI.BL.Services.Helpers
 
             var isValidShop = shop != null;
             var isValidTitle = (isUpdate && _helpers.Value.IsStringEmty(title) || isUpdate && shop.Products.Where(product => product.Title == title).Count() == 1) || (title != null && title.Length > 2 && nameRegex.IsMatch(title));
-            var isValidCategory = (isUpdate && _helpers.Value.IsStringEmty(category) || isUpdate && shop.Products.Where(product => product.Category == category).Count() == 1) || category != null || category.Length > 1;
+            var isValidCategory = (isUpdate && _helpers.Value.IsStringEmty(category) || isUpdate && shop.Products.Where(product => product.Category == category).Count() == 1) || category != null && category.Length > 1;
             var isValidStatus = (isUpdate && _helpers.Value.IsStringEmty(status)) || statuses.Contains(status);
             var isValidPrice = priceRegex.IsMatch(price.ToString()) || (isUpdate && price > 0 || isUpdate && shop.Products.Where(product => product.Price == price).Count() == 1);
             var isValidQuantity = (isUpdate && quantity > 0 || isUpdate && shop.Products.Where(product => product.Quantity == quantity).Count() == 1) || quantityRegex.IsMatch(quantity.ToString());
@@ -75,14 +75,15 @@ namespace FlowerEShopAPI.BL.Services.Helpers
             return true;
         }
 
-        public async Task<bool> ValidateUser(string email, string userName, string password)
+        public async Task<bool> ValidateUser(string email, string userName, string password, bool isUpdate)
         {
             var emailRegex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
             var passwordRegex = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$");
-            var users = await _userRepository.FindByUsername(userName);
+            var usersWithuserName = await _userRepository.FindByUsername(userName);
+            var userWithEmail = await _userRepository.FindByEmail(email);
 
-            var isValidUserName = _helpers.Value.IsStringEmty(userName) || users == null;
-            var isValidEmail = _helpers.Value.IsStringEmty(email) || emailRegex.IsMatch(email);
+            var isValidUserName = (isUpdate && _helpers.Value.IsStringEmty(userName)) || !_helpers.Value.IsStringEmty(userName) && usersWithuserName == null;
+            var isValidEmail = !_helpers.Value.IsStringEmty(email) && emailRegex.IsMatch(email) && userWithEmail == null;
             var isValidPassword = passwordRegex.IsMatch(password);
 
             bool[] validators = { isValidUserName, isValidEmail };
