@@ -12,7 +12,7 @@ const App = () => {
   return (
     <Container>
       {/* <TestApi /> */}
-
+          <Header />
           <ShopItems />
     </Container>
   );

@@ -1,19 +1,16 @@
 import * as React from 'react';
-import List from '@mui/material/List';
 import Item from "./Item";
 import Box from '@mui/material/Box';
 import { Button, Grid } from "@mui/material";
 import MobileStepper from '@mui/material/MobileStepper';
 import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
-import SwipeableViews from 'react-swipeable-views';
-import { autoPlay } from 'react-swipeable-views-utils';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+
+
 
 const ItemList = (props) => {
     const theme = useTheme();
@@ -29,15 +26,8 @@ const ItemList = (props) => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const handleStepChange = (step) => {
-        setActiveStep(step);
-    };
-
     const chunk = (arr, size) => arr.reduce((acc, e, i) => (i % size ? acc[acc.length - 1].push(e) : acc.push([e]), acc), []);
-
     const dataSliced = chunk(props.data, itemsPerPage);
-
-    const matches = useMediaQuery('(min-width:600px)');
 
     return (
         <Box sx={{ maxWidth: 1200, flexGrow: 1 }}>
