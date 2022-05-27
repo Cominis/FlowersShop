@@ -23,7 +23,6 @@ namespace FlowerEShopAPI.BL.Controllers
         [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> Get(string id)
         {
-            var user = (User)HttpContext.Items["User"];
             var product = await _productService.GetById(id);
             return ReturnResponse(product);
         }

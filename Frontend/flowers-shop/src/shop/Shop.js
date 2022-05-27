@@ -12,7 +12,7 @@ const Shop = (props) => {
     const routes = ["Flower E-shop", "SHOPS"];
     const [shops, setShops] = useState([]);
     const { query, priceStart, priceEnd, statusSearch } = useParams();
-    const [opened,setOpened] = React.useState(false);
+    const [opened, setOpened] = React.useState();
 
     useEffect(() => {
         const fetch = async () => {
@@ -36,13 +36,20 @@ const Shop = (props) => {
     return (
         <Box>
             <Breadcrumb routes={routes} />
-            <Grid container columnSpacing={20}>
+            <Grid container columnSpacing={20} margin={"0,0,0,0"}>
                 <Grid item>
-                    <ShopsContainer shops={shops} useOpened = {[opened,setOpened]}/>
+                    <ShopsContainer
+                        shops={shops}
+                        useOpened={[opened, setOpened]}
+                    />
                 </Grid>
                 <Grid item>
-                    <FlowersContainer shop={shops[0]} />
-                </Grid> 
+                    {opened && (
+                        <FlowersContainer
+                            shop={shops.find(({ id }) => id === opened)}
+                        />
+                    )}
+                </Grid>
             </Grid>
         </Box>
     );
