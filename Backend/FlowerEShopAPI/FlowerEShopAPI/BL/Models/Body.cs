@@ -43,6 +43,12 @@
             public string ShopId { get; set; }
         }
 
+        public class AllProductsBody
+        {
+            public string ShopId { get; set; }
+            public string SortingItem { get; set; } = "";
+        }
+
         public class SearchBody
         {
             public string SearchQuery { get; set; }

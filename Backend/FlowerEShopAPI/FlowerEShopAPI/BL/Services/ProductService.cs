@@ -82,7 +82,7 @@ namespace FlowerEShopAPI.BL.Services
             }
             return product;
         }
-        public async Task<List<Product>> GetAllProducts(string shopId)
+        public async Task<List<Product>> GetAllProducts(string shopId, string sortingItem)
         {
             var shop = await _shopRepository.FindOne(shopId);
 
@@ -91,7 +91,10 @@ namespace FlowerEShopAPI.BL.Services
                 throw new ArgumentException("Couldn't get products of shop which doesn't exist");
             }
 
-            var products = await _productRepository.FindAll(shopId);
+            var allProducts = await _productRepository.FindAll(shopId);
+
+            var products = _validation.Value.ValidateSorting(allProducts, sortingItem);
+
             return products;
         }
     }
