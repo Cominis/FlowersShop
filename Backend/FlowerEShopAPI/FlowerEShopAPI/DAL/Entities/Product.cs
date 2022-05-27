@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -7,6 +8,17 @@ namespace FlowerEShopAPI.DAL.Entities
 {
     public class Product : BaseEntity
     {
+        private ILazyLoader _lazyLoader { get; set; }
+        public Product()
+        {
+
+        }
+
+        public Product(ILazyLoader lazyLoader)
+        {
+            _lazyLoader = lazyLoader;
+        }
+
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public enum StatusEnum
         {
@@ -46,8 +58,20 @@ namespace FlowerEShopAPI.DAL.Entities
         public Guid ShopId { get; set; }
 
         [ForeignKey("ShopId")]
-        public virtual Shop? Shop { get; set; }
+        private Shop _Shop;
 
-        public virtual List<ShoppingCart> ShoppingCarts { get; set; } = new List<ShoppingCart>();
+        public virtual Shop Shop
+        {
+            get => _lazyLoader.Load(this, ref _Shop);
+            set => _Shop = value;
+        }
+
+        private List<ShoppingCart> _ShoppingCarts;
+
+        public virtual List<ShoppingCart> ShoppingCarts
+        {
+            get => _lazyLoader.Load(this, ref _ShoppingCarts);
+            set => _ShoppingCarts = value;
+        }
     }
 }

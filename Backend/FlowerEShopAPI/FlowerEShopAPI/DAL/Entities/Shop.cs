@@ -1,10 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FlowerEShopAPI.DAL.Entities
 {
     public class Shop : BaseEntity
     {
+        private ILazyLoader _lazyLoader { get; set; }
+        public Shop()
+        {
+
+        }
+
+        public Shop(ILazyLoader lazyLoader)
+        {
+            _lazyLoader = lazyLoader;
+        }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public Guid Id { get; set; }
@@ -22,9 +34,21 @@ namespace FlowerEShopAPI.DAL.Entities
 
         public Guid UserId { get; set; }
 
-        public virtual List<Product> Products { get; set; } = new List<Product>();
+        private List<Product> _Products;
+
+        public virtual List<Product> Products
+        {
+            get => _lazyLoader.Load(this, ref _Products);
+            set => _Products = value;
+        }
 
         [ForeignKey("UserId")]
-        public virtual User? User { get; set; }
+        private User _User;
+
+        public virtual User User
+        {
+            get => _lazyLoader.Load(this, ref _User);
+            set => _User = value;
+        }
     }
 }
