@@ -16,7 +16,7 @@ namespace FlowerEShopAPI.BL.Controllers
             _searchService = searchService;
         }
 
-        [HttpGet]
+        [HttpPost]
         [TypeFilter(typeof(LogInterceptor))]
         public async Task<IActionResult> Get([FromBody] SearchBody body)
         {
