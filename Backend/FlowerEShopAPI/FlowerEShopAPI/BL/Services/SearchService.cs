@@ -17,7 +17,8 @@ namespace FlowerEShopAPI.BL.Services
 
         public async Task<List<Shop>> SearchShops(string searchQuery, decimal? priceStart, decimal? priceEnd, string status = "All")
         {
-            var trimmedSearchQuery = searchQuery.Trim();
+            var checkedSearchQuery = searchQuery == "All" ? "" : searchQuery;
+            var trimmedSearchQuery = checkedSearchQuery.Trim();
             var regex = new Regex(@"^(?=.*\b" + trimmedSearchQuery + @"\b).*$");
 
             var shopList = (await _shopRepository.FindAll()).Where(shop => _validation.ValidateFilters(shop, status, priceStart, priceEnd));
