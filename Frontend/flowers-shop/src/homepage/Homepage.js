@@ -3,8 +3,15 @@ import Box from "@mui/material/Box";
 import { Button, Grid } from "@mui/material";
 import MainLogo from "./MainLogo";
 import IntroTextItem from "./Intro";
+import { useNavigate } from "react-router-dom";
 
 const Homepage = (props) => {
+    const navigate = useNavigate();
+
+    const onNavClick = (path) => {
+        navigate(`/${path}`);
+    };
+
     return (
         <Box
             sx={{
@@ -38,10 +45,20 @@ const Homepage = (props) => {
                             sx={{
                                 mr: { xl: 25, lg: 20, md: 15, sm: 10, xs: 5 }
                             }}
+                            onClick={() => {
+                                onNavClick("myShop");
+                            }}
                         >
                             Buy
                         </Button>
-                        <Button variant="outlined">Sell</Button>
+                        <Button
+                            variant="outlined"
+                            onClick={() => {
+                                onNavClick("myShop");
+                            }}
+                        >
+                            Sell
+                        </Button>
                     </Box>
                 </Grid>
             </Grid>
